@@ -1,8 +1,48 @@
 {
   "name": "css-gum",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A flexible CSS unit conversion utility for responsive design with viewport units (vw, vh)",
   "type": "module",
+  "author": {
+    "name": "jzovvo",
+    "email": "jzovvo@gmail.com",
+    "url": "https://jzovvo.dev/"
+  },
+  "maintainers": [
+    {
+      "name": "jzovvo",
+      "email": "jzovvo@gmail.com",
+      "url": "https://jzovvo.dev/"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "jzovvo",
+      "email": "jzovvo@gmail.com",
+      "url": "https://jzovvo.dev/"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "css",
+    "viewport",
+    "vw",
+    "vh",
+    "px-to-vw",
+    "px-to-vh",
+    "responsive",
+    "design-draft scaling",
+    "css-units",
+    "rwd"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jzovvo/css-gum"
+  },
+  "bugs": {
+    "url": "https://github.com/jzovvo/css-gum/issues"
+  },
+  "homepage": "https://github.com/jzovvo/css-gum#readme",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -26,6 +66,7 @@
   },
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup"
+    "build": "tsup",
+    "prepublishOnly": "npm run build"
   }
 }
