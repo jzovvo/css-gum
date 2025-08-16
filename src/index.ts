@@ -1,4 +1,4 @@
-import * as core from './core'
-import * as gen from './gen'
-import * as utils from './utils'
-export { core, gen, utils }
+import * as Core from './core'
+import * as Gen from './gen'
+import * as Utils from './utils'
+export { Core, Gen, Utils }
