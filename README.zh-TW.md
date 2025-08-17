@@ -43,6 +43,12 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
+## 使用場景範例
+
+### 搭配 [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
+
+[查看完整範例 →](./examples/vite/README.zh-TW.md)
+
 ## 核心 API
 
 ### 視窗單位

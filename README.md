@@ -43,6 +43,12 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
+## Example Use Cases
+
+### With [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
+
+[View Complete Example →](./examples/vite/README.md)
+
 ## Core API
 
 ### Viewport Units

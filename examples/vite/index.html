@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet" />
+    <link href="/src/tailwind.css" rel="stylesheet" />
+    <link href="/src/normal.css" rel="stylesheet" />
+  </head>
+  <body class="font-bold font-red-hat">
+    <!-- TAILWIND EXAMPLE-->
+    <div
+      class="relative bg-stone-700">
+      <div
+        class="
+          absolute top-0 left-[vwc2(-15)]
+          bg-orange-500 w-[vwc2(30)] h-[vwc2(30)]
+          min-p2:left-[vwe2(-15)]
+          max-p1:left-[vwe1(-15)] max-p1:w-[vwc1(30)] max-p1:h-[vwc1(30)]
+          max-p0:left-[vwc1(-15)]
+        "></div>
+      <div
+        class="
+          w-[vwc2(1440)] mx-auto bg-black text-white
+          text-[length:vwc2(100)]
+          max-p1:w-[vwc1(375)] max-p1:text-[length:vwc1(50)]
+        ">CLAMP+EXTEND</div>
+    </div>
+    <div
+      class="relative bg-stone-700">
+      <div
+        class="
+          absolute top-0 left-[vwc2(-15)]
+          bg-orange-500 w-[vwc2(30)] h-[vwc2(30)]
+          max-p1:left-[vwc1(-15)] max-p1:w-[vwc1(30)] max-p1:h-[vwc1(30)]
+        "></div>
+      <div
+        class="
+          w-[vwc2(1440)] mx-auto bg-black text-white
+          text-[length:vwc2(100)]
+          max-p1:w-[vwc1(375)] max-p1:text-[length:vwc1(50)]
+        ">CLAMP</div>
+    </div>
+    <div
+      class="relative">
+      <div
+        class="
+          absolute top-0 left-[vw2(-15)]
+          bg-orange-500 w-[vw2(30)] h-[vw2(30)]
+          max-p1:left-[vw1(-15)] max-p1:w-[vw1(30)] max-p1:h-[vw1(30)]
+      "></div>
+      <div
+        class="
+          w-[vw2(1440)] mx-auto bg-black
+          text-[length:vw2(100)] text-white
+          max-p1:text-[length:vw1(50)]
+        ">SCALE</div>
+    </div>
+
+    <!-- NORMAL CSS EXAMPLE-->
+    <div class="clampExtend">
+      <div class="oBox"></div>
+      <div class="oTxt">CLAMP+EXTEND</div>
+    </div>
+    <div class="clamp">
+      <div class="oBox"></div>
+      <div class="oTxt">CLAMP</div>
+    </div>
+    <div class="scale">
+      <div class="oBox"></div>
+      <div class="oTxt">SCALE</div>
+    </div>
+  </body>
+</html>
