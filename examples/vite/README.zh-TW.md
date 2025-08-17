@@ -19,7 +19,7 @@ pnpm install
 pnpm dev
 ```
 
-https://github.com/user-attachments/assets/0954e4c1-57f7-4e00-88d9-f7ad7e2d123c
+![Demo](./assets/demo.gif)
 
 ## 核心說明
 
