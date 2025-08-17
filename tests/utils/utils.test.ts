@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { Utils } from '../../src/index'
+import {describe, it, expect} from 'vitest'
+import {Utils} from '../../src/index'
 
 describe('Utils Module', () => {
   describe('Basic conversion functions', () => {

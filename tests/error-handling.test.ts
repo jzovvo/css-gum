@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { Core } from '../src/index'
+import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest'
+import {Core} from '../src/index'
 
 describe('Error Handling', () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>
@@ -17,7 +17,7 @@ describe('Error Handling', () => {
       const result1 = Core.vw('not-a-number' as any, 1920)
       expect(result1).toBe('')
       expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
-        message: expect.stringContaining('[ vw error ]')
+        message: expect.stringContaining('[ vw error ]'),
       }))
 
       consoleSpy.mockClear()
@@ -31,7 +31,7 @@ describe('Error Handling', () => {
       const result1 = Core.vh({} as any, 1080)
       expect(result1).toBe('')
       expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
-        message: expect.stringContaining('[ vh error ]')
+        message: expect.stringContaining('[ vh error ]'),
       }))
 
       consoleSpy.mockClear()
@@ -57,7 +57,7 @@ describe('Error Handling', () => {
       const result1 = Core.ddws(func as any, 1920, 0.5)
       expect(result1).toBe('')
       expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
-        message: expect.stringContaining('[ ddws error ]')
+        message: expect.stringContaining('[ ddws error ]'),
       }))
 
       consoleSpy.mockClear()

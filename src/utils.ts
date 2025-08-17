@@ -1,4 +1,4 @@
-import type { DesignDraft, Percent, Pixel } from "./types"
+import type {DesignDraft, Percent, Pixel} from './types'
 
 export const percent = (denominator: number) => (numerator: number) => numerator / denominator * 100
 export const pxToVw = percent
@@ -8,13 +8,13 @@ export const pxToVh = percent
 const classifyNumber = (result: number): { special: true; result: string } | { special: false; result: number } => {
   switch (result) {
     case Infinity:
-      return { special: true, result: 'infinity' }
+      return {special: true, result: 'infinity'}
     case -Infinity:
-      return { special: true, result: '-infinity' }
+      return {special: true, result: '-infinity'}
     case 0:
-      return { special: true, result: '0' }
+      return {special: true, result: '0'}
     default:
-      return { special: false, result }
+      return {special: false, result}
   }
 }
 

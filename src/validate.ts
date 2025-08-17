@@ -1,4 +1,4 @@
-import { designDraftSchema, percentSchema, pixelSchema } from "./types"
+import {designDraftSchema, percentSchema, pixelSchema} from './types'
 
 
 export const checkViewportParams = (pixel: unknown, designDraftData: unknown) => {
@@ -8,7 +8,7 @@ export const checkViewportParams = (pixel: unknown, designDraftData: unknown) =>
   if (pixelDataResult.success && designDraftDataResult.success) {
     return {
       data: [pixelDataResult.data, designDraftDataResult.data],
-      error: null
+      error: null,
     }
   }
 
@@ -16,7 +16,7 @@ export const checkViewportParams = (pixel: unknown, designDraftData: unknown) =>
     data: null,
     error:
       `pixel expected number, received ${pixel}\n` +
-      `designDraftData expected number, received ${designDraftData}`
+      `designDraftData expected number, received ${designDraftData}`,
   }
 }
 
@@ -27,7 +27,7 @@ export const checkPercentParams = (child: unknown, parent: unknown) => {
   if (childResult.success && parentResult.success) {
     return {
       data: [childResult.data, parentResult.data],
-      error: null
+      error: null,
     }
   }
 
@@ -35,7 +35,7 @@ export const checkPercentParams = (child: unknown, parent: unknown) => {
     data: null,
     error:
       `child expected number, received ${child}\n` +
-      `parent expected number, received ${parent}`
+      `parent expected number, received ${parent}`,
   }
 }
 
@@ -47,7 +47,7 @@ export const checkDesignDraftScalingParams = (pixel: unknown, designDraftData: u
   if (pixelDataResult.success && designDraftDataResult.success && percentResult.success) {
     return {
       data: [pixelDataResult.data, designDraftDataResult.data, percentResult.data],
-      error: null
+      error: null,
     }
   }
 
@@ -56,6 +56,6 @@ export const checkDesignDraftScalingParams = (pixel: unknown, designDraftData: u
     error:
       `pixel expected number, received ${pixel}\n` +
       `designDraftData expected number, received ${designDraftData}\n` +
-      `percent expected number, received ${percent}`
+      `percent expected number, received ${percent}`,
   }
 }

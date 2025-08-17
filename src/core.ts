@@ -1,6 +1,6 @@
-import type { DesignDraft, Percent, Pixel } from "./types"
-import { cssDesignDraftVhScaling, cssDesignDraftVwScaling, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhClamp, cssPxToVw, cssPxToVwClamp } from "./utils"
-import { checkDesignDraftScalingParams, checkPercentParams, checkViewportParams, } from './validate'
+import type {DesignDraft, Percent, Pixel} from './types'
+import {cssDesignDraftVhScaling, cssDesignDraftVwScaling, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhClamp, cssPxToVw, cssPxToVwClamp} from './utils'
+import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from './validate'
 
 
 export const vw = (pixelData: Pixel, designDraftData: DesignDraft) => {

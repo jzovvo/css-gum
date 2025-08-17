@@ -1,5 +1,5 @@
-import { vw, lvw, ddws, vh, lvh, ddhs } from './core'
-import type { Pixel } from './types'
+import {vw, lvw, ddws, vh, lvh, ddhs} from './core'
+import type {Pixel} from './types'
 
 
 interface PropsDraftFuncs {

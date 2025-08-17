@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { Gen } from '../../src/index'
+import {describe, it, expect} from 'vitest'
+import {Gen} from '../../src/index'
 
 describe('Gen Module', () => {
   describe('genDraftWidthFuncs', () => {
@@ -41,7 +41,7 @@ describe('Gen Module', () => {
         points: [100, 1000],
         nameVw: 'mobile',
         nameLvw: 'clampWidth',
-        nameDdws: 'scaleWidth'
+        nameDdws: 'scaleWidth',
       })
 
       expect(funcs).toHaveProperty('mobile1')
@@ -55,7 +55,7 @@ describe('Gen Module', () => {
     it('should respect custom firstIndex', () => {
       const funcs = Gen.genDraftWidthFuncs({
         points: [100, 1000],
-        firstIndex: 0
+        firstIndex: 0,
       })
 
       expect(funcs).toHaveProperty('vw0')
@@ -111,7 +111,7 @@ describe('Gen Module', () => {
         points: [100, 1000],
         nameVh: 'mobile',
         nameLvh: 'clampHeight',
-        nameDdhs: 'scaleHeight'
+        nameDdhs: 'scaleHeight',
       })
 
       expect(funcs).toHaveProperty('mobile1')
@@ -125,7 +125,7 @@ describe('Gen Module', () => {
     it('should respect custom firstIndex', () => {
       const funcs = Gen.genDraftHeightFuncs({
         points: [100, 1000],
-        firstIndex: 0
+        firstIndex: 0,
       })
 
       expect(funcs).toHaveProperty('vh0')
@@ -146,7 +146,7 @@ describe('Gen Module', () => {
     it('should return valid CSS values', () => {
       const widthFuncs = Gen.genDraftWidthFuncs({
         points: [100, 1000],
-        firstIndex: 1
+        firstIndex: 1,
       })
 
       const result1 = widthFuncs.vw1(100)

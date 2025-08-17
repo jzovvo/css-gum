@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import {z} from 'zod'
 
 export const pixelSchema = z.coerce.number()
 export const designDraftSchema = z.coerce.number()
