@@ -1,4 +1,4 @@
-import {vw, vwc, vwe, vh, vhc, vhe} from './core'
+import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent} from './core'
 import type {Pixel} from './types'
 
 
@@ -7,16 +7,22 @@ interface PropsDraftFuncs {
   firstIndex?: number
 }
 
-interface PropsDraftWidthFuncs {
+interface PropsNameCustomWidth {
   nameVw?: string
   nameVwc?: string
   nameVwe?: string
 }
 
-interface PropsDraftHeightFuncs {
+interface PropsNameCustomHeight {
   nameVh?: string
   nameVhc?: string
   nameVhe?: string
+}
+
+interface PropsNameCustomOther {
+  nameEm?: string
+  nameLh?: string
+  namePercent?: string
 }
 
 export const genDraftWidthFuncs = ({
@@ -25,7 +31,7 @@ export const genDraftWidthFuncs = ({
   nameVw = 'vw',
   nameVwc = 'vwc',
   nameVwe = 'vwe',
-}: PropsDraftFuncs & PropsDraftWidthFuncs) => {
+}: PropsDraftFuncs & PropsNameCustomWidth) => {
   points.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
@@ -47,7 +53,7 @@ export const genDraftHeightFuncs = ({
   nameVh = 'vh',
   nameVhc = 'vhc',
   nameVhe = 'vhe',
-}: PropsDraftFuncs & PropsDraftHeightFuncs) => {
+}: PropsDraftFuncs & PropsNameCustomHeight) => {
   points.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
@@ -62,4 +68,27 @@ export const genDraftHeightFuncs = ({
   }
 
   return temp
+}
+export const genCoreFuncs = ({
+  nameEm = 'em',
+  nameLh = 'lh',
+  nameVh = 'vh',
+  nameVhc = 'vhc',
+  nameVhe = 'vhe',
+  nameVw = 'vw',
+  nameVwc = 'vwc',
+  nameVwe = 'vwe',
+  namePercent = 'percent',
+}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther = {}) => {
+  return {
+    [nameEm]: em,
+    [nameLh]: lh,
+    [nameVh]: vh,
+    [nameVhc]: vhc,
+    [nameVhe]: vhe,
+    [nameVw]: vw,
+    [nameVwc]: vwc,
+    [nameVwe]: vwe,
+    [namePercent]: percent,
+  }
 }

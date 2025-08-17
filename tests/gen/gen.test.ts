@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest'
-import {Gen} from '../../src/index'
+import {Gen, Core} from '../../src/index'
 
 describe('Gen Module', () => {
   describe('genDraftWidthFuncs', () => {
@@ -139,6 +139,70 @@ describe('Gen Module', () => {
       })
 
       expect(Object.keys(funcs)).toHaveLength(0)
+    })
+  })
+
+  describe('genCoreFuncs', () => {
+    it('should generate all core functions with default names', () => {
+      const funcs = Gen.genCoreFuncs()
+
+      expect(funcs).toHaveProperty('em')
+      expect(funcs).toHaveProperty('lh')
+      expect(funcs).toHaveProperty('vh')
+      expect(funcs).toHaveProperty('vhc')
+      expect(funcs).toHaveProperty('vhe')
+      expect(funcs).toHaveProperty('vw')
+      expect(funcs).toHaveProperty('vwc')
+      expect(funcs).toHaveProperty('vwe')
+      expect(funcs).toHaveProperty('percent')
+    })
+
+    it('should respect partial custom names and use defaults for others', () => {
+      const funcs = Gen.genCoreFuncs({
+        nameVw: 'customVw',
+        namePercent: 'customPercent',
+      })
+
+      expect(funcs).toHaveProperty('customVw')
+      expect(funcs).toHaveProperty('customPercent')
+      expect(funcs).toHaveProperty('em')     // default
+      expect(funcs).toHaveProperty('lh')     // default
+      expect(funcs).toHaveProperty('vh')     // default
+      expect(funcs).toHaveProperty('vhc')    // default
+      expect(funcs).toHaveProperty('vhe')    // default
+      expect(funcs).toHaveProperty('vwc')    // default
+      expect(funcs).toHaveProperty('vwe')    // default
+    })
+
+    it('should return working core functions', () => {
+      const funcs = Gen.genCoreFuncs()
+
+      // Test viewport functions
+      expect(funcs.vw(10, 100)).toBe('10vw')
+      expect(funcs.vh(10, 100)).toBe('10vh')
+      expect(funcs.vwc(10, 100)).toBe('min(10px, 10vw)')
+      expect(funcs.vhc(10, 100)).toBe('min(10px, 10vh)')
+      expect(funcs.vwe(10, 100)).toBe('calc((100vw - 100px) * 0.5 + 10px)')
+      expect(funcs.vhe(10, 100)).toBe('calc((100vh - 100px) * 0.5 + 10px)')
+
+      // Test utility functions
+      expect(funcs.em(24, 16)).toBe('1.5em')
+      expect(funcs.lh(24, 16)).toBe('1.5')
+      expect(funcs.percent(10, 100)).toBe('10%')
+    })
+
+    it('should return the exact same functions as core imports', () => {
+      const funcs = Gen.genCoreFuncs()
+
+      expect(funcs.vw).toBe(Core.vw)
+      expect(funcs.vh).toBe(Core.vh)
+      expect(funcs.vwc).toBe(Core.vwc)
+      expect(funcs.vhc).toBe(Core.vhc)
+      expect(funcs.vwe).toBe(Core.vwe)
+      expect(funcs.vhe).toBe(Core.vhe)
+      expect(funcs.em).toBe(Core.em)
+      expect(funcs.lh).toBe(Core.lh)
+      expect(funcs.percent).toBe(Core.percent)
     })
   })
 
