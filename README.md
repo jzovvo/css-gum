@@ -229,7 +229,7 @@ Generates width conversion functions for multiple design draft breakpoints.
 
 - `points` - Array of design draft widths (pixels)
 - `firstIndex` - Starting index number (default: 1)
-- `nameVw`, `nameVwc`, `nameVwe` - Custom function name prefixes
+- `nameVw`, `nameVwc`, `nameVwe` - Custom function name prefixes (use empty string `''` to skip generating that type)
 
 ```typescript
 import { Gen } from "css-gum";
@@ -242,6 +242,16 @@ const widthFuncs = Gen.genDraftWidthFuncs({
 widthFuncs.vw1(20); // 20px on 375px design
 widthFuncs.vwc2(20); // Clamped 20px on 768px design
 widthFuncs.vwe3(20); // Extended 20px on 1440px design
+
+// Skip specific function types by using empty string
+const partialFuncs = Gen.genDraftWidthFuncs({
+  points: [375, 768],
+  nameVw: "vw", // Generate vw functions
+  nameVwc: "", // Skip vwc functions
+  nameVwe: "extend", // Generate extend functions
+});
+
+// Only generates: vw1, vw2, extend1, extend2
 ```
 
 ### `genDraftHeightFuncs(options)`
@@ -252,7 +262,7 @@ Generates height conversion functions for multiple design draft breakpoints.
 
 - `points` - Array of design draft heights (pixels)
 - `firstIndex` - Starting index number (default: 1)
-- `nameVh`, `nameVhc`, `nameVhe` - Custom function name prefixes
+- `nameVh`, `nameVhc`, `nameVhe` - Custom function name prefixes (use empty string `''` to skip generating that type)
 
 ```typescript
 const heightFuncs = Gen.genDraftHeightFuncs({
@@ -261,6 +271,16 @@ const heightFuncs = Gen.genDraftHeightFuncs({
 
 heightFuncs.vh1(30); // 30px on 667px design
 heightFuncs.vhc2(30); // Clamped 30px on 1080px design
+
+// Skip specific function types
+const onlyVhFuncs = Gen.genDraftHeightFuncs({
+  points: [667, 1080],
+  nameVh: "vh",
+  nameVhc: "", // Skip clamped functions
+  nameVhe: "", // Skip extended functions
+});
+
+// Only generates: vh1, vh2
 ```
 
 ### `genCoreFuncs(options)`
@@ -269,8 +289,8 @@ Generates core function collection with custom names.
 
 **Parameters:**
 
-- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe` - Viewport function names
-- `nameEm`, `nameLh`, `namePercent` - Utility function names
+- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe` - Viewport function names (use empty string `''` to exclude)
+- `nameEm`, `nameLh`, `namePercent` - Utility function names (use empty string `''` to exclude)
 
 ```typescript
 const customCore = Gen.genCoreFuncs({
@@ -280,6 +300,21 @@ const customCore = Gen.genCoreFuncs({
 
 customCore.toVw(20, 1440); // Same as Core.vw(20, 1440)
 customCore.toPercent(10, 100); // Same as Core.percent(10, 100)
+
+// Exclude specific functions
+const minimalCore = Gen.genCoreFuncs({
+  nameVw: "vw",
+  nameVh: "vh",
+  nameVwc: "", // Exclude clamped width
+  nameVhc: "", // Exclude clamped height
+  nameVwe: "", // Exclude extended width
+  nameVhe: "", // Exclude extended height
+  nameEm: "", // Exclude em function
+  nameLh: "", // Exclude line-height function
+  namePercent: "", // Exclude percent function
+});
+
+// Only generates: vw, vh functions
 ```
 
 ## Error Handling

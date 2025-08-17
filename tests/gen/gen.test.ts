@@ -70,6 +70,19 @@ describe('Gen Module', () => {
 
       expect(Object.keys(funcs)).toHaveLength(0)
     })
+
+    it('should skip functions with empty string names', () => {
+      const funcs = Gen.genDraftWidthFuncs({
+        points: [100, 1000],
+        nameVw: '',
+        nameVwc: 'vwClamp',
+        nameVwe: '',
+      })
+
+      expect(funcs).toHaveProperty('vwClamp1')
+      expect(funcs).toHaveProperty('vwClamp2')
+      expect(Object.keys(funcs)).toHaveLength(2)
+    })
   })
 
   describe('genDraftHeightFuncs', () => {
@@ -140,6 +153,19 @@ describe('Gen Module', () => {
 
       expect(Object.keys(funcs)).toHaveLength(0)
     })
+
+    it('should skip functions with empty string names', () => {
+      const funcs = Gen.genDraftHeightFuncs({
+        points: [100, 1000],
+        nameVh: '',
+        nameVhc: 'vhClamp',
+        nameVhe: '',
+      })
+
+      expect(funcs).toHaveProperty('vhClamp1')
+      expect(funcs).toHaveProperty('vhClamp2')
+      expect(Object.keys(funcs)).toHaveLength(2)
+    })
   })
 
   describe('genCoreFuncs', () => {
@@ -203,6 +229,24 @@ describe('Gen Module', () => {
       expect(funcs.em).toBe(Core.em)
       expect(funcs.lh).toBe(Core.lh)
       expect(funcs.percent).toBe(Core.percent)
+    })
+
+    it('should remove empty string keys', () => {
+      const funcs = Gen.genCoreFuncs({
+        nameVw: '',
+        nameVh: 'vhh',
+        namePercent: '',
+      })
+
+      expect(funcs).toEqual(expect.not.objectContaining({'': expect.anything()}))
+      expect(funcs).toHaveProperty('vhh')
+      expect(funcs).toHaveProperty('vwc')  // default
+      expect(funcs).toHaveProperty('vhc')  // default
+      expect(funcs).toHaveProperty('vwe')  // default
+      expect(funcs).toHaveProperty('vhe')  // default
+      expect(funcs).toHaveProperty('em')   // default
+      expect(funcs).toHaveProperty('lh')   // default
+      expect(Object.keys(funcs)).toHaveLength(7)  // 9 total - 2 empty = 7
     })
   })
 

@@ -64,9 +64,9 @@ export const genDraftWidthFuncs = ({
     const idx = i + firstIndex
     const point = points[i] ?? 0
 
-    temp[nameVw + idx] = (pixel: Pixel) => vw(pixel, point)
-    temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point)
-    temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point)
+    nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel) => vw(pixel, point))
+    nameVwc !== '' && (temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point))
+    nameVwe !== '' && (temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point))
   }
 
   return temp
@@ -110,9 +110,9 @@ export const genDraftHeightFuncs = ({
     const idx = i + firstIndex
     const point = points[i] ?? 0
 
-    temp[nameVh + idx] = (pixel: Pixel) => vh(pixel, point)
-    temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point)
-    temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point)
+    nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel) => vh(pixel, point))
+    nameVhc !== '' && (temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point))
+    nameVhe !== '' && (temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point))
   }
 
   return temp
@@ -156,7 +156,7 @@ export const genCoreFuncs = ({
   nameVwe = 'vwe',
   namePercent = 'percent',
 }: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther = {}) => {
-  return {
+  const temp = {
     [nameEm]: em,
     [nameLh]: lh,
     [nameVh]: vh,
@@ -167,4 +167,7 @@ export const genCoreFuncs = ({
     [nameVwe]: vwe,
     [namePercent]: percent,
   }
+  delete temp['']
+
+  return temp
 }

@@ -229,7 +229,7 @@ Utils.cssLh(24, 16); // '1.5'
 
 - `points` - 設計稿寬度陣列（像素）
 - `firstIndex` - 起始索引號（預設：1）
-- `nameVw`, `nameVwc`, `nameVwe` - 自訂函數名稱前綴
+- `nameVw`, `nameVwc`, `nameVwe` - 自訂函數名稱前綴（使用空字串 `''` 可跳過生成該類型）
 
 ```typescript
 import { Gen } from "css-gum";
@@ -242,6 +242,16 @@ const widthFuncs = Gen.genDraftWidthFuncs({
 widthFuncs.vw1(20); // 375px 設計稿上的 20px
 widthFuncs.vwc2(20); // 768px 設計稿上的限制 20px
 widthFuncs.vwe3(20); // 1440px 設計稿上的延伸 20px
+
+// 使用空字串跳過特定函數類型
+const partialFuncs = Gen.genDraftWidthFuncs({
+  points: [375, 768],
+  nameVw: "vw", // 生成 vw 函數
+  nameVwc: "", // 跳過 vwc 函數
+  nameVwe: "extend", // 生成延伸函數
+});
+
+// 只生成：vw1, vw2, extend1, extend2
 ```
 
 ### `genDraftHeightFuncs(options)`
@@ -252,7 +262,7 @@ widthFuncs.vwe3(20); // 1440px 設計稿上的延伸 20px
 
 - `points` - 設計稿高度陣列（像素）
 - `firstIndex` - 起始索引號（預設：1）
-- `nameVh`, `nameVhc`, `nameVhe` - 自訂函數名稱前綴
+- `nameVh`, `nameVhc`, `nameVhe` - 自訂函數名稱前綴（使用空字串 `''` 可跳過生成該類型）
 
 ```typescript
 const heightFuncs = Gen.genDraftHeightFuncs({
@@ -261,6 +271,16 @@ const heightFuncs = Gen.genDraftHeightFuncs({
 
 heightFuncs.vh1(30); // 667px 設計稿上的 30px
 heightFuncs.vhc2(30); // 1080px 設計稿上的限制 30px
+
+// 跳過特定函數類型
+const onlyVhFuncs = Gen.genDraftHeightFuncs({
+  points: [667, 1080],
+  nameVh: "vh",
+  nameVhc: "", // 跳過限制函數
+  nameVhe: "", // 跳過延伸函數
+});
+
+// 只生成：vh1, vh2
 ```
 
 ### `genCoreFuncs(options)`
@@ -269,8 +289,8 @@ heightFuncs.vhc2(30); // 1080px 設計稿上的限制 30px
 
 **參數：**
 
-- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe` - 視窗函數名稱
-- `nameEm`, `nameLh`, `namePercent` - 工具函數名稱
+- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe` - 視窗函數名稱（使用空字串 `''` 可排除）
+- `nameEm`, `nameLh`, `namePercent` - 工具函數名稱（使用空字串 `''` 可排除）
 
 ```typescript
 const customCore = Gen.genCoreFuncs({
@@ -280,6 +300,21 @@ const customCore = Gen.genCoreFuncs({
 
 customCore.toVw(20, 1440); // 等同於 Core.vw(20, 1440)
 customCore.toPercent(10, 100); // 等同於 Core.percent(10, 100)
+
+// 排除特定函數
+const minimalCore = Gen.genCoreFuncs({
+  nameVw: "vw",
+  nameVh: "vh",
+  nameVwc: "", // 排除限制寬度
+  nameVhc: "", // 排除限制高度
+  nameVwe: "", // 排除延伸寬度
+  nameVhe: "", // 排除延伸高度
+  nameEm: "", // 排除 em 函數
+  nameLh: "", // 排除行高函數
+  namePercent: "", // 排除百分比函數
+});
+
+// 只生成：vw, vh 函數
 ```
 
 ## 錯誤處理
