@@ -1,4 +1,12 @@
 {
   "tabWidth": 2,
-  "printWidth": 1
+  "printWidth": 999999,
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "printWidth": 1
+      }
+    }
+  ]
 }
