@@ -19,7 +19,7 @@ pnpm install
 pnpm dev
 ```
 
-<video src="./assets/demo.mp4" width="100%" controls></video>
+https://github.com/user-attachments/assets/0954e4c1-57f7-4e00-88d9-f7ad7e2d123c
 
 ## Core Concepts
 
