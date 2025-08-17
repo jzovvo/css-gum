@@ -1,13 +1,13 @@
 import {designDraftSchema, percentSchema, pixelSchema} from './types'
 
 
-export const checkViewportParams = (pixel: unknown, designDraftData: unknown) => {
-  const pixelDataResult = pixelSchema.safeParse(pixel)
-  const designDraftDataResult = designDraftSchema.safeParse(designDraftData)
+export const checkViewportParams = (pixel: unknown, designDraft: unknown) => {
+  const pixelResult = pixelSchema.safeParse(pixel)
+  const designDraftResult = designDraftSchema.safeParse(designDraft)
 
-  if (pixelDataResult.success && designDraftDataResult.success) {
+  if (pixelResult.success && designDraftResult.success) {
     return {
-      data: [pixelDataResult.data, designDraftDataResult.data],
+      data: [pixelResult.data, designDraftResult.data],
       error: null,
     }
   }
@@ -16,7 +16,7 @@ export const checkViewportParams = (pixel: unknown, designDraftData: unknown) =>
     data: null,
     error:
       `pixel expected number, received ${pixel}\n` +
-      `designDraftData expected number, received ${designDraftData}`,
+      `designDraft expected number, received ${designDraft}`,
   }
 }
 export const checkPercentParams = (child: unknown, parent: unknown) => {
@@ -37,14 +37,14 @@ export const checkPercentParams = (child: unknown, parent: unknown) => {
       `parent expected number, received ${parent}`,
   }
 }
-export const checkDesignDraftScalingParams = (pixel: unknown, designDraftData: unknown, percent: unknown) => {
-  const pixelDataResult = pixelSchema.safeParse(pixel)
-  const designDraftDataResult = designDraftSchema.safeParse(designDraftData)
+export const checkDesignDraftScalingParams = (pixel: unknown, designDraft: unknown, percent: unknown) => {
+  const pixelResult = pixelSchema.safeParse(pixel)
+  const designDraftResult = designDraftSchema.safeParse(designDraft)
   const percentResult = percentSchema.safeParse(percent)
 
-  if (pixelDataResult.success && designDraftDataResult.success && percentResult.success) {
+  if (pixelResult.success && designDraftResult.success && percentResult.success) {
     return {
-      data: [pixelDataResult.data, designDraftDataResult.data, percentResult.data],
+      data: [pixelResult.data, designDraftResult.data, percentResult.data],
       error: null,
     }
   }
@@ -53,7 +53,7 @@ export const checkDesignDraftScalingParams = (pixel: unknown, designDraftData: u
     data: null,
     error:
       `pixel expected number, received ${pixel}\n` +
-      `designDraftData expected number, received ${designDraftData}\n` +
+      `designDraft expected number, received ${designDraft}\n` +
       `percent expected number, received ${percent}`,
   }
 }

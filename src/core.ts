@@ -3,8 +3,8 @@ import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc,
 import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from './validate'
 
 
-export const vw = (pixelData: Pixel, designDraftData: DesignDraft) => {
-  const result = checkViewportParams(pixelData, designDraftData)
+export const vw = (pixel: Pixel, designDraft: DesignDraft) => {
+  const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
     return cssPxToVw(result.data[1])(result.data[0])
@@ -14,8 +14,8 @@ export const vw = (pixelData: Pixel, designDraftData: DesignDraft) => {
 
   return ''
 }
-export const vwc = (pixel: Pixel, designDraftData: DesignDraft) => {
-  const result = checkViewportParams(pixel, designDraftData)
+export const vwc = (pixel: Pixel, designDraft: DesignDraft) => {
+  const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
     return cssPxToVwc(result.data[1])(result.data[0])
@@ -25,8 +25,8 @@ export const vwc = (pixel: Pixel, designDraftData: DesignDraft) => {
 
   return ''
 }
-export const vh = (pixel: Pixel, designDraftData: DesignDraft) => {
-  const result = checkViewportParams(pixel, designDraftData)
+export const vh = (pixel: Pixel, designDraft: DesignDraft) => {
+  const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
     return cssPxToVh(result.data[1])(result.data[0])
@@ -36,8 +36,8 @@ export const vh = (pixel: Pixel, designDraftData: DesignDraft) => {
 
   return ''
 }
-export const vhc = (pixel: Pixel, designDraftData: DesignDraft) => {
-  const result = checkViewportParams(pixel, designDraftData)
+export const vhc = (pixel: Pixel, designDraft: DesignDraft) => {
+  const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
     return cssPxToVhc(result.data[1])(result.data[0])
@@ -58,8 +58,8 @@ export const percent = (child: Percent, parent: Percent) => {
 
   return ''
 }
-export const vwe = (pixel: Pixel, designDraftData: DesignDraft, percent: Percent = 0.5) => {
-  const result = checkDesignDraftScalingParams(pixel, designDraftData, percent)
+export const vwe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5) => {
+  const result = checkDesignDraftScalingParams(pixel, designDraft, percent)
 
   if (result.data) {
     return cssPxToVwe(result.data[1])(result.data[2])(result.data[0])
@@ -69,8 +69,8 @@ export const vwe = (pixel: Pixel, designDraftData: DesignDraft, percent: Percent
 
   return ''
 }
-export const vhe = (pixel: Pixel, designDraftData: DesignDraft, percent: Percent = 0.5) => {
-  const result = checkDesignDraftScalingParams(pixel, designDraftData, percent)
+export const vhe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5) => {
+  const result = checkDesignDraftScalingParams(pixel, designDraft, percent)
 
   if (result.data) {
     return cssPxToVhe(result.data[1])(result.data[2])(result.data[0])
