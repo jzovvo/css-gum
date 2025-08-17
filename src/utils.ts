@@ -4,10 +4,40 @@ export const percent = (denominator: number) => (numerator: number) => numerator
 export const pxToVw = percent
 export const pxToVh = percent
 
-export const cssPxToVw = (designDraftWidth: DesignDraft) => (pixel: Pixel) => `${pxToVw(designDraftWidth)(pixel)}vw`
-export const cssPxToVh = (designDraftHeight: DesignDraft) => (pixel: Pixel) => `${pxToVh(designDraftHeight)(pixel)}vh`
-export const cssPxToVwClamp = (designDraftWidth: DesignDraft) => (pixel: Pixel) => pixel >= 0 ? `min(${pixel}px, ${cssPxToVw(designDraftWidth)(pixel)})` : `max(${pixel}px, ${cssPxToVw(designDraftWidth)(pixel)})`
-export const cssPxToVhClamp = (designDraftHeight: DesignDraft) => (pixel: Pixel) => pixel >= 0 ? `min(${pixel}px, ${cssPxToVh(designDraftHeight)(pixel)})` : `max(${pixel}px, ${cssPxToVh(designDraftHeight)(pixel)})`
+
+const classifyNumber = (result: number): { special: true; result: string } | { special: false; result: number } => {
+  switch (result) {
+    case Infinity:
+      return { special: true, result: 'infinity' }
+    case -Infinity:
+      return { special: true, result: '-infinity' }
+    case 0:
+      return { special: true, result: '0' }
+    default:
+      return { special: false, result }
+  }
+}
+
+export const cssPxToVw = (designDraftWidth: DesignDraft) => (pixel: Pixel) => {
+  const result = classifyNumber(pxToVw(designDraftWidth)(pixel))
+  return result.special ? result.result : `${result.result}vw`
+}
+export const cssPxToVh = (designDraftHeight: DesignDraft) => (pixel: Pixel) => {
+  const result = classifyNumber(pxToVh(designDraftHeight)(pixel))
+  return result.special ? result.result : `${result.result}vh`
+}
+export const cssPxToVwClamp = (designDraftWidth: DesignDraft) => (pixel: Pixel) => {
+  if (pixel === 0) {
+    return '0'
+  }
+  return pixel > 0 ? `min(${pixel}px, ${cssPxToVw(designDraftWidth)(pixel)})` : `max(${pixel}px, ${cssPxToVw(designDraftWidth)(pixel)})`
+}
+export const cssPxToVhClamp = (designDraftHeight: DesignDraft) => (pixel: Pixel) => {
+  if (pixel === 0) {
+    return '0'
+  }
+  return pixel > 0 ? `min(${pixel}px, ${cssPxToVh(designDraftHeight)(pixel)})` : `max(${pixel}px, ${cssPxToVh(designDraftHeight)(pixel)})`
+}
 export const cssDesignDraftVwScaling = (designDraftWidth: DesignDraft) => (percent: Percent) => (pixel: Pixel) => `calc((100vw - ${designDraftWidth}px) * ${percent} + ${pixel}px)`
 export const cssDesignDraftVhScaling = (designDraftHeight: DesignDraft) => (percent: Percent) => (pixel: Pixel) => `calc((100vh - ${designDraftHeight}px) * ${percent} + ${pixel}px)`
 export const cssPercent = (parent: number) => (child: number) => `${percent(parent)(child)}%`
