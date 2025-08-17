@@ -67,6 +67,9 @@
     "@vitest/ui": "^3.2.4",
     "eslint": "^9.33.0",
     "eslint-plugin-import": "^2.32.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
@@ -76,10 +79,12 @@
     "build": "tsup",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{json,md}\" && lint:fix",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "npm run lint && npm run test:run && npm run build"
+    "prepublishOnly": "npm run lint && npm run test:run && npm run build",
+    "prepare": "husky"
   }
 }
