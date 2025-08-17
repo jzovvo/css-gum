@@ -1,9 +1,462 @@
 # css-gum
 
-一個靈活的 CSS 單位轉換工具，支援響應式設計的視窗單位 (vw, vh) 及設計稿縮放功能。
+[![Test](https://github.com/jzovvo/css-gum/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/jzovvo/css-gum/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/jzovvo/css-gum/branch/master/graph/badge.svg)](https://codecov.io/gh/jzovvo/css-gum)
+[![npm version](https://badge.fury.io/js/css-gum.svg)](https://www.npmjs.com/package/css-gum)
+
+讓你的響應式設計像口香糖一樣伸縮自如 — 在各種螢幕尺寸間完美彈性適應。這個工具包將複雜的視窗計算轉化為簡單直觀的函數，輕鬆黏合到你的響應式開發工作流中。
 
 [English](./README.md)
 
+## 功能特色
+
+- 🖥️ **視窗單位**：將像素轉換為響應式 `vw`/`vh` 單位
+- 🔒 **限制單位**：使用 `vwc`/`vhc` 限制最大/最小值
+- 📏 **延伸縮放**：適應比設計稿更大螢幕的自適應縮放
+
+## 安裝
+
+```bash
+npm install css-gum
+```
+
+## 快速開始
+
+```typescript
+import { Core } from "css-gum";
+
+// 基本視窗單位
+Core.vw(
+  20,
+  1440,
+); // '1.39vw' - 1440px 設計稿上的 20px
+Core.vh(
+  30,
+  1080,
+); // '2.78vh' - 1080px 設計稿上的 30px
+
+// 限制單位（防止縮放超過設計尺寸）
+Core.vwc(
+  20,
+  1440,
+); // 'min(20px, 1.39vw)'
+Core.vhc(
+  30,
+  1080,
+); // 'min(30px, 2.78vh)'
+
+// 延伸縮放（適應更大螢幕）
+Core.vwe(
+  20,
+  1440,
+); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+Core.vhe(
+  30,
+  1080,
+); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+
+// 其他工具
+Core.percent(
+  10,
+  100,
+); // '10%'
+Core.em(
+  24,
+  16,
+); // '1.5em'
+Core.lh(
+  24,
+  16,
+); // '1.5'
+```
+
+## 核心 API
+
+### 視窗單位
+
+#### `vw(pixel, designDraft)`
+
+將像素轉換為視窗寬度單位。
+
+```typescript
+Core.vw(
+  20,
+  1440,
+); // '1.39vw'
+```
+
+#### `vh(pixel, designDraft)`
+
+將像素轉換為視窗高度單位。
+
+```typescript
+Core.vh(
+  30,
+  1080,
+); // '2.78vh'
+```
+
+#### `vwc(pixel, designDraft)`
+
+有限制的視窗寬度（防止縮放超過原始尺寸）。
+
+```typescript
+Core.vwc(
+  20,
+  1440,
+); // 'min(20px, 1.39vw)'
+```
+
+#### `vhc(pixel, designDraft)`
+
+有限制的視窗高度。
+
+```typescript
+Core.vhc(
+  30,
+  1080,
+); // 'min(30px, 2.78vh)'
+```
+
+#### `vwe(pixel, designDraft, percent?)`
+
+延伸視窗寬度，適應比設計稿更大的螢幕。
+
+```typescript
+Core.vwe(
+  20,
+  1440,
+  0.5,
+); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+```
+
+#### `vhe(pixel, designDraft, percent?)`
+
+延伸視窗高度，適應比設計稿更大的螢幕。
+
+```typescript
+Core.vhe(
+  30,
+  1080,
+  0.5,
+); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+```
+
+### 工具函數
+
+#### `percent(child, parent)`
+
+計算百分比值。
+
+```typescript
+Core.percent(
+  10,
+  100,
+); // '10%'
+```
+
+#### `em(lineSize, fontSize)`
+
+轉換為 em 單位。
+
+```typescript
+Core.em(
+  24,
+  16,
+); // '1.5em'
+```
+
+#### `lh(lineHeight, fontSize)`
+
+轉換為行高比例。
+
+```typescript
+Core.lh(
+  24,
+  16,
+); // '1.5'
+```
+
+## Utils 工具模組
+
+### CSS 轉換函數
+
+#### `cssPxToVw(designDraft)(pixel)`
+
+將像素轉換為 CSS vw 字串的 curried 函數。
+
+```typescript
+import { Utils } from "css-gum";
+
+const toVw =
+  Utils.cssPxToVw(
+    1440,
+  );
+toVw(
+  20,
+); // '1.39vw'
+toVw(
+  0,
+); // '0'
+```
+
+#### `cssPxToVh(designDraft)(pixel)`
+
+將像素轉換為 CSS vh 字串的 curried 函數。
+
+```typescript
+const toVh =
+  Utils.cssPxToVh(
+    1080,
+  );
+toVh(
+  30,
+); // '2.78vh'
+```
+
+#### `cssPxToVwc(designDraft)(pixel)`
+
+將像素轉換為限制型 vw 的 curried 函數。
+
+```typescript
+const toVwc =
+  Utils.cssPxToVwc(
+    1440,
+  );
+toVwc(
+  20,
+); // 'min(20px, 1.39vw)'
+toVwc(
+  -20,
+); // 'max(-20px, -1.39vw)'
+```
+
+#### `cssPxToVhc(designDraft)(pixel)`
+
+將像素轉換為限制型 vh 的 curried 函數。
+
+```typescript
+const toVhc =
+  Utils.cssPxToVhc(
+    1080,
+  );
+toVhc(
+  30,
+); // 'min(30px, 2.78vh)'
+```
+
+#### `cssPxToVwe(designDraft)(percent)(pixel)`
+
+將像素轉換為延伸型 vw 的 curried 函數。
+
+```typescript
+const toVwe =
+  Utils.cssPxToVwe(
+    1440,
+  )(
+    0.5,
+  );
+toVwe(
+  20,
+); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+```
+
+#### `cssPxToVhe(designDraft)(percent)(pixel)`
+
+將像素轉換為延伸型 vh 的 curried 函數。
+
+```typescript
+const toVhe =
+  Utils.cssPxToVhe(
+    1080,
+  )(
+    0.5,
+  );
+toVhe(
+  30,
+); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+```
+
+### 基礎計算函數
+
+#### `percent(denominator)(numerator)`
+
+計算百分比的 curried 函數。
+
+```typescript
+const getPercent =
+  Utils.percent(
+    100,
+  );
+getPercent(
+  25,
+); // 25 (數值)
+```
+
+#### `cssPercent(parent)(child)`
+
+計算 CSS 百分比字串的 curried 函數。
+
+```typescript
+const toCssPercent =
+  Utils.cssPercent(
+    100,
+  );
+toCssPercent(
+  25,
+); // '25%'
+```
+
+#### `cssEm(lineSize, fontSize)`
+
+計算 CSS em 值。
+
+```typescript
+Utils.cssEm(
+  24,
+  16,
+); // '1.5em'
+```
+
+#### `cssLh(lineHeight, fontSize)`
+
+計算 CSS 行高比例。
+
+```typescript
+Utils.cssLh(
+  24,
+  16,
+); // '1.5'
+```
+
+## 生成器函數
+
+### `genDraftWidthFuncs(options)`
+
+為多個設計稿斷點生成寬度轉換函數。
+
+**參數：**
+
+- `points` - 設計稿寬度陣列（像素）
+- `firstIndex` - 起始索引號（預設：1）
+- `nameVw`, `nameVwc`, `nameVwe` - 自訂函數名稱前綴
+
+```typescript
+import { Gen } from "css-gum";
+
+const widthFuncs =
+  Gen.genDraftWidthFuncs(
+    {
+      points:
+        [
+          375,
+          768,
+          1440,
+          1920,
+        ],
+      firstIndex: 1,
+    },
+  );
+
+widthFuncs.vw1(
+  20,
+); // 375px 設計稿上的 20px
+widthFuncs.vwc2(
+  20,
+); // 768px 設計稿上的限制 20px
+widthFuncs.vwe3(
+  20,
+); // 1440px 設計稿上的延伸 20px
+```
+
+### `genDraftHeightFuncs(options)`
+
+為多個設計稿斷點生成高度轉換函數。
+
+**參數：**
+
+- `points` - 設計稿高度陣列（像素）
+- `firstIndex` - 起始索引號（預設：1）
+- `nameVh`, `nameVhc`, `nameVhe` - 自訂函數名稱前綴
+
+```typescript
+const heightFuncs =
+  Gen.genDraftHeightFuncs(
+    {
+      points:
+        [
+          667,
+          1080,
+          1440,
+        ],
+    },
+  );
+
+heightFuncs.vh1(
+  30,
+); // 667px 設計稿上的 30px
+heightFuncs.vhc2(
+  30,
+); // 1080px 設計稿上的限制 30px
+```
+
+### `genCoreFuncs(options)`
+
+生成具有自訂名稱的核心函數集合。
+
+**參數：**
+
+- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe` - 視窗函數名稱
+- `nameEm`, `nameLh`, `namePercent` - 工具函數名稱
+
+```typescript
+const customCore =
+  Gen.genCoreFuncs(
+    {
+      nameVw:
+        "toVw",
+      namePercent:
+        "toPercent",
+    },
+  );
+
+customCore.toVw(
+  20,
+  1440,
+); // 等同於 Core.vw(20, 1440)
+customCore.toPercent(
+  10,
+  100,
+); // 等同於 Core.percent(10, 100)
+```
+
+## 錯誤處理
+
+所有函數都包含內建驗證，對於無效輸入會返回空字串並在控制台記錄錯誤：
+
+```typescript
+Core.vw(
+  "invalid",
+  1440,
+); // 返回 ''，記錄錯誤
+Core.vw(
+  20,
+  "invalid",
+); // 返回 ''，記錄錯誤
+Core.vw(
+  20,
+  1440,
+); // 返回 '1.39vw'
+```
+
+## 瀏覽器支援
+
+支援所有支援以下功能的現代瀏覽器：
+
+- 視窗單位（`vw`、`vh`）
+- CSS `calc()` 函數
+- CSS `min()`/`max()` 函數
+
 ## 授權
 
-MIT
+MIT © [jzovvo](https://github.com/jzovvo)
