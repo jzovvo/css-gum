@@ -35,45 +35,45 @@ describe('Utils Module', () => {
   })
 
   describe('CSS clamp functions', () => {
-    it('cssPxToVwClamp should return min for positive values', () => {
-      const result = Utils.cssPxToVwClamp(100)(10)
+    it('cssPxToVwc should return min for positive values', () => {
+      const result = Utils.cssPxToVwc(100)(10)
       expect(result).toBe('min(10px, 10vw)')
     })
 
-    it('cssPxToVwClamp should return max for negative values', () => {
-      const result = Utils.cssPxToVwClamp(100)(-10)
+    it('cssPxToVwc should return max for negative values', () => {
+      const result = Utils.cssPxToVwc(100)(-10)
       expect(result).toBe('max(-10px, -10vw)')
     })
 
-    it('cssPxToVhClamp should return min for positive values', () => {
-      const result = Utils.cssPxToVhClamp(100)(10)
+    it('cssPxToVhc should return min for positive values', () => {
+      const result = Utils.cssPxToVhc(100)(10)
       expect(result).toBe('min(10px, 10vh)')
     })
 
-    it('cssPxToVhClamp should return max for negative values', () => {
-      const result = Utils.cssPxToVhClamp(100)(-10)
+    it('cssPxToVhc should return max for negative values', () => {
+      const result = Utils.cssPxToVhc(100)(-10)
       expect(result).toBe('max(-10px, -10vh)')
     })
   })
 
   describe('Design draft scaling functions', () => {
-    it('cssDesignDraftVwScaling should generate calc expression', () => {
-      const result = Utils.cssDesignDraftVwScaling(100)(0.5)(10)
+    it('cssPxToVwe should generate calc expression', () => {
+      const result = Utils.cssPxToVwe(100)(0.5)(10)
       expect(result).toBe('calc((100vw - 100px) * 0.5 + 10px)')
     })
 
-    it('cssDesignDraftVhScaling should generate calc expression', () => {
-      const result = Utils.cssDesignDraftVhScaling(100)(0.8)(50)
+    it('cssPxToVhe should generate calc expression', () => {
+      const result = Utils.cssPxToVhe(100)(0.8)(50)
       expect(result).toBe('calc((100vh - 100px) * 0.8 + 50px)')
     })
 
-    it('should handle zero scaling', () => {
-      const result = Utils.cssDesignDraftVwScaling(100)(0)(10)
+    it('should handle zero scaling for vwe', () => {
+      const result = Utils.cssPxToVwe(100)(0)(10)
       expect(result).toBe('calc((100vw - 100px) * 0 + 10px)')
     })
 
-    it('should handle zero scaling', () => {
-      const result = Utils.cssDesignDraftVhScaling(100)(0)(10)
+    it('should handle zero scaling for vhe', () => {
+      const result = Utils.cssPxToVhe(100)(0)(10)
       expect(result).toBe('calc((100vh - 100px) * 0 + 10px)')
     })
   })
@@ -114,17 +114,17 @@ describe('Utils Module', () => {
 
   describe('Clamp functions with special values', () => {
     it('should handle zero pixel values in clamp functions', () => {
-      const result = Utils.cssPxToVwClamp(100)(0)
+      const result = Utils.cssPxToVwc(100)(0)
       expect(result).toBe('0')
     })
 
     it('should handle infinity in clamp functions', () => {
-      const result = Utils.cssPxToVwClamp(0)(100)
+      const result = Utils.cssPxToVwc(0)(100)
       expect(result).toBe('min(100px, infinity)')
     })
 
     it('should handle negative infinity in clamp functions', () => {
-      const result = Utils.cssPxToVwClamp(0)(-100)
+      const result = Utils.cssPxToVwc(0)(-100)
       expect(result).toBe('max(-100px, -infinity)')
     })
   })

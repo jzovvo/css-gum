@@ -1,5 +1,5 @@
 import type {DesignDraft, Percent, Pixel} from './types'
-import {cssDesignDraftVhScaling, cssDesignDraftVwScaling, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhClamp, cssPxToVw, cssPxToVwClamp} from './utils'
+import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc} from './utils'
 import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from './validate'
 
 
@@ -12,12 +12,12 @@ export const vw = (pixelData: Pixel, designDraftData: DesignDraft) => {
   return ''
 }
 
-export const lvw = (pixel: Pixel, designDraftData: DesignDraft) => {
+export const vwc = (pixel: Pixel, designDraftData: DesignDraft) => {
   const result = checkViewportParams(pixel, designDraftData)
   if (result.data) {
-    return cssPxToVwClamp(result.data[1])(result.data[0])
+    return cssPxToVwc(result.data[1])(result.data[0])
   }
-  console.error(new Error('[ lvw error ]\n' + result.error))
+  console.error(new Error('[ vwc error ]\n' + result.error))
   return ''
 }
 
@@ -30,12 +30,12 @@ export const vh = (pixel: Pixel, designDraftData: DesignDraft) => {
   return ''
 }
 
-export const lvh = (pixel: Pixel, designDraftData: DesignDraft) => {
+export const vhc = (pixel: Pixel, designDraftData: DesignDraft) => {
   const result = checkViewportParams(pixel, designDraftData)
   if (result.data) {
-    return cssPxToVhClamp(result.data[1])(result.data[0])
+    return cssPxToVhc(result.data[1])(result.data[0])
   }
-  console.error(new Error('[ lvh error ]\n' + result.error))
+  console.error(new Error('[ vhc error ]\n' + result.error))
   return ''
 }
 
@@ -48,21 +48,21 @@ export const percent = (child: Percent, parent: Percent) => {
   return ''
 }
 
-export const ddws = (pixel: Pixel, designDraftData: DesignDraft, percent: Percent = 0.5) => {
+export const vwe = (pixel: Pixel, designDraftData: DesignDraft, percent: Percent = 0.5) => {
   const result = checkDesignDraftScalingParams(pixel, designDraftData, percent)
   if (result.data) {
-    return cssDesignDraftVwScaling(result.data[1])(result.data[2])(result.data[0])
+    return cssPxToVwe(result.data[1])(result.data[2])(result.data[0])
   }
-  console.error(new Error('[ ddws error ]\n' + result.error))
+  console.error(new Error('[ vwe error ]\n' + result.error))
   return ''
 }
 
-export const ddhs = (pixel: Pixel, designDraftData: DesignDraft, percent: Percent = 0.5) => {
+export const vhe = (pixel: Pixel, designDraftData: DesignDraft, percent: Percent = 0.5) => {
   const result = checkDesignDraftScalingParams(pixel, designDraftData, percent)
   if (result.data) {
-    return cssDesignDraftVhScaling(result.data[1])(result.data[2])(result.data[0])
+    return cssPxToVhe(result.data[1])(result.data[2])(result.data[0])
   }
-  console.error(new Error('[ ddhs error ]\n' + result.error))
+  console.error(new Error('[ vhe error ]\n' + result.error))
   return ''
 }
 

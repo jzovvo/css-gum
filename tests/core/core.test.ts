@@ -56,47 +56,47 @@ describe('Core Module', () => {
     })
   })
 
-  describe('lvw function (lock viewport width)', () => {
+  describe('vwc function (viewport width clamped)', () => {
     it('should return min function for positive values', () => {
-      const result = Core.lvw(10, 100)
+      const result = Core.vwc(10, 100)
       expect(result).toContain('min')
       expect(result).toContain('10px')
       expect(result).toContain('10vw')
     })
 
     it('should return max function for negative values', () => {
-      const result = Core.lvw(-10, 100)
+      const result = Core.vwc(-10, 100)
       expect(result).toContain('max')
       expect(result).toContain('-10px')
       expect(result).toContain('-10vw')
     })
 
     it('should handle zero pixel values', () => {
-      const result = Core.lvw(0, 100)
+      const result = Core.vwc(0, 100)
       expect(result).toBe('0')
     })
 
     it('should handle infinity values', () => {
-      const result = Core.lvw(10, 0)
+      const result = Core.vwc(10, 0)
       expect(result).toBe('min(10px, infinity)')
     })
   })
 
-  describe('lvh function (lock viewport height)', () => {
+  describe('vhc function (viewport height clamped)', () => {
     it('should return min function for positive values', () => {
-      const result = Core.lvh(10, 100)
+      const result = Core.vhc(10, 100)
       expect(result).toContain('min')
       expect(result).toContain('10px')
       expect(result).toContain('10vh')
     })
 
     it('should handle zero pixel values', () => {
-      const result = Core.lvh(0, 100)
+      const result = Core.vhc(0, 100)
       expect(result).toBe('0')
     })
 
     it('should handle infinity values', () => {
-      const result = Core.lvh(10, 0)
+      const result = Core.vhc(10, 0)
       expect(result).toBe('min(10px, infinity)')
     })
   })
@@ -113,21 +113,21 @@ describe('Core Module', () => {
     })
   })
 
-  describe('ddws function (design draft width scaling)', () => {
+  describe('vwe function (viewport width extended)', () => {
     it('should generate calc expression with default scaling', () => {
-      const result = Core.ddws(10, 100)
+      const result = Core.vwe(10, 100)
       expect(result).toBe('calc((100vw - 100px) * 0.5 + 10px)')
     })
 
     it('should generate calc expression with custom scaling', () => {
-      const result = Core.ddws(10, 100, 0.8)
+      const result = Core.vwe(10, 100, 0.8)
       expect(result).toBe('calc((100vw - 100px) * 0.8 + 10px)')
     })
   })
 
-  describe('ddhs function (design draft height scaling)', () => {
+  describe('vhe function (viewport height extended)', () => {
     it('should generate calc expression with default scaling', () => {
-      const result = Core.ddhs(10, 100)
+      const result = Core.vhe(10, 100)
       expect(result).toBe('calc((100vh - 100px) * 0.5 + 10px)')
     })
   })

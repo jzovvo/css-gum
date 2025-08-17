@@ -54,21 +54,21 @@ describe('Error Handling', () => {
 
     it('should handle function inputs', () => {
       const func = () => {}
-      const result1 = Core.ddws(func as any, 1920, 0.5)
+      const result1 = Core.vwe(func as any, 1920, 0.5)
       expect(result1).toBe('')
       expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({
-        message: expect.stringContaining('[ ddws error ]'),
+        message: expect.stringContaining('[ vwe error ]'),
       }))
 
       consoleSpy.mockClear()
 
-      const result2 = Core.ddws(100, func as any, 0.5)
+      const result2 = Core.vwe(100, func as any, 0.5)
       expect(result2).toBe('')
       expect(consoleSpy).toHaveBeenCalled()
 
       consoleSpy.mockClear()
 
-      const result3 = Core.ddws(100, 1920, func as any)
+      const result3 = Core.vwe(100, 1920, func as any)
       expect(result3).toBe('')
       expect(consoleSpy).toHaveBeenCalled()
     })

@@ -10,10 +10,10 @@ describe('Gen Module', () => {
 
       expect(funcs).toHaveProperty('vw1')
       expect(funcs).toHaveProperty('vw2')
-      expect(funcs).toHaveProperty('lvw1')
-      expect(funcs).toHaveProperty('lvw2')
-      expect(funcs).toHaveProperty('ddws1')
-      expect(funcs).toHaveProperty('ddws2')
+      expect(funcs).toHaveProperty('vwc1')
+      expect(funcs).toHaveProperty('vwc2')
+      expect(funcs).toHaveProperty('vwe1')
+      expect(funcs).toHaveProperty('vwe2')
     })
 
     it('should generate correct vw conversions for different breakpoints', () => {
@@ -39,17 +39,17 @@ describe('Gen Module', () => {
     it('should respect custom function names', () => {
       const funcs = Gen.genDraftWidthFuncs({
         points: [100, 1000],
-        nameVw: 'mobile',
-        nameLvw: 'clampWidth',
-        nameDdws: 'scaleWidth',
+        nameVw: 'vwNormal',
+        nameVwc: 'vwClamp',
+        nameVwe: 'vwExtend',
       })
 
-      expect(funcs).toHaveProperty('mobile1')
-      expect(funcs).toHaveProperty('mobile2')
-      expect(funcs).toHaveProperty('clampWidth1')
-      expect(funcs).toHaveProperty('clampWidth2')
-      expect(funcs).toHaveProperty('scaleWidth1')
-      expect(funcs).toHaveProperty('scaleWidth2')
+      expect(funcs).toHaveProperty('vwNormal1')
+      expect(funcs).toHaveProperty('vwNormal2')
+      expect(funcs).toHaveProperty('vwClamp1')
+      expect(funcs).toHaveProperty('vwClamp2')
+      expect(funcs).toHaveProperty('vwExtend1')
+      expect(funcs).toHaveProperty('vwExtend2')
     })
 
     it('should respect custom firstIndex', () => {
@@ -80,10 +80,10 @@ describe('Gen Module', () => {
 
       expect(funcs).toHaveProperty('vh1')
       expect(funcs).toHaveProperty('vh2')
-      expect(funcs).toHaveProperty('lvh1')
-      expect(funcs).toHaveProperty('lvh2')
-      expect(funcs).toHaveProperty('ddhs1')
-      expect(funcs).toHaveProperty('ddhs2')
+      expect(funcs).toHaveProperty('vhc1')
+      expect(funcs).toHaveProperty('vhc2')
+      expect(funcs).toHaveProperty('vhe1')
+      expect(funcs).toHaveProperty('vhe2')
     })
 
     it('should generate correct vh conversions for different breakpoints', () => {
@@ -109,13 +109,13 @@ describe('Gen Module', () => {
     it('should respect custom function names', () => {
       const funcs = Gen.genDraftHeightFuncs({
         points: [100, 1000],
-        nameVh: 'mobile',
-        nameLvh: 'clampHeight',
-        nameDdhs: 'scaleHeight',
+        nameVh: 'vwNormal',
+        nameVhc: 'clampHeight',
+        nameVhe: 'scaleHeight',
       })
 
-      expect(funcs).toHaveProperty('mobile1')
-      expect(funcs).toHaveProperty('mobile2')
+      expect(funcs).toHaveProperty('vwNormal1')
+      expect(funcs).toHaveProperty('vwNormal2')
       expect(funcs).toHaveProperty('clampHeight1')
       expect(funcs).toHaveProperty('clampHeight2')
       expect(funcs).toHaveProperty('scaleHeight1')
@@ -150,8 +150,8 @@ describe('Gen Module', () => {
       })
 
       const result1 = widthFuncs.vw1(100)
-      const result2 = widthFuncs.lvw1(100)
-      const result3 = widthFuncs.ddws1(100)
+      const result2 = widthFuncs.vwc1(100)
+      const result3 = widthFuncs.vwe1(100)
 
       expect(result1).toMatch(/^\d+(\.\d+)?vw$/)
       expect(result2).toMatch(/^(min|max)\(\d+px,\s*-?\d+(\.\d+)?vw\)$/)
