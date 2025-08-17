@@ -148,7 +148,6 @@ describe('Gen Module', () => {
         points: [100, 1000],
         firstIndex: 1,
       })
-
       const result1 = widthFuncs.vw1(100)
       const result2 = widthFuncs.vwc1(100)
       const result3 = widthFuncs.vwe1(100)

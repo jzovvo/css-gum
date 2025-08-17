@@ -2,13 +2,15 @@ import js from '@eslint/js'
 import typescript from '@typescript-eslint/eslint-plugin'
 import typescriptParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
+import stylistic from '@stylistic/eslint-plugin'
 
 export default [
   js.configs.recommended,
   {
     files: ['**/*.{js,mjs,ts,tsx}'],
     plugins: {
-      'import': importPlugin
+      'import': importPlugin,
+      '@stylistic': stylistic
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -26,13 +28,15 @@ export default [
       'no-var': 'error',
       'eqeqeq': ['error', 'always'],
       'curly': ['error', 'all'],
-      'quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
-      'semi': ['error', 'never'],
-      'no-trailing-spaces': 'error',
-      'object-curly-spacing': ['error', 'never'],
-      'array-bracket-spacing': ['error', 'never'],
-      'comma-dangle': ['error', 'always-multiline'],
-      'indent': [
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+
+      '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
+      '@stylistic/semi': ['error', 'never'],
+      '@stylistic/no-trailing-spaces': 'error',
+      '@stylistic/object-curly-spacing': ['error', 'never'],
+      '@stylistic/array-bracket-spacing': ['error', 'never'],
+      '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/indent': [
         'error',
         2,
         {
@@ -58,7 +62,19 @@ export default [
           ignoreComments: true,
         },
       ],
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      '@stylistic/padding-line-between-statements': [
+        'error',
+        // Import 語句後要空行（但 import 之間不要）
+        { blankLine: 'always', prev: 'import', next: '*' },
+        { blankLine: 'never', prev: 'import', next: 'import' },
+
+        // Export 語句前要空行（但連續 export 不要）
+        { blankLine: 'always', prev: '*', next: 'export' },
+        { blankLine: 'never', prev: 'export', next: 'export' },
+
+        // Return 語句前要空行
+        { blankLine: 'always', prev: '*', next: 'return' },
+      ],
     }
   },
   {

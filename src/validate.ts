@@ -19,7 +19,6 @@ export const checkViewportParams = (pixel: unknown, designDraftData: unknown) =>
       `designDraftData expected number, received ${designDraftData}`,
   }
 }
-
 export const checkPercentParams = (child: unknown, parent: unknown) => {
   const childResult = percentSchema.safeParse(child)
   const parentResult = percentSchema.safeParse(parent)
@@ -38,7 +37,6 @@ export const checkPercentParams = (child: unknown, parent: unknown) => {
       `parent expected number, received ${parent}`,
   }
 }
-
 export const checkDesignDraftScalingParams = (pixel: unknown, designDraftData: unknown, percent: unknown) => {
   const pixelDataResult = pixelSchema.safeParse(pixel)
   const designDraftDataResult = designDraftSchema.safeParse(designDraftData)

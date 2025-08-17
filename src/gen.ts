@@ -29,16 +29,18 @@ export const genDraftWidthFuncs = ({
   points.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
+
   for (let i = 0; i < points.length; i++) {
     const idx = i + firstIndex
     const point = points[i] ?? 0
+
     temp[nameVw + idx] = (pixel: Pixel) => vw(pixel, point)
     temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point)
     temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point)
   }
+
   return temp
 }
-
 export const genDraftHeightFuncs = ({
   points = [],
   firstIndex = 1,
@@ -49,12 +51,15 @@ export const genDraftHeightFuncs = ({
   points.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
+
   for (let i = 0; i < points.length; i++) {
     const idx = i + firstIndex
     const point = points[i] ?? 0
+
     temp[nameVh + idx] = (pixel: Pixel) => vh(pixel, point)
     temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point)
     temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point)
   }
+
   return temp
 }
