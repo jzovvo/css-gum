@@ -99,12 +99,13 @@ describe('Error Handling', () => {
     })
 
     it('should handle negative values correctly', () => {
-      // Negative values are mathematically valid
+      // Negative pixel values are mathematically valid
       const result1 = Core.vw(-100, 1920)
 
       expect(result1).toContain('vw')
       expect(consoleSpy).not.toHaveBeenCalled()
 
+      // Negative design draft values are mathematically valid
       const result2 = Core.vw(100, -1920)
 
       expect(result2).toContain('vw')
