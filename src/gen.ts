@@ -25,6 +25,30 @@ interface PropsNameCustomOther {
   namePercent?: string
 }
 
+/**
+ * Generates width conversion functions for multiple design draft breakpoints.
+ * Creates vw, vwc, and vwe functions for each breakpoint with indexed names.
+ *
+ * @param params - Configuration object
+ * @param params.points - Array of design draft widths in pixels
+ * @param params.firstIndex - Starting index for generated function names (default: 1)
+ * @param params.nameVw - Prefix for vw functions (default: 'vw')
+ * @param params.nameVwc - Prefix for vwc functions (default: 'vwc')
+ * @param params.nameVwe - Prefix for vwe functions (default: 'vwe')
+ * @returns Object with generated functions
+ *
+ * @example
+ * ```typescript
+ * const funcs = genDraftWidthFuncs({
+ *   points: [375, 768, 1440],
+ *   firstIndex: 1
+ * })
+ *
+ * funcs.vw1(20)   // 20px on 375px design
+ * funcs.vwc2(20)  // Clamped 20px on 768px design
+ * funcs.vwe3(20)  // Extended 20px on 1440px design
+ * ```
+ */
 export const genDraftWidthFuncs = ({
   points = [],
   firstIndex = 1,
@@ -47,6 +71,30 @@ export const genDraftWidthFuncs = ({
 
   return temp
 }
+/**
+ * Generates height conversion functions for multiple design draft breakpoints.
+ * Creates vh, vhc, and vhe functions for each breakpoint with indexed names.
+ *
+ * @param params - Configuration object
+ * @param params.points - Array of design draft heights in pixels
+ * @param params.firstIndex - Starting index for generated function names (default: 1)
+ * @param params.nameVh - Prefix for vh functions (default: 'vh')
+ * @param params.nameVhc - Prefix for vhc functions (default: 'vhc')
+ * @param params.nameVhe - Prefix for vhe functions (default: 'vhe')
+ * @returns Object with generated functions
+ *
+ * @example
+ * ```typescript
+ * const funcs = genDraftHeightFuncs({
+ *   points: [667, 1080, 1440],
+ *   firstIndex: 1
+ * })
+ *
+ * funcs.vh1(30)   // 30px on 667px design
+ * funcs.vhc2(30)  // Clamped 30px on 1080px design
+ * funcs.vhe3(30)  // Extended 30px on 1440px design
+ * ```
+ */
 export const genDraftHeightFuncs = ({
   points = [],
   firstIndex = 1,
@@ -69,6 +117,34 @@ export const genDraftHeightFuncs = ({
 
   return temp
 }
+/**
+ * Generates core conversion functions with custom names.
+ * Returns all core functions (vw, vh, vwc, vhc, vwe, vhe, em, lh, percent) with customizable names.
+ *
+ * @param params - Configuration object with optional custom function names
+ * @param params.nameVw - Custom name for vw function (default: 'vw')
+ * @param params.nameVh - Custom name for vh function (default: 'vh')
+ * @param params.nameVwc - Custom name for vwc function (default: 'vwc')
+ * @param params.nameVhc - Custom name for vhc function (default: 'vhc')
+ * @param params.nameVwe - Custom name for vwe function (default: 'vwe')
+ * @param params.nameVhe - Custom name for vhe function (default: 'vhe')
+ * @param params.nameEm - Custom name for em function (default: 'em')
+ * @param params.nameLh - Custom name for lh function (default: 'lh')
+ * @param params.namePercent - Custom name for percent function (default: 'percent')
+ * @returns Object with all core functions using specified names
+ *
+ * @example
+ * ```typescript
+ * const funcs = genCoreFuncs({
+ *   nameVw: 'toVw',
+ *   namePercent: 'toPercent'
+ * })
+ *
+ * funcs.toVw(20, 1440)      // Same as Core.vw
+ * funcs.toPercent(10, 100)  // Same as Core.percent
+ * funcs.vh(30, 1080)        // Uses default name
+ * ```
+ */
 export const genCoreFuncs = ({
   nameEm = 'em',
   nameLh = 'lh',
