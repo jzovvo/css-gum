@@ -64,6 +64,7 @@ export const genDraftWidthFuncs = ({
   nameVwe = 'vwe',
 }: PropsDraftFuncs & PropsNameCustomWidth) => {
   const validPoints = points.filter(point => point > 0)
+
   validPoints.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
@@ -79,6 +80,7 @@ export const genDraftWidthFuncs = ({
 
   return temp
 }
+
 /**
  * Generates height conversion functions for multiple design draft breakpoints.
  * Creates vh, vhc, and vhe functions for each breakpoint with indexed names.
@@ -118,6 +120,7 @@ export const genDraftHeightFuncs = ({
   nameVhe = 'vhe',
 }: PropsDraftFuncs & PropsNameCustomHeight) => {
   const validPoints = points.filter(point => point > 0)
+
   validPoints.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
@@ -133,6 +136,7 @@ export const genDraftHeightFuncs = ({
 
   return temp
 }
+
 /**
  * Generates core conversion functions with custom names.
  * Returns all core functions (vw, vh, vwc, vhc, vwe, vhe, em, lh, percent) with customizable names.
@@ -183,6 +187,7 @@ export const genCoreFuncs = ({
     [nameVwe]: vwe,
     [namePercent]: percent,
   }
+
   delete temp['']
 
   return temp

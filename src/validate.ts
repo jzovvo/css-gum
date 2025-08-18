@@ -36,6 +36,7 @@ export const checkViewportParams = (pixel: unknown, designDraft: unknown) => {
       `designDraft expected number, received ${designDraft}`,
   }
 }
+
 /**
  * Validates percentage calculation parameters (child and parent values).
  * Uses Zod schemas to ensure inputs are valid finite numbers.
@@ -71,6 +72,7 @@ export const checkPercentParams = (child: unknown, parent: unknown) => {
       `parent expected number, received ${parent}`,
   }
 }
+
 /**
  * Validates parameters for design draft scaling functions (vwe/vhe).
  * Ensures pixel, design draft, and scaling percentage are all valid numbers.

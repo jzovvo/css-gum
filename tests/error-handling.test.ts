@@ -62,7 +62,6 @@ describe('Error Handling', () => {
 
     it('should handle function inputs', () => {
       const func = () => {}
-
       const result1 = Core.vwe(func as any, 1920, 0.5)
 
       expect(result1).toBe('')

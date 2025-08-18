@@ -26,6 +26,7 @@ export const vw = (pixel: Pixel, designDraft: DesignDraft) => {
 
   return ''
 }
+
 /**
  * Converts pixel values to clamped viewport width units that won't scale beyond the original pixel size.
  *
@@ -51,6 +52,7 @@ export const vwc = (pixel: Pixel, designDraft: DesignDraft) => {
 
   return ''
 }
+
 /**
  * Converts pixel values to viewport height (vh) units based on design draft height.
  *
@@ -75,6 +77,7 @@ export const vh = (pixel: Pixel, designDraft: DesignDraft) => {
 
   return ''
 }
+
 /**
  * Converts pixel values to clamped viewport height units that won't scale beyond the original pixel size.
  *
@@ -100,6 +103,7 @@ export const vhc = (pixel: Pixel, designDraft: DesignDraft) => {
 
   return ''
 }
+
 /**
  * Calculates percentage value from child and parent values.
  *
@@ -124,6 +128,7 @@ export const percent = (child: Percent, parent: Percent) => {
 
   return ''
 }
+
 /**
  * Converts pixel values to extended viewport width units for screens larger than design draft.
  * Uses calc() to add proportional spacing based on excess viewport width.
@@ -150,6 +155,7 @@ export const vwe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0
 
   return ''
 }
+
 /**
  * Converts pixel values to extended viewport height units for screens larger than design draft.
  * Uses calc() to add proportional spacing based on excess viewport height.
@@ -176,6 +182,7 @@ export const vhe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0
 
   return ''
 }
+
 /**
  * Converts line size and font size to em units.
  *
@@ -200,6 +207,7 @@ export const em = (child: Percent, parent: Percent) => {
 
   return ''
 }
+
 /**
  * Converts line height and font size to unit-less line-height ratio.
  *

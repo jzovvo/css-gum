@@ -14,16 +14,19 @@ import type {DesignDraft, Percent, Pixel} from './types'
  * ```
  */
 export const percent = (denominator: number) => (numerator: number) => numerator / denominator * 100
+
 /**
  * Alias for percent function, specifically for pixel to viewport width conversion.
  * Calculates the viewport width percentage for a given pixel value.
  */
 export const pxToVw = percent
+
 /**
  * Alias for percent function, specifically for pixel to viewport height conversion.
  * Calculates the viewport height percentage for a given pixel value.
  */
 export const pxToVh = percent
+
 /**
  * Converts pixel values to CSS viewport width (vw) units.
  * Returns a curried function for reusable conversion with a fixed design draft width.
@@ -42,12 +45,14 @@ export const cssPxToVw = (designDraftWidth: DesignDraft) => (pixel: Pixel) => {
   if (designDraftWidth <= 0) {
     return ''
   }
+
   if (pixel === 0) {
     return '0'
   }
 
   return `${pxToVw(designDraftWidth)(pixel)}vw`
 }
+
 /**
  * Converts pixel values to CSS viewport height (vh) units.
  * Returns a curried function for reusable conversion with a fixed design draft height.
@@ -66,12 +71,14 @@ export const cssPxToVh = (designDraftHeight: DesignDraft) => (pixel: Pixel) => {
   if (designDraftHeight <= 0) {
     return ''
   }
+
   if (pixel === 0) {
     return '0'
   }
 
   return `${pxToVh(designDraftHeight)(pixel)}vh`
 }
+
 /**
  * Converts pixel values to clamped viewport width units using CSS min/max functions.
  * Prevents scaling beyond the original pixel size, useful for responsive elements that shouldn't grow too large.
@@ -91,12 +98,14 @@ export const cssPxToVwc = (designDraftWidth: DesignDraft) => (pixel: Pixel) => {
   if (designDraftWidth <= 0) {
     return ''
   }
+
   if (pixel === 0) {
     return '0'
   }
 
   return pixel > 0 ? `min(${pixel}px, ${cssPxToVw(designDraftWidth)(pixel)})` : `max(${pixel}px, ${cssPxToVw(designDraftWidth)(pixel)})`
 }
+
 /**
  * Converts pixel values to clamped viewport height units using CSS min/max functions.
  * Prevents scaling beyond the original pixel size, useful for responsive elements that shouldn't grow too large.
@@ -116,12 +125,14 @@ export const cssPxToVhc = (designDraftHeight: DesignDraft) => (pixel: Pixel) => 
   if (designDraftHeight <= 0) {
     return ''
   }
+
   if (pixel === 0) {
     return '0'
   }
 
   return pixel > 0 ? `min(${pixel}px, ${cssPxToVh(designDraftHeight)(pixel)})` : `max(${pixel}px, ${cssPxToVh(designDraftHeight)(pixel)})`
 }
+
 /**
  * Converts pixel values to extended viewport width units for screens larger than design draft.
  * Uses CSS calc() to add proportional spacing based on excess viewport width.
@@ -150,6 +161,7 @@ export const cssPxToVwe = (designDraftWidth: DesignDraft) => (percent: Percent) 
 
   return `calc(${ratioString}${pixelString})`
 }
+
 /**
  * Converts pixel values to extended viewport height units for screens larger than design draft.
  * Uses CSS calc() to add proportional spacing based on excess viewport height.
@@ -178,6 +190,7 @@ export const cssPxToVhe = (designDraftHeight: DesignDraft) => (percent: Percent)
 
   return `calc(${ratioString}${pixelString})`
 }
+
 /**
  * Converts child and parent values to CSS percentage string.
  * Returns a curried function for reusable percentage calculations.
@@ -195,12 +208,14 @@ export const cssPercent = (parent: number) => (child: number) => {
   if (child === 0) {
     return '0'
   }
+
   if (parent === 0) {
     return 'Infinity%'
   }
 
   return `${percent(parent)(child)}%`
 }
+
 /**
  * Converts line size and font size to CSS em units.
  *
@@ -218,12 +233,14 @@ export const cssEm = (ls: number, fontSize: number) => {
   if (ls === 0) {
     return '0'
   }
+
   if (fontSize === 0) {
     return 'infinity'
   }
 
   return `${ls / fontSize}em`
 }
+
 /**
  * Converts line height and font size to CSS line-height ratio (unit-less).
  *
@@ -241,6 +258,7 @@ export const cssLh = (lh: number, fontSize: number) => {
   if (lh === 0) {
     return '0'
   }
+
   if (fontSize === 0) {
     return 'infinity'
   }
