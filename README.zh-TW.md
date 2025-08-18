@@ -47,6 +47,8 @@ Core.lh(24, 16); // '1.5'
 
 ### 搭配 [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
 
+![Demo](./examples/vite/assets/demo.gif)
+
 [查看完整範例 →](./examples/vite/README.zh-TW.md)
 
 ## 核心 API

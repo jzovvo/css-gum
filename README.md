@@ -47,6 +47,8 @@ Core.lh(24, 16); // '1.5'
 
 ### With [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
 
+![Demo](./examples/vite/assets/demo.gif)
+
 [View Complete Example →](./examples/vite/README.md)
 
 ## Core API
