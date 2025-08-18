@@ -229,11 +229,11 @@ Utils.cssLh(24, 16); // '1.5'
 
 ### `genDraftWidthFuncs(options)`
 
-Generates width conversion functions for multiple design draft breakpoints.
+Generates width conversion functions for multiple design draft breakpoints. Automatically filters out invalid design draft widths (≤ 0).
 
 **Parameters:**
 
-- `points` - Array of design draft widths (pixels)
+- `points` - Array of design draft widths (pixels) - invalid values (≤ 0) are automatically filtered out
 - `firstIndex` - Starting index number (default: 1)
 - `nameVw`, `nameVwc`, `nameVwe` - Custom function name prefixes (use empty string `''` to skip generating that type)
 
@@ -249,6 +249,12 @@ widthFuncs.vw1(20); // 20px on 375px design
 widthFuncs.vwc2(20); // Clamped 20px on 768px design
 widthFuncs.vwe3(20); // Extended 20px on 1440px design
 
+// Invalid points are automatically filtered out
+const filteredFuncs = Gen.genDraftWidthFuncs({
+  points: [0, -100, 375, 768, -50], // Only 375 and 768 are valid
+});
+// Only generates: vw1, vw2, vwc1, vwc2, vwe1, vwe2
+
 // Skip specific function types by using empty string
 const partialFuncs = Gen.genDraftWidthFuncs({
   points: [375, 768],
@@ -262,11 +268,11 @@ const partialFuncs = Gen.genDraftWidthFuncs({
 
 ### `genDraftHeightFuncs(options)`
 
-Generates height conversion functions for multiple design draft breakpoints.
+Generates height conversion functions for multiple design draft breakpoints. Automatically filters out invalid design draft heights (≤ 0).
 
 **Parameters:**
 
-- `points` - Array of design draft heights (pixels)
+- `points` - Array of design draft heights (pixels) - invalid values (≤ 0) are automatically filtered out
 - `firstIndex` - Starting index number (default: 1)
 - `nameVh`, `nameVhc`, `nameVhe` - Custom function name prefixes (use empty string `''` to skip generating that type)
 
@@ -277,6 +283,12 @@ const heightFuncs = Gen.genDraftHeightFuncs({
 
 heightFuncs.vh1(30); // 30px on 667px design
 heightFuncs.vhc2(30); // Clamped 30px on 1080px design
+
+// Invalid points are automatically filtered out
+const filteredHeightFuncs = Gen.genDraftHeightFuncs({
+  points: [0, -200, 667, 1080, -100], // Only 667 and 1080 are valid
+});
+// Only generates: vh1, vh2, vhc1, vhc2, vhe1, vhe2
 
 // Skip specific function types
 const onlyVhFuncs = Gen.genDraftHeightFuncs({
@@ -325,11 +337,13 @@ const minimalCore = Gen.genCoreFuncs({
 
 ## Error Handling
 
-All functions include built-in validation and will return an empty string with console error for invalid inputs:
+All functions include built-in validation and will return an empty string for invalid inputs:
 
 ```typescript
 Core.vw("invalid", 1440); // Returns '', logs error
 Core.vw(20, "invalid"); // Returns '', logs error
+Core.vw(20, 0); // Returns '' (zero design draft rejected)
+Core.vw(20, -100); // Returns '' (negative design draft rejected)
 Core.vw(20, 1440); // Returns '1.39vw'
 ```
 

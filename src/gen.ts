@@ -28,9 +28,10 @@ interface PropsNameCustomOther {
 /**
  * Generates width conversion functions for multiple design draft breakpoints.
  * Creates vw, vwc, and vwe functions for each breakpoint with indexed names.
+ * Automatically filters out invalid design draft widths (≤ 0).
  *
  * @param params - Configuration object
- * @param params.points - Array of design draft widths in pixels
+ * @param params.points - Array of design draft widths in pixels (invalid values ≤ 0 are automatically filtered out)
  * @param params.firstIndex - Starting index for generated function names (default: 1)
  * @param params.nameVw - Prefix for vw functions (default: 'vw')
  * @param params.nameVwc - Prefix for vwc functions (default: 'vwc')
@@ -47,6 +48,12 @@ interface PropsNameCustomOther {
  * funcs.vw1(20)   // 20px on 375px design
  * funcs.vwc2(20)  // Clamped 20px on 768px design
  * funcs.vwe3(20)  // Extended 20px on 1440px design
+ *
+ * // Invalid points are automatically filtered out
+ * const filteredFuncs = genDraftWidthFuncs({
+ *   points: [0, -100, 375, 768, -50] // Only 375 and 768 are valid
+ * })
+ * // Only generates: vw1, vw2, vwc1, vwc2, vwe1, vwe2
  * ```
  */
 export const genDraftWidthFuncs = ({
@@ -56,13 +63,14 @@ export const genDraftWidthFuncs = ({
   nameVwc = 'vwc',
   nameVwe = 'vwe',
 }: PropsDraftFuncs & PropsNameCustomWidth) => {
-  points.sort((a, b) => a - b)
+  const validPoints = points.filter(point => point > 0)
+  validPoints.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
 
-  for (let i = 0; i < points.length; i++) {
+  for (let i = 0; i < validPoints.length; i++) {
     const idx = i + firstIndex
-    const point = points[i] ?? 0
+    const point = validPoints[i]
 
     nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel) => vw(pixel, point))
     nameVwc !== '' && (temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point))
@@ -74,9 +82,10 @@ export const genDraftWidthFuncs = ({
 /**
  * Generates height conversion functions for multiple design draft breakpoints.
  * Creates vh, vhc, and vhe functions for each breakpoint with indexed names.
+ * Automatically filters out invalid design draft heights (≤ 0).
  *
  * @param params - Configuration object
- * @param params.points - Array of design draft heights in pixels
+ * @param params.points - Array of design draft heights in pixels (invalid values ≤ 0 are automatically filtered out)
  * @param params.firstIndex - Starting index for generated function names (default: 1)
  * @param params.nameVh - Prefix for vh functions (default: 'vh')
  * @param params.nameVhc - Prefix for vhc functions (default: 'vhc')
@@ -93,6 +102,12 @@ export const genDraftWidthFuncs = ({
  * funcs.vh1(30)   // 30px on 667px design
  * funcs.vhc2(30)  // Clamped 30px on 1080px design
  * funcs.vhe3(30)  // Extended 30px on 1440px design
+ *
+ * // Invalid points are automatically filtered out
+ * const filteredFuncs = genDraftHeightFuncs({
+ *   points: [0, -200, 667, 1080, -100] // Only 667 and 1080 are valid
+ * })
+ * // Only generates: vh1, vh2, vhc1, vhc2, vhe1, vhe2
  * ```
  */
 export const genDraftHeightFuncs = ({
@@ -102,13 +117,14 @@ export const genDraftHeightFuncs = ({
   nameVhc = 'vhc',
   nameVhe = 'vhe',
 }: PropsDraftFuncs & PropsNameCustomHeight) => {
-  points.sort((a, b) => a - b)
+  const validPoints = points.filter(point => point > 0)
+  validPoints.sort((a, b) => a - b)
 
   const temp: Record<string, (pixel: Pixel) => string> = {}
 
-  for (let i = 0; i < points.length; i++) {
+  for (let i = 0; i < validPoints.length; i++) {
     const idx = i + firstIndex
-    const point = points[i] ?? 0
+    const point = validPoints[i]
 
     nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel) => vh(pixel, point))
     nameVhc !== '' && (temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point))

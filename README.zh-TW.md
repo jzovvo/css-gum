@@ -229,11 +229,11 @@ Utils.cssLh(24, 16); // '1.5'
 
 ### `genDraftWidthFuncs(options)`
 
-為多個設計稿斷點生成寬度轉換函數。
+為多個設計稿斷點生成寬度轉換函數。會自動過濾無效的設計稿寬度（≤ 0）。
 
 **參數：**
 
-- `points` - 設計稿寬度陣列（像素）
+- `points` - 設計稿寬度陣列（像素）- 無效值（≤ 0）會自動被過濾
 - `firstIndex` - 起始索引號（預設：1）
 - `nameVw`, `nameVwc`, `nameVwe` - 自訂函數名稱前綴（使用空字串 `''` 可跳過生成該類型）
 
@@ -249,6 +249,12 @@ widthFuncs.vw1(20); // 375px 設計稿上的 20px
 widthFuncs.vwc2(20); // 768px 設計稿上的限制 20px
 widthFuncs.vwe3(20); // 1440px 設計稿上的延伸 20px
 
+// 無效的斷點會自動被過濾
+const filteredFuncs = Gen.genDraftWidthFuncs({
+  points: [0, -100, 375, 768, -50], // 只有 375 和 768 是有效的
+});
+// 只生成：vw1, vw2, vwc1, vwc2, vwe1, vwe2
+
 // 使用空字串跳過特定函數類型
 const partialFuncs = Gen.genDraftWidthFuncs({
   points: [375, 768],
@@ -262,11 +268,11 @@ const partialFuncs = Gen.genDraftWidthFuncs({
 
 ### `genDraftHeightFuncs(options)`
 
-為多個設計稿斷點生成高度轉換函數。
+為多個設計稿斷點生成高度轉換函數。會自動過濾無效的設計稿高度（≤ 0）。
 
 **參數：**
 
-- `points` - 設計稿高度陣列（像素）
+- `points` - 設計稿高度陣列（像素）- 無效值（≤ 0）會自動被過濾
 - `firstIndex` - 起始索引號（預設：1）
 - `nameVh`, `nameVhc`, `nameVhe` - 自訂函數名稱前綴（使用空字串 `''` 可跳過生成該類型）
 
@@ -277,6 +283,12 @@ const heightFuncs = Gen.genDraftHeightFuncs({
 
 heightFuncs.vh1(30); // 667px 設計稿上的 30px
 heightFuncs.vhc2(30); // 1080px 設計稿上的限制 30px
+
+// 無效的斷點會自動被過濾
+const filteredHeightFuncs = Gen.genDraftHeightFuncs({
+  points: [0, -200, 667, 1080, -100], // 只有 667 和 1080 是有效的
+});
+// 只生成：vh1, vh2, vhc1, vhc2, vhe1, vhe2
 
 // 跳過特定函數類型
 const onlyVhFuncs = Gen.genDraftHeightFuncs({
@@ -325,11 +337,13 @@ const minimalCore = Gen.genCoreFuncs({
 
 ## 錯誤處理
 
-所有函數都包含內建驗證，對於無效輸入會返回空字串並在控制台記錄錯誤：
+所有函數都包含內建驗證，對於無效輸入會返回空字串：
 
 ```typescript
 Core.vw("invalid", 1440); // 返回 ''，記錄錯誤
 Core.vw(20, "invalid"); // 返回 ''，記錄錯誤
+Core.vw(20, 0); // 返回 ''（零設計稿被拒絕）
+Core.vw(20, -100); // 返回 ''（負數設計稿被拒絕）
 Core.vw(20, 1440); // 返回 '1.39vw'
 ```
 

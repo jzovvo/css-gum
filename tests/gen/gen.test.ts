@@ -52,6 +52,14 @@ describe('Gen Module', () => {
       expect(funcs).toHaveProperty('vwExtend2')
     })
 
+    it('should return empty object when all points are invalid', () => {
+      const funcs = Gen.genDraftWidthFuncs({
+        points: [0, -100, -50],
+      })
+
+      expect(Object.keys(funcs)).toHaveLength(0)
+    })
+
     it('should respect custom firstIndex', () => {
       const funcs = Gen.genDraftWidthFuncs({
         points: [100, 1000],
@@ -165,6 +173,14 @@ describe('Gen Module', () => {
       expect(funcs).toHaveProperty('vhClamp1')
       expect(funcs).toHaveProperty('vhClamp2')
       expect(Object.keys(funcs)).toHaveLength(2)
+    })
+
+    it('should return empty object when all height points are invalid', () => {
+      const funcs = Gen.genDraftHeightFuncs({
+        points: [0, -100, -50],
+      })
+
+      expect(Object.keys(funcs)).toHaveLength(0)
     })
   })
 

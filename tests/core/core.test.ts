@@ -15,16 +15,16 @@ describe('Core Module', () => {
       expect(result).toBe('0')
     })
 
-    it('should handle infinity values (zero design width)', () => {
+    it('should reject zero design width', () => {
       const result = Core.vw(100, 0)
 
-      expect(result).toBe('infinity')
+      expect(result).toBe('')
     })
 
-    it('should handle negative infinity', () => {
+    it('should reject negative design width', () => {
       const result = Core.vw(-100, 0)
 
-      expect(result).toBe('-infinity')
+      expect(result).toBe('')
     })
 
     it('should handle invalid input and return empty string', () => {
@@ -51,16 +51,16 @@ describe('Core Module', () => {
       expect(result).toBe('0')
     })
 
-    it('should handle infinity values (zero design height)', () => {
+    it('should reject zero design height', () => {
       const result = Core.vh(100, 0)
 
-      expect(result).toBe('infinity')
+      expect(result).toBe('')
     })
 
-    it('should handle negative infinity', () => {
+    it('should reject negative design height', () => {
       const result = Core.vh(-100, 0)
 
-      expect(result).toBe('-infinity')
+      expect(result).toBe('')
     })
   })
 
@@ -87,10 +87,10 @@ describe('Core Module', () => {
       expect(result).toBe('0')
     })
 
-    it('should handle infinity values', () => {
+    it('should reject zero design width', () => {
       const result = Core.vwc(10, 0)
 
-      expect(result).toBe('min(10px, infinity)')
+      expect(result).toBe('')
     })
   })
 
@@ -109,10 +109,10 @@ describe('Core Module', () => {
       expect(result).toBe('0')
     })
 
-    it('should handle infinity values', () => {
+    it('should reject zero design height', () => {
       const result = Core.vhc(10, 0)
 
-      expect(result).toBe('min(10px, infinity)')
+      expect(result).toBe('')
     })
   })
 
@@ -126,7 +126,7 @@ describe('Core Module', () => {
     it('should handle zero values', () => {
       const result = Core.percent(0, 100)
 
-      expect(result).toBe('0%')
+      expect(result).toBe('0')
     })
   })
 

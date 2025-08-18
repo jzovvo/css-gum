@@ -49,12 +49,14 @@ describe('Error Handling', () => {
       // Empty array is coerced to 0
       const result1 = Core.percent([] as any, 1200)
 
-      expect(result1).toBe('0%')
+      expect(result1).toBe('0')
       expect(consoleSpy).not.toHaveBeenCalled()
 
+      // Empty array coerced to 0, causes division by zero -> Infinity
+      // But finite() validation doesn't reject Infinity at percent function level
       const result2 = Core.percent(300, [] as any)
 
-      expect(result2).toContain('Infinity%')
+      expect(result2).toBe('Infinity%')
       expect(consoleSpy).not.toHaveBeenCalled()
     })
 
@@ -99,16 +101,16 @@ describe('Error Handling', () => {
     })
 
     it('should handle negative values correctly', () => {
-      // Negative pixel values are mathematically valid
+      // Negative pixel values are valid
       const result1 = Core.vw(-100, 1920)
 
       expect(result1).toContain('vw')
       expect(consoleSpy).not.toHaveBeenCalled()
 
-      // Negative design draft values are mathematically valid
+      // Negative design draft values are now rejected at utils level (no console.error)
       const result2 = Core.vw(100, -1920)
 
-      expect(result2).toContain('vw')
+      expect(result2).toBe('')
       expect(consoleSpy).not.toHaveBeenCalled()
     })
 
@@ -119,10 +121,10 @@ describe('Error Handling', () => {
       expect(result1).toBe('0')
       expect(consoleSpy).not.toHaveBeenCalled()
 
-      // Zero design width creates division by zero -> Infinity
+      // Zero design width is rejected at utils level (no console.error)
       const result2 = Core.vw(100, 0)
 
-      expect(result2).toContain('infinity')
+      expect(result2).toBe('')
       expect(consoleSpy).not.toHaveBeenCalled()
     })
 

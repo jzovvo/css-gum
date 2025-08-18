@@ -80,13 +80,85 @@ describe('Utils Module', () => {
     it('should handle zero scaling for vwe', () => {
       const result = Utils.cssPxToVwe(100)(0)(10)
 
-      expect(result).toBe('calc((100vw - 100px) * 0 + 10px)')
+      expect(result).toBe('10px')
     })
 
     it('should handle zero scaling for vhe', () => {
       const result = Utils.cssPxToVhe(100)(0)(10)
 
-      expect(result).toBe('calc((100vh - 100px) * 0 + 10px)')
+      expect(result).toBe('10px')
+    })
+
+    it('should handle zero pixel with zero percent for vwe', () => {
+      const result = Utils.cssPxToVwe(100)(0)(0)
+
+      expect(result).toBe('0')
+    })
+
+    it('should handle zero pixel with zero percent for vhe', () => {
+      const result = Utils.cssPxToVhe(100)(0)(0)
+
+      expect(result).toBe('0')
+    })
+
+    it('cssPxToVwe should handle negative pixel values', () => {
+      const result = Utils.cssPxToVwe(100)(0.5)(-20)
+
+      expect(result).toBe('calc((100vw - 100px) * 0.5 - 20px)')
+    })
+
+    it('cssPxToVhe should handle negative pixel values', () => {
+      const result = Utils.cssPxToVhe(100)(0.5)(-30)
+
+      expect(result).toBe('calc((100vh - 100px) * 0.5 - 30px)')
+    })
+
+    it('cssPxToVwe should not add + 0px when pixel is zero', () => {
+      const result = Utils.cssPxToVwe(100)(0.5)(0)
+
+      expect(result).toBe('calc((100vw - 100px) * 0.5)')
+    })
+
+    it('cssPxToVhe should not add + 0px when pixel is zero', () => {
+      const result = Utils.cssPxToVhe(100)(0.5)(0)
+
+      expect(result).toBe('calc((100vh - 100px) * 0.5)')
+    })
+
+    it('cssPxToVwe with zero percent and negative pixel', () => {
+      const result = Utils.cssPxToVwe(100)(0)(-10)
+
+      expect(result).toBe('-10px')
+    })
+
+    it('cssPxToVhe with zero percent and negative pixel', () => {
+      const result = Utils.cssPxToVhe(100)(0)(-15)
+
+      expect(result).toBe('-15px')
+    })
+
+    it('cssPxToVwe should reject zero design width', () => {
+      const result = Utils.cssPxToVwe(0)(0.5)(10)
+
+      expect(result).toBe('')
+    })
+
+    it('cssPxToVhe should reject zero design height', () => {
+      const result = Utils.cssPxToVhe(0)(0.5)(10)
+
+      expect(result).toBe('')
+    })
+
+    it('cssPxToVwe should reject negative design width', () => {
+      const result = Utils.cssPxToVwe(-100)(0.5)(10)
+
+      expect(result).toBe('')
+    })
+
+    it('cssPxToVhe should reject negative design height', () => {
+      const result = Utils.cssPxToVhe(-100)(0.5)(10)
+
+      expect(result).toBe('')
     })
   })
 
@@ -97,24 +169,48 @@ describe('Utils Module', () => {
       expect(result).toBe('1.5em')
     })
 
+    it('cssEm should return 0 for zero line size', () => {
+      const result = Utils.cssEm(0, 16)
+
+      expect(result).toBe('0')
+    })
+
     it('cssLh should calculate line height ratio', () => {
       const result = Utils.cssLh(24, 16)
 
       expect(result).toBe('1.5')
     })
-  })
 
-  describe('Special number handling with classifyNumber', () => {
-    it('should handle positive infinity (zero design width)', () => {
-      const result = Utils.cssPxToVw(0)(100)
+    it('cssLh should return 0 for zero line height', () => {
+      const result = Utils.cssLh(0, 16)
 
-      expect(result).toBe('infinity')
+      expect(result).toBe('0')
     })
 
-    it('should handle negative infinity (zero design width, negative pixel)', () => {
-      const result = Utils.cssPxToVw(0)(-100)
+    it('cssPercent should return percentage string', () => {
+      const result = Utils.cssPercent(100)(25)
 
-      expect(result).toBe('-infinity')
+      expect(result).toBe('25%')
+    })
+
+    it('cssPercent should return 0 for zero child value', () => {
+      const result = Utils.cssPercent(100)(0)
+
+      expect(result).toBe('0')
+    })
+  })
+
+  describe('Special number handling', () => {
+    it('should reject zero design width', () => {
+      const result = Utils.cssPxToVw(0)(100)
+
+      expect(result).toBe('')
+    })
+
+    it('should reject negative design width', () => {
+      const result = Utils.cssPxToVw(-100)(100)
+
+      expect(result).toBe('')
     })
 
     it('should handle zero values', () => {
@@ -137,16 +233,16 @@ describe('Utils Module', () => {
       expect(result).toBe('0')
     })
 
-    it('should handle infinity in clamp functions', () => {
+    it('should reject zero design width in clamp functions', () => {
       const result = Utils.cssPxToVwc(0)(100)
 
-      expect(result).toBe('min(100px, infinity)')
+      expect(result).toBe('')
     })
 
-    it('should handle negative infinity in clamp functions', () => {
-      const result = Utils.cssPxToVwc(0)(-100)
+    it('should reject negative design width in clamp functions', () => {
+      const result = Utils.cssPxToVwc(-100)(100)
 
-      expect(result).toBe('max(-100px, -infinity)')
+      expect(result).toBe('')
     })
   })
 
@@ -157,10 +253,28 @@ describe('Utils Module', () => {
       expect(result).toBe('100vw')
     })
 
-    it('should handle negative design values', () => {
+    it('should reject negative design values', () => {
       const result = Utils.cssPxToVw(-100)(10)
 
-      expect(result).toBe('-10vw')
+      expect(result).toBe('')
+    })
+
+    it('cssPercent should handle division by zero', () => {
+      const result = Utils.cssPercent(0)(100)
+
+      expect(result).toBe('Infinity%')
+    })
+
+    it('cssEm should handle division by zero', () => {
+      const result = Utils.cssEm(24, 0)
+
+      expect(result).toBe('infinity')
+    })
+
+    it('cssLh should handle division by zero', () => {
+      const result = Utils.cssLh(24, 0)
+
+      expect(result).toBe('infinity')
     })
   })
 })
