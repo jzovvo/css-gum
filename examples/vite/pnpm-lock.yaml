@@ -12,8 +12,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       css-gum:
-        specifier: ^0.0.4
-        version: 0.0.4
+        specifier: ^0.0.6
+        version: 0.0.6
       postcss-functions:
         specifier: ^4.0.2
         version: 4.0.2(postcss@8.5.6)
@@ -401,8 +401,8 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  css-gum@0.0.4:
-    resolution: {integrity: sha512-YZHeOi3VgffTQsjy1UeokSWaWSf2PTl9mPhkKrUTIExeqTJ4170H1JRu3bDWpN5Ke0C2mpGqLrdhMruYkoFOrQ==}
+  css-gum@0.0.6:
+    resolution: {integrity: sha512-yeZZFLlHgqnSp5af7gJn4z49HMGH1aDPNOJRORIJrZkONrXRV3XDWJp+UuFZGOiiSiuWpOtdz218enUIZs466w==}
 
   detect-libc@2.0.4:
     resolution: {integrity: sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==}
@@ -854,7 +854,7 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  css-gum@0.0.4:
+  css-gum@0.0.6:
     dependencies:
       zod: 4.0.17
 
