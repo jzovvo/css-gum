@@ -7,19 +7,19 @@ interface PropsDraftFuncs {
   firstIndex?: number
 }
 
-interface PropsNameCustomWidth {
+export interface PropsNameCustomWidth {
   nameVw?: string
   nameVwc?: string
   nameVwe?: string
 }
 
-interface PropsNameCustomHeight {
+export interface PropsNameCustomHeight {
   nameVh?: string
   nameVhc?: string
   nameVhe?: string
 }
 
-interface PropsNameCustomOther {
+export interface PropsNameCustomOther {
   nameEm?: string
   nameLh?: string
   namePercent?: string
