@@ -1,6 +1,6 @@
-import * as Core from './core'
-import * as Gen from './gen'
-import * as Utils from './utils'
-import * as Snippet from './snippets'
+import * as Core from './modules/core'
+import * as Gen from './modules/gen'
+import * as Utils from './modules/utils'
+import * as Snippet from './modules/snippets'
 
 export {Core, Gen, Utils, Snippet}
