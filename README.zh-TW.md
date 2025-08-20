@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/jzovvo/css-gum/branch/master/graph/badge.svg)](https://codecov.io/gh/jzovvo/css-gum)
 [![npm version](https://badge.fury.io/js/css-gum.svg)](https://www.npmjs.com/package/css-gum)
 
-讓你的響應式設計像口香糖一樣伸縮自如 — 在各種螢幕尺寸間完美彈性適應。這個工具包將複雜的視窗計算轉化為簡單直觀的函數，輕鬆黏合到你的響應式開發工作流中。
+讓你的響應式設計像口香糖一樣伸縮自如 — 在各種螢幕尺寸間完美彈性適應。這個工具包將複雜的視窗計算轉化為簡單直觀的函數，並自動生成 VS Code 代碼片段，讓你輕鬆黏合到高效的響應式開發工作流中。
 
 [English](./README.md)
 
@@ -13,6 +13,8 @@
 - 🖥️ **視窗單位**：將像素轉換為響應式 `vw`/`vh` 單位
 - 🔒 **限制單位**：使用 `vwc`/`vhc` 限制最大/最小值
 - 📏 **延伸縮放**：適應比設計稿更大螢幕的自適應縮放
+- ⚡ **批量生成**：為多個設計稿斷點批量生成函數
+- 🎯 **Snippet**：自動生成代碼片段，提升開發效率
 
 ## 安裝
 
@@ -39,6 +41,7 @@ Core.vhe(30, 1080); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 
 // 其他工具
 Core.percent(10, 100); // '10%'
+Core.percent(0, 100); // '0'（零值返回 '0' 而非 '0%'）
 Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
@@ -51,9 +54,9 @@ Core.lh(24, 16); // '1.5'
 
 [查看完整範例 →](./examples/vite/README.zh-TW.md)
 
-## 核心 API
+## API
 
-### 視窗單位
+### Core Module
 
 #### `vw(pixel, designDraft)`
 
@@ -103,14 +106,13 @@ Core.vwe(20, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 Core.vhe(30, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 ```
 
-### 工具函數
-
 #### `percent(child, parent)`
 
 計算百分比值。
 
 ```typescript
 Core.percent(10, 100); // '10%'
+Core.percent(0, 100); // '0'（零值返回 '0'）
 ```
 
 #### `em(lineSize, fontSize)`
@@ -129,9 +131,7 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
-## Utils 工具模組
-
-### CSS 轉換函數
+### Utils Module
 
 #### `cssPxToVw(designDraft)(pixel)`
 
@@ -191,8 +191,6 @@ const toVhe = Utils.cssPxToVhe(1080)(0.5);
 toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 ```
 
-### 基礎計算函數
-
 #### `percent(denominator)(numerator)`
 
 計算百分比的 curried 函數。
@@ -209,6 +207,7 @@ getPercent(25); // 25 (數值)
 ```typescript
 const toCssPercent = Utils.cssPercent(100);
 toCssPercent(25); // '25%'
+toCssPercent(0); // '0'（零值返回 '0'）
 ```
 
 #### `cssEm(lineSize, fontSize)`
@@ -227,13 +226,15 @@ Utils.cssEm(24, 16); // '1.5em'
 Utils.cssLh(24, 16); // '1.5'
 ```
 
-## 生成器函數
+### Gen Module
 
-### `genFuncsDraftWidth(options)`
+生成器模組提供了批量創建函數和 VS Code 程式碼片段的功能，讓你可以為多個設計稿斷點快速生成對應的函數。
 
-為多個設計稿斷點生成寬度轉換函數。會自動過濾無效的設計稿寬度（≤ 0）。
+#### `genFuncsDraftWidth(options)`
 
-**參數：**
+為多個設計稿斷點生成寬度轉換函數。
+
+**options**
 
 - `points` - 設計稿寬度陣列（像素）- 無效值（≤ 0）會自動被過濾
 - `firstIndex` - 起始索引號（預設：1）
@@ -247,15 +248,15 @@ const widthFuncs = Gen.genFuncsDraftWidth({
   firstIndex: 1,
 });
 
-widthFuncs.vw1(20); // 375px 設計稿上的 20px
-widthFuncs.vwc2(20); // 768px 設計稿上的限制 20px
-widthFuncs.vwe3(20); // 1440px 設計稿上的延伸 20px
+widthFuncs.core.vw1(20); // 375px 設計稿上的 20px
+widthFuncs.core.vwc2(20); // 768px 設計稿上的限制 20px
+widthFuncs.core.vwe3(20); // 1440px 設計稿上的延伸 20px
 
 // 無效的斷點會自動被過濾
 const filteredFuncs = Gen.genFuncsDraftWidth({
   points: [0, -100, 375, 768, -50], // 只有 375 和 768 是有效的
 });
-// 只生成：vw1, vw2, vwc1, vwc2, vwe1, vwe2
+// 只生成：core.vw1, core.vw2, core.vwc1, core.vwc2, core.vwe1, core.vwe2
 
 // 使用空字串跳過特定函數類型
 const partialFuncs = Gen.genFuncsDraftWidth({
@@ -265,14 +266,14 @@ const partialFuncs = Gen.genFuncsDraftWidth({
   nameVwe: "extend", // 生成延伸函數
 });
 
-// 只生成：vw1, vw2, extend1, extend2
+// 只生成：core.vw1, core.vw2, core.extend1, core.extend2
 ```
 
-### `genFuncsDraftHeight(options)`
+#### `genFuncsDraftHeight(options)`
 
-為多個設計稿斷點生成高度轉換函數。會自動過濾無效的設計稿高度（≤ 0）。
+為多個設計稿斷點生成高度轉換函數。
 
-**參數：**
+**options**
 
 - `points` - 設計稿高度陣列（像素）- 無效值（≤ 0）會自動被過濾
 - `firstIndex` - 起始索引號（預設：1）
@@ -283,14 +284,14 @@ const heightFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
 
-heightFuncs.vh1(30); // 667px 設計稿上的 30px
-heightFuncs.vhc2(30); // 1080px 設計稿上的限制 30px
+heightFuncs.core.vh1(30); // 667px 設計稿上的 30px
+heightFuncs.core.vhc2(30); // 1080px 設計稿上的限制 30px
 
 // 無效的斷點會自動被過濾
 const filteredHeightFuncs = Gen.genFuncsDraftHeight({
   points: [0, -200, 667, 1080, -100], // 只有 667 和 1080 是有效的
 });
-// 只生成：vh1, vh2, vhc1, vhc2, vhe1, vhe2
+// 只生成：core.vh1, core.vh2, core.vhc1, core.vhc2, core.vhe1, core.vhe2
 
 // 跳過特定函數類型
 const onlyVhFuncs = Gen.genFuncsDraftHeight({
@@ -300,17 +301,16 @@ const onlyVhFuncs = Gen.genFuncsDraftHeight({
   nameVhe: "", // 跳過延伸函數
 });
 
-// 只生成：vh1, vh2
+// 只生成：core.vh1, core.vh2
 ```
 
-### `genFuncsCore(options)`
+#### `genFuncsCore(options)`
 
 生成具有自訂名稱的核心函數集合。
 
-**參數：**
+**options**
 
-- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe` - 視窗函數名稱（使用空字串 `''` 可排除）
-- `nameEm`, `nameLh`, `namePercent` - 工具函數名稱（使用空字串 `''` 可排除）
+- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent` - 自訂函數名稱前綴（使用空字串 `''` 可排除）
 
 ```typescript
 const customCore = Gen.genFuncsCore({
@@ -318,8 +318,8 @@ const customCore = Gen.genFuncsCore({
   namePercent: "toPercent",
 });
 
-customCore.toVw(20, 1440); // 等同於 Core.vw(20, 1440)
-customCore.toPercent(10, 100); // 等同於 Core.percent(10, 100)
+customCore.core.toVw(20, 1440); // 等同於 Core.vw(20, 1440)
+customCore.core.toPercent(10, 100); // 等同於 Core.percent(10, 100)
 
 // 排除特定函數
 const minimalCore = Gen.genFuncsCore({
@@ -334,19 +334,134 @@ const minimalCore = Gen.genFuncsCore({
   namePercent: "", // 排除百分比函數
 });
 
-// 只生成：vw, vh 函數
+// 只生成：core.vw, core.vh 函數
+```
+
+### Snippet Module
+
+![](./assets/snippet.gif)
+
+Snippet 模組可以自動生成 [VSCode Snippet](https://code.visualstudio.com/docs/editing/userdefinedsnippets) 文件，讓你在編輯器中快速輸入 css-gum 函數。
+
+- 🔄 **自動合併**：新代碼片段會與現有文件合併，不會覆蓋其他片段
+- 🛡️ **安全備份**：如果現有文件格式錯誤，會自動創建備份
+- 📁 **創建目錄**：如果輸出目錄不存在，會自動創建
+
+#### Gen
+
+所有生成器函數都包含 `genVscodeSnippet()` 方法，可以生成對應的 VS Code 代碼片段：
+
+```typescript
+import { Gen } from "css-gum";
+
+const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
+
+// 生成基礎核心函數的代碼片段
+const coreGen = Gen.genFuncsCore();
+coreGen.genVscodeSnippet(VscodeSnippetsPath);
+
+// 生成寬度函數的代碼片段
+const widthGen = Gen.genFuncsDraftWidth({
+  points: [375, 768, 1440],
+  firstIndex: 1,
+});
+widthGen.genVscodeSnippet(VscodeSnippetsPath);
+
+// 生成高度函數的代碼片段
+const heightGen = Gen.genFuncsDraftHeight({
+  points: [667, 1080, 1440],
+});
+heightGen.genVscodeSnippet(VscodeSnippetsPath);
+```
+
+#### Snippet
+
+你也可以直接使用 Snippet 模組的函數來生成代碼片段：
+
+```typescript
+import { Snippet } from "css-gum";
+
+const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
+
+// 生成核心函數代碼片段
+Snippet.genVscodeSnippetCore({
+  nameVw: "vw",
+  nameVh: "vh",
+  namePercent: "percent",
+  output: VscodeSnippetsPath,
+});
+
+// 生成寬度函數代碼片段
+Snippet.genVscodeSnippetDraftWidth({
+  pointsSize: 3,
+  firstIndex: 1,
+  nameVw: "vw",
+  nameVwc: "vwc",
+  nameVwe: "vwe",
+  output: VscodeSnippetsPath,
+});
+
+// 生成高度函數代碼片段
+Snippet.genVscodeSnippetDraftHeight({
+  pointsSize: 3,
+  firstIndex: 1,
+  nameVh: "vh",
+  nameVhc: "vhc",
+  nameVhe: "vhe",
+  output: VscodeSnippetsPath,
+});
+```
+
+#### 生成的代碼片段範例
+
+```json
+{
+  "vw1": {
+    "prefix": "vw1",
+    "body": "vw1($1,$2)"
+  },
+  "vwc1": {
+    "prefix": "vwc1",
+    "body": "vwc1($1,$2)"
+  },
+  "percent": {
+    "prefix": "percent",
+    "body": "percent($1,$2)"
+  }
+}
+```
+
+#### 自定義代碼片段名稱
+
+你可以通過空字串來跳過不需要的代碼片段類型
+
+```typescript
+// 只生成 vw 相關的代碼片段，跳過 vwc 和 vwe
+Snippet.genVscodeSnippetDraftWidth({
+  pointsSize: 2,
+  nameVw: "vw",
+  nameVwc: "", // 跳過 vwc 代碼片段
+  nameVwe: "", // 跳過 vwe 代碼片段
+  output: ["/path/to/.vscode/minimal.code-snippets"],
+});
 ```
 
 ## 錯誤處理
 
-所有函數都包含內建驗證，對於無效輸入會返回空字串：
+所有函數都包含內建驗證和彩色錯誤訊息，對於無效輸入會返回空字串：
 
 ```typescript
-Core.vw("invalid", 1440); // 返回 ''，記錄錯誤
-Core.vw(20, "invalid"); // 返回 ''，記錄錯誤
-Core.vw(20, 0); // 返回 ''（零設計稿被拒絕）
-Core.vw(20, -100); // 返回 ''（負數設計稿被拒絕）
+Core.vw("invalid", 1440); // 返回 ''，記錄紅色錯誤訊息
+Core.vw(20, "invalid"); // 返回 ''，記錄紅色錯誤訊息
+Core.vw(20, 0); // 返回 ''（零/負數設計稿被拒絕）
+Core.vw(20, -100); // 返回 ''（零/負數設計稿被拒絕）
 Core.vw(20, 1440); // 返回 '1.39vw'
+
+// 錯誤訊息包含堆疊追踪以便除錯
+Core.vw("invalid", 1920);
+// 輸出：[error] pixel expected number, received invalid
+//      designDraft expected number, received 1920
+//      Error: <堆疊追踪>
 ```
 
 ## 瀏覽器支援

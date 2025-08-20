@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/jzovvo/css-gum/branch/master/graph/badge.svg)](https://codecov.io/gh/jzovvo/css-gum)
 [![npm version](https://badge.fury.io/js/css-gum.svg)](https://www.npmjs.com/package/css-gum)
 
-Make your responsive designs stretch like gum – seamlessly elastic across all screen sizes. This toolkit transforms complex viewport calculations into simple, intuitive functions, glueing together effortless responsive workflows.
+Make your responsive designs stretch like gum – seamlessly elastic across all screen sizes. This toolkit transforms complex viewport calculations into simple, intuitive functions, and automatically generates VS Code snippets, allowing you to effortlessly integrate efficient responsive workflows.
 
 [繁體中文](./README.zh-TW.md)
 
@@ -13,6 +13,8 @@ Make your responsive designs stretch like gum – seamlessly elastic across all 
 - 🖥️ **Viewport Units**: Convert pixels to responsive `vw`/`vh` units
 - 🔒 **Clamped Units**: Limit max/min values with `vwc`/`vhc`
 - 📏 **Extended Scaling**: Adaptive scaling for screens larger than design draft
+- ⚡ **Batch Generation**: Generate functions for multiple design draft breakpoints
+- 🎯 **Snippets**: Auto-generate code snippets for improved development efficiency
 
 ## Installation
 
@@ -39,6 +41,7 @@ Core.vhe(30, 1080); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 
 // Other utilities
 Core.percent(10, 100); // '10%'
+Core.percent(0, 100); // '0' (zero values return '0' not '0%')
 Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
@@ -51,9 +54,9 @@ Core.lh(24, 16); // '1.5'
 
 [View Complete Example →](./examples/vite/README.md)
 
-## Core API
+## API
 
-### Viewport Units
+### Core Module
 
 #### `vw(pixel, designDraft)`
 
@@ -103,14 +106,13 @@ Extended viewport height for screens larger than design draft.
 Core.vhe(30, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 ```
 
-### Utility Functions
-
 #### `percent(child, parent)`
 
 Calculates percentage value.
 
 ```typescript
 Core.percent(10, 100); // '10%'
+Core.percent(0, 100); // '0' (zero values return '0')
 ```
 
 #### `em(lineSize, fontSize)`
@@ -129,9 +131,7 @@ Converts to line-height ratio.
 Core.lh(24, 16); // '1.5'
 ```
 
-## Utils Module
-
-### CSS Conversion Functions
+### Utils Module
 
 #### `cssPxToVw(designDraft)(pixel)`
 
@@ -191,8 +191,6 @@ const toVhe = Utils.cssPxToVhe(1080)(0.5);
 toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 ```
 
-### Basic Calculation Functions
-
 #### `percent(denominator)(numerator)`
 
 Curried function to calculate percentage.
@@ -209,6 +207,7 @@ Curried function to calculate CSS percentage strings.
 ```typescript
 const toCssPercent = Utils.cssPercent(100);
 toCssPercent(25); // '25%'
+toCssPercent(0); // '0' (zero values return '0')
 ```
 
 #### `cssEm(lineSize, fontSize)`
@@ -227,13 +226,15 @@ Calculates CSS line-height ratios.
 Utils.cssLh(24, 16); // '1.5'
 ```
 
-## Generator Functions
+### Gen Module
 
-### `genFuncsDraftWidth(options)`
+The Generator module provides bulk creation of functions and VS Code snippets, allowing you to quickly generate corresponding functions for multiple design draft breakpoints.
 
-Generates width conversion functions for multiple design draft breakpoints. Automatically filters out invalid design draft widths (≤ 0).
+#### `genFuncsDraftWidth(options)`
 
-**Parameters:**
+Generates width conversion functions for multiple design draft breakpoints.
+
+**options**
 
 - `points` - Array of design draft widths (pixels) - invalid values (≤ 0) are automatically filtered out
 - `firstIndex` - Starting index number (default: 1)
@@ -247,15 +248,15 @@ const widthFuncs = Gen.genFuncsDraftWidth({
   firstIndex: 1,
 });
 
-widthFuncs.vw1(20); // 20px on 375px design
-widthFuncs.vwc2(20); // Clamped 20px on 768px design
-widthFuncs.vwe3(20); // Extended 20px on 1440px design
+widthFuncs.core.vw1(20); // 20px on 375px design
+widthFuncs.core.vwc2(20); // Clamped 20px on 768px design
+widthFuncs.core.vwe3(20); // Extended 20px on 1440px design
 
 // Invalid points are automatically filtered out
 const filteredFuncs = Gen.genFuncsDraftWidth({
   points: [0, -100, 375, 768, -50], // Only 375 and 768 are valid
 });
-// Only generates: vw1, vw2, vwc1, vwc2, vwe1, vwe2
+// Only generates: core.vw1, core.vw2, core.vwc1, core.vwc2, core.vwe1, core.vwe2
 
 // Skip specific function types by using empty string
 const partialFuncs = Gen.genFuncsDraftWidth({
@@ -265,14 +266,14 @@ const partialFuncs = Gen.genFuncsDraftWidth({
   nameVwe: "extend", // Generate extend functions
 });
 
-// Only generates: vw1, vw2, extend1, extend2
+// Only generates: core.vw1, core.vw2, core.extend1, core.extend2
 ```
 
-### `genFuncsDraftHeight(options)`
+#### `genFuncsDraftHeight(options)`
 
-Generates height conversion functions for multiple design draft breakpoints. Automatically filters out invalid design draft heights (≤ 0).
+Generates height conversion functions for multiple design draft breakpoints.
 
-**Parameters:**
+**options**
 
 - `points` - Array of design draft heights (pixels) - invalid values (≤ 0) are automatically filtered out
 - `firstIndex` - Starting index number (default: 1)
@@ -283,14 +284,14 @@ const heightFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
 
-heightFuncs.vh1(30); // 30px on 667px design
-heightFuncs.vhc2(30); // Clamped 30px on 1080px design
+heightFuncs.core.vh1(30); // 30px on 667px design
+heightFuncs.core.vhc2(30); // Clamped 30px on 1080px design
 
 // Invalid points are automatically filtered out
 const filteredHeightFuncs = Gen.genFuncsDraftHeight({
   points: [0, -200, 667, 1080, -100], // Only 667 and 1080 are valid
 });
-// Only generates: vh1, vh2, vhc1, vhc2, vhe1, vhe2
+// Only generates: core.vh1, core.vh2, core.vhc1, core.vhc2, core.vhe1, core.vhe2
 
 // Skip specific function types
 const onlyVhFuncs = Gen.genFuncsDraftHeight({
@@ -300,17 +301,16 @@ const onlyVhFuncs = Gen.genFuncsDraftHeight({
   nameVhe: "", // Skip extended functions
 });
 
-// Only generates: vh1, vh2
+// Only generates: core.vh1, core.vh2
 ```
 
-### `genFuncsCore(options)`
+#### `genFuncsCore(options)`
 
 Generates core function collection with custom names.
 
-**Parameters:**
+**options**
 
-- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe` - Viewport function names (use empty string `''` to exclude)
-- `nameEm`, `nameLh`, `namePercent` - Utility function names (use empty string `''` to exclude)
+- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent` - Custom function name prefixes (use empty string `''` to exclude)
 
 ```typescript
 const customCore = Gen.genFuncsCore({
@@ -318,8 +318,8 @@ const customCore = Gen.genFuncsCore({
   namePercent: "toPercent",
 });
 
-customCore.toVw(20, 1440); // Same as Core.vw(20, 1440)
-customCore.toPercent(10, 100); // Same as Core.percent(10, 100)
+customCore.core.toVw(20, 1440); // Same as Core.vw(20, 1440)
+customCore.core.toPercent(10, 100); // Same as Core.percent(10, 100)
 
 // Exclude specific functions
 const minimalCore = Gen.genFuncsCore({
@@ -334,19 +334,134 @@ const minimalCore = Gen.genFuncsCore({
   namePercent: "", // Exclude percent function
 });
 
-// Only generates: vw, vh functions
+// Only generates: core.vw, core.vh functions
+```
+
+### Snippet Module
+
+![](./assets/snippet.gif)
+
+The Snippet module can automatically generate [VSCode Snippet](https://code.visualstudio.com/docs/editing/userdefinedsnippets) files, allowing you to quickly input css-gum functions in your editor.
+
+- 🔄 **Auto Merge**: New snippets merge with existing files, won't overwrite other snippets
+- 🛡️ **Safe Backup**: Automatically creates backup if existing file has format errors
+- 📁 **Auto Directory**: Creates output directories automatically if they don't exist
+
+#### Gen
+
+All generator functions include a `genVscodeSnippet()` method that can generate corresponding VS Code snippets:
+
+```typescript
+import { Gen } from "css-gum";
+
+const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
+
+// Generate snippets for core functions
+const coreGen = Gen.genFuncsCore();
+coreGen.genVscodeSnippet(VscodeSnippetsPath);
+
+// Generate snippets for width functions
+const widthGen = Gen.genFuncsDraftWidth({
+  points: [375, 768, 1440],
+  firstIndex: 1,
+});
+widthGen.genVscodeSnippet(VscodeSnippetsPath);
+
+// Generate snippets for height functions
+const heightGen = Gen.genFuncsDraftHeight({
+  points: [667, 1080, 1440],
+});
+heightGen.genVscodeSnippet(VscodeSnippetsPath);
+```
+
+#### Snippet
+
+You can also use the Snippet module functions directly to generate snippets:
+
+```typescript
+import { Snippet } from "css-gum";
+
+const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
+
+// Generate core function snippets
+Snippet.genVscodeSnippetCore({
+  nameVw: "vw",
+  nameVh: "vh",
+  namePercent: "percent",
+  output: VscodeSnippetsPath,
+});
+
+// Generate width function snippets
+Snippet.genVscodeSnippetDraftWidth({
+  pointsSize: 3,
+  firstIndex: 1,
+  nameVw: "vw",
+  nameVwc: "vwc",
+  nameVwe: "vwe",
+  output: VscodeSnippetsPath,
+});
+
+// Generate height function snippets
+Snippet.genVscodeSnippetDraftHeight({
+  pointsSize: 3,
+  firstIndex: 1,
+  nameVh: "vh",
+  nameVhc: "vhc",
+  nameVhe: "vhe",
+  output: VscodeSnippetsPath,
+});
+```
+
+#### Generated Snippet Example
+
+```json
+{
+  "vw1": {
+    "prefix": "vw1",
+    "body": "vw1($1,$2)"
+  },
+  "vwc1": {
+    "prefix": "vwc1",
+    "body": "vwc1($1,$2)"
+  },
+  "percent": {
+    "prefix": "percent",
+    "body": "percent($1,$2)"
+  }
+}
+```
+
+#### Custom Snippet Names
+
+You can skip unnecessary snippet types by using empty strings:
+
+```typescript
+// Only generate vw-related snippets, skip vwc and vwe
+Snippet.genVscodeSnippetDraftWidth({
+  pointsSize: 2,
+  nameVw: "vw",
+  nameVwc: "", // Skip vwc snippets
+  nameVwe: "", // Skip vwe snippets
+  output: ["/path/to/.vscode/minimal.code-snippets"],
+});
 ```
 
 ## Error Handling
 
-All functions include built-in validation and will return an empty string for invalid inputs:
+All functions include built-in validation with colored error messages and will return an empty string for invalid inputs:
 
 ```typescript
-Core.vw("invalid", 1440); // Returns '', logs error
-Core.vw(20, "invalid"); // Returns '', logs error
-Core.vw(20, 0); // Returns '' (zero design draft rejected)
-Core.vw(20, -100); // Returns '' (negative design draft rejected)
+Core.vw("invalid", 1440); // Returns '', logs red error message
+Core.vw(20, "invalid"); // Returns '', logs red error message
+Core.vw(20, 0); // Returns '' (zero/negative design draft rejected)
+Core.vw(20, -100); // Returns '' (zero/negative design draft rejected)
 Core.vw(20, 1440); // Returns '1.39vw'
+
+// Error messages include stack traces for debugging
+Core.vw("invalid", 1920);
+// Output: [error] pixel expected number, received invalid
+//         designDraft expected number, received 1920
+//         Error: <stack trace>
 ```
 
 ## Browser Support

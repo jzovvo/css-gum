@@ -202,6 +202,7 @@ export const cssPxToVhe = (designDraftHeight: DesignDraft) => (percent: Percent)
  * ```typescript
  * const getPercentOfWidth = cssPercent(100)
  * getPercentOfWidth(25) // Returns '25%'
+ * getPercentOfWidth(0)  // Returns '0' (zero values return '0' not '0%')
  * ```
  */
 export const cssPercent = (parent: number) => (child: number) => {

@@ -116,6 +116,7 @@ export const vhc = (pixel: Pixel, designDraft: DesignDraft) => {
  * ```typescript
  * percent(10, 100) // Returns '10%'
  * percent(25, 200) // Returns '12.5%'
+ * percent(0, 100)  // Returns '0' (zero values return '0' not '0%')
  * ```
  */
 export const percent = (child: Percent, parent: Percent) => {

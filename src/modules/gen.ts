@@ -46,9 +46,9 @@ export interface PropsNameCustomOther {
  *   firstIndex: 1
  * })
  *
- * funcs.vw1(20)   // 20px on 375px design
- * funcs.vwc2(20)  // Clamped 20px on 768px design
- * funcs.vwe3(20)  // Extended 20px on 1440px design
+ * funcs.core.vw1(20)   // 20px on 375px design
+ * funcs.core.vwc2(20)  // Clamped 20px on 768px design
+ * funcs.core.vwe3(20)  // Extended 20px on 1440px design
  *
  * // Invalid points are automatically filtered out
  * const filteredFuncs = genFuncsDraftWidth({
@@ -112,9 +112,9 @@ export const genFuncsDraftWidth = ({
  *   firstIndex: 1
  * })
  *
- * funcs.vh1(30)   // 30px on 667px design
- * funcs.vhc2(30)  // Clamped 30px on 1080px design
- * funcs.vhe3(30)  // Extended 30px on 1440px design
+ * funcs.core.vh1(30)   // 30px on 667px design
+ * funcs.core.vhc2(30)  // Clamped 30px on 1080px design
+ * funcs.core.vhe3(30)  // Extended 30px on 1440px design
  *
  * // Invalid points are automatically filtered out
  * const filteredFuncs = genFuncsDraftHeight({
@@ -181,9 +181,9 @@ export const genFuncsDraftHeight = ({
  *   namePercent: 'toPercent'
  * })
  *
- * funcs.toVw(20, 1440)      // Same as Core.vw
- * funcs.toPercent(10, 100)  // Same as Core.percent
- * funcs.vh(30, 1080)        // Uses default name
+ * funcs.core.toVw(20, 1440)      // Same as Core.vw
+ * funcs.core.toPercent(10, 100)  // Same as Core.percent
+ * funcs.core.vh(30, 1080)        // Uses default name
  * ```
  */
 export const genFuncsCore = ({
