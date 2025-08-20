@@ -5,7 +5,7 @@ export default {
     '@tailwindcss/postcss': {},
     'postcss-functions': {
       functions: {
-        ...Gen.genDraftWidthFuncs({points: [375, 1440]}),
+        ...Gen.genFuncsDraftWidth({points: [375, 1440]}),
       },
     },
   },

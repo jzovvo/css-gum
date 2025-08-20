@@ -36,7 +36,7 @@ export default {
       functions: {
         // 將會使用到的函數都塞入，讓 postcss-functions 攔截來執行並替換
         // 假設有兩張設計稿，分別是 375px 與 1440px 的大小
-        ...Gen.genDraftWidthFuncs({ points: [375, 1440] }),
+        ...Gen.genFuncsDraftWidth({ points: [375, 1440] }),
       },
     },
   },

@@ -5,9 +5,9 @@ import path from 'path'
 import {tmpdir} from 'os'
 
 describe('Gen Module', () => {
-  describe('genDraftWidthFuncs', () => {
+  describe('genFuncsDraftWidth', () => {
     it('should generate functions for width conversions', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [100, 1000],
       })
 
@@ -20,7 +20,7 @@ describe('Gen Module', () => {
     })
 
     it('should generate correct vw conversions for different breakpoints', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [100, 1000],
       })
 
@@ -29,7 +29,7 @@ describe('Gen Module', () => {
     })
 
     it('should sort points automatically', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [100, 10000, 1000],
       })
 
@@ -40,7 +40,7 @@ describe('Gen Module', () => {
     })
 
     it('should respect custom function names', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [100, 1000],
         nameVw: 'vwNormal',
         nameVwc: 'vwClamp',
@@ -56,7 +56,7 @@ describe('Gen Module', () => {
     })
 
     it('should return empty object when all points are invalid', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [0, -100, -50],
       })
 
@@ -64,7 +64,7 @@ describe('Gen Module', () => {
     })
 
     it('should respect custom firstIndex', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [100, 1000],
         firstIndex: 0,
       })
@@ -75,7 +75,7 @@ describe('Gen Module', () => {
     })
 
     it('should handle empty points array', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [],
       })
 
@@ -83,7 +83,7 @@ describe('Gen Module', () => {
     })
 
     it('should skip functions with empty string names', () => {
-      const funcs = Gen.genDraftWidthFuncs({
+      const funcs = Gen.genFuncsDraftWidth({
         points: [100, 1000],
         nameVw: '',
         nameVwc: 'vwClamp',
@@ -96,9 +96,9 @@ describe('Gen Module', () => {
     })
   })
 
-  describe('genDraftHeightFuncs', () => {
+  describe('genFuncsDraftHeight', () => {
     it('should generate functions for width conversions', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [100, 1000],
       })
 
@@ -111,7 +111,7 @@ describe('Gen Module', () => {
     })
 
     it('should generate correct vh conversions for different breakpoints', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [100, 1000],
       })
 
@@ -120,7 +120,7 @@ describe('Gen Module', () => {
     })
 
     it('should sort points automatically', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [100, 10000, 1000],
       })
 
@@ -131,7 +131,7 @@ describe('Gen Module', () => {
     })
 
     it('should respect custom function names', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [100, 1000],
         nameVh: 'vwNormal',
         nameVhc: 'clampHeight',
@@ -147,7 +147,7 @@ describe('Gen Module', () => {
     })
 
     it('should respect custom firstIndex', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [100, 1000],
         firstIndex: 0,
       })
@@ -158,7 +158,7 @@ describe('Gen Module', () => {
     })
 
     it('should handle empty points array', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [],
       })
 
@@ -166,7 +166,7 @@ describe('Gen Module', () => {
     })
 
     it('should skip functions with empty string names', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [100, 1000],
         nameVh: '',
         nameVhc: 'vhClamp',
@@ -179,7 +179,7 @@ describe('Gen Module', () => {
     })
 
     it('should return empty object when all height points are invalid', () => {
-      const funcs = Gen.genDraftHeightFuncs({
+      const funcs = Gen.genFuncsDraftHeight({
         points: [0, -100, -50],
       })
 
@@ -187,9 +187,9 @@ describe('Gen Module', () => {
     })
   })
 
-  describe('genCoreFuncs', () => {
+  describe('genFuncsCore', () => {
     it('should generate all core functions with default names', () => {
-      const funcs = Gen.genCoreFuncs()
+      const funcs = Gen.genFuncsCore()
 
       expect(funcs.core).toHaveProperty('em')
       expect(funcs.core).toHaveProperty('lh')
@@ -203,7 +203,7 @@ describe('Gen Module', () => {
     })
 
     it('should respect partial custom names and use defaults for others', () => {
-      const funcs = Gen.genCoreFuncs({
+      const funcs = Gen.genFuncsCore({
         nameVw: 'customVw',
         namePercent: 'customPercent',
       })
@@ -220,7 +220,7 @@ describe('Gen Module', () => {
     })
 
     it('should return working core functions', () => {
-      const funcs = Gen.genCoreFuncs()
+      const funcs = Gen.genFuncsCore()
 
       // Test viewport functions
       expect(funcs.core.vw(10, 100)).toBe('10vw')
@@ -237,7 +237,7 @@ describe('Gen Module', () => {
     })
 
     it('should return the exact same functions as core imports', () => {
-      const funcs = Gen.genCoreFuncs()
+      const funcs = Gen.genFuncsCore()
 
       expect(funcs.core.vw).toBe(Core.vw)
       expect(funcs.core.vh).toBe(Core.vh)
@@ -251,7 +251,7 @@ describe('Gen Module', () => {
     })
 
     it('should remove empty string keys', () => {
-      const funcs = Gen.genCoreFuncs({
+      const funcs = Gen.genFuncsCore({
         nameVw: '',
         nameVh: 'vhh',
         namePercent: '',
@@ -271,7 +271,7 @@ describe('Gen Module', () => {
 
   describe('Generated function behavior', () => {
     it('should return valid CSS values', () => {
-      const widthFuncs = Gen.genDraftWidthFuncs({
+      const widthFuncs = Gen.genFuncsDraftWidth({
         points: [100, 1000],
         firstIndex: 1,
       })
@@ -305,7 +305,7 @@ describe('Gen Module', () => {
     })
 
     it('should generate and write VS Code snippets for width functions', () => {
-      const widthFuncs = Gen.genDraftWidthFuncs({
+      const widthFuncs = Gen.genFuncsDraftWidth({
         points: [375, 768],
         firstIndex: 1,
       })
@@ -331,7 +331,7 @@ describe('Gen Module', () => {
     })
 
     it('should generate and write VS Code snippets for height functions', () => {
-      const heightFuncs = Gen.genDraftHeightFuncs({
+      const heightFuncs = Gen.genFuncsDraftHeight({
         points: [667, 1080],
         firstIndex: 1,
       })
@@ -357,7 +357,7 @@ describe('Gen Module', () => {
     })
 
     it('should generate and write VS Code snippets for core functions', () => {
-      const coreFuncs = Gen.genCoreFuncs()
+      const coreFuncs = Gen.genFuncsCore()
       const result = coreFuncs.genVscodeSnippet([testFile])
 
       expect(result).toBeDefined()
@@ -380,7 +380,7 @@ describe('Gen Module', () => {
     })
 
     it('should handle custom names when generating snippets', () => {
-      const widthFuncs = Gen.genDraftWidthFuncs({
+      const widthFuncs = Gen.genFuncsDraftWidth({
         points: [375],
         nameVw: 'customVw',
         nameVwc: 'customVwc',
@@ -409,7 +409,7 @@ describe('Gen Module', () => {
     it('should handle multiple output files', () => {
       const file1 = path.join(tempDir, 'file1.code-snippets')
       const file2 = path.join(tempDir, 'file2.code-snippets')
-      const coreFuncs = Gen.genCoreFuncs()
+      const coreFuncs = Gen.genFuncsCore()
       const result = coreFuncs.genVscodeSnippet([file1, file2])
 
       expect(result).toBeDefined()
@@ -434,7 +434,7 @@ describe('Gen Module', () => {
 
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
-      const coreFuncs = Gen.genCoreFuncs()
+      const coreFuncs = Gen.genFuncsCore()
 
       coreFuncs.genVscodeSnippet([testFile])
 
@@ -448,7 +448,7 @@ describe('Gen Module', () => {
     })
 
     it('should handle empty output array gracefully', () => {
-      const coreFuncs = Gen.genCoreFuncs()
+      const coreFuncs = Gen.genFuncsCore()
 
       expect(() => {
         coreFuncs.genVscodeSnippet([])
@@ -456,7 +456,7 @@ describe('Gen Module', () => {
     })
 
     it('should skip functions with empty string names', () => {
-      const widthFuncs = Gen.genDraftWidthFuncs({
+      const widthFuncs = Gen.genFuncsDraftWidth({
         points: [375],
         nameVw: '',
         nameVwe: '',

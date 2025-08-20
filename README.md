@@ -229,7 +229,7 @@ Utils.cssLh(24, 16); // '1.5'
 
 ## Generator Functions
 
-### `genDraftWidthFuncs(options)`
+### `genFuncsDraftWidth(options)`
 
 Generates width conversion functions for multiple design draft breakpoints. Automatically filters out invalid design draft widths (≤ 0).
 
@@ -242,7 +242,7 @@ Generates width conversion functions for multiple design draft breakpoints. Auto
 ```typescript
 import { Gen } from "css-gum";
 
-const widthFuncs = Gen.genDraftWidthFuncs({
+const widthFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440, 1920],
   firstIndex: 1,
 });
@@ -252,13 +252,13 @@ widthFuncs.vwc2(20); // Clamped 20px on 768px design
 widthFuncs.vwe3(20); // Extended 20px on 1440px design
 
 // Invalid points are automatically filtered out
-const filteredFuncs = Gen.genDraftWidthFuncs({
+const filteredFuncs = Gen.genFuncsDraftWidth({
   points: [0, -100, 375, 768, -50], // Only 375 and 768 are valid
 });
 // Only generates: vw1, vw2, vwc1, vwc2, vwe1, vwe2
 
 // Skip specific function types by using empty string
-const partialFuncs = Gen.genDraftWidthFuncs({
+const partialFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768],
   nameVw: "vw", // Generate vw functions
   nameVwc: "", // Skip vwc functions
@@ -268,7 +268,7 @@ const partialFuncs = Gen.genDraftWidthFuncs({
 // Only generates: vw1, vw2, extend1, extend2
 ```
 
-### `genDraftHeightFuncs(options)`
+### `genFuncsDraftHeight(options)`
 
 Generates height conversion functions for multiple design draft breakpoints. Automatically filters out invalid design draft heights (≤ 0).
 
@@ -279,7 +279,7 @@ Generates height conversion functions for multiple design draft breakpoints. Aut
 - `nameVh`, `nameVhc`, `nameVhe` - Custom function name prefixes (use empty string `''` to skip generating that type)
 
 ```typescript
-const heightFuncs = Gen.genDraftHeightFuncs({
+const heightFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
 
@@ -287,13 +287,13 @@ heightFuncs.vh1(30); // 30px on 667px design
 heightFuncs.vhc2(30); // Clamped 30px on 1080px design
 
 // Invalid points are automatically filtered out
-const filteredHeightFuncs = Gen.genDraftHeightFuncs({
+const filteredHeightFuncs = Gen.genFuncsDraftHeight({
   points: [0, -200, 667, 1080, -100], // Only 667 and 1080 are valid
 });
 // Only generates: vh1, vh2, vhc1, vhc2, vhe1, vhe2
 
 // Skip specific function types
-const onlyVhFuncs = Gen.genDraftHeightFuncs({
+const onlyVhFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080],
   nameVh: "vh",
   nameVhc: "", // Skip clamped functions
@@ -303,7 +303,7 @@ const onlyVhFuncs = Gen.genDraftHeightFuncs({
 // Only generates: vh1, vh2
 ```
 
-### `genCoreFuncs(options)`
+### `genFuncsCore(options)`
 
 Generates core function collection with custom names.
 
@@ -313,7 +313,7 @@ Generates core function collection with custom names.
 - `nameEm`, `nameLh`, `namePercent` - Utility function names (use empty string `''` to exclude)
 
 ```typescript
-const customCore = Gen.genCoreFuncs({
+const customCore = Gen.genFuncsCore({
   nameVw: "toVw",
   namePercent: "toPercent",
 });
@@ -322,7 +322,7 @@ customCore.toVw(20, 1440); // Same as Core.vw(20, 1440)
 customCore.toPercent(10, 100); // Same as Core.percent(10, 100)
 
 // Exclude specific functions
-const minimalCore = Gen.genCoreFuncs({
+const minimalCore = Gen.genFuncsCore({
   nameVw: "vw",
   nameVh: "vh",
   nameVwc: "", // Exclude clamped width

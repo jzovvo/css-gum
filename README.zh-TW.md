@@ -229,7 +229,7 @@ Utils.cssLh(24, 16); // '1.5'
 
 ## 生成器函數
 
-### `genDraftWidthFuncs(options)`
+### `genFuncsDraftWidth(options)`
 
 為多個設計稿斷點生成寬度轉換函數。會自動過濾無效的設計稿寬度（≤ 0）。
 
@@ -242,7 +242,7 @@ Utils.cssLh(24, 16); // '1.5'
 ```typescript
 import { Gen } from "css-gum";
 
-const widthFuncs = Gen.genDraftWidthFuncs({
+const widthFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440, 1920],
   firstIndex: 1,
 });
@@ -252,13 +252,13 @@ widthFuncs.vwc2(20); // 768px 設計稿上的限制 20px
 widthFuncs.vwe3(20); // 1440px 設計稿上的延伸 20px
 
 // 無效的斷點會自動被過濾
-const filteredFuncs = Gen.genDraftWidthFuncs({
+const filteredFuncs = Gen.genFuncsDraftWidth({
   points: [0, -100, 375, 768, -50], // 只有 375 和 768 是有效的
 });
 // 只生成：vw1, vw2, vwc1, vwc2, vwe1, vwe2
 
 // 使用空字串跳過特定函數類型
-const partialFuncs = Gen.genDraftWidthFuncs({
+const partialFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768],
   nameVw: "vw", // 生成 vw 函數
   nameVwc: "", // 跳過 vwc 函數
@@ -268,7 +268,7 @@ const partialFuncs = Gen.genDraftWidthFuncs({
 // 只生成：vw1, vw2, extend1, extend2
 ```
 
-### `genDraftHeightFuncs(options)`
+### `genFuncsDraftHeight(options)`
 
 為多個設計稿斷點生成高度轉換函數。會自動過濾無效的設計稿高度（≤ 0）。
 
@@ -279,7 +279,7 @@ const partialFuncs = Gen.genDraftWidthFuncs({
 - `nameVh`, `nameVhc`, `nameVhe` - 自訂函數名稱前綴（使用空字串 `''` 可跳過生成該類型）
 
 ```typescript
-const heightFuncs = Gen.genDraftHeightFuncs({
+const heightFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
 
@@ -287,13 +287,13 @@ heightFuncs.vh1(30); // 667px 設計稿上的 30px
 heightFuncs.vhc2(30); // 1080px 設計稿上的限制 30px
 
 // 無效的斷點會自動被過濾
-const filteredHeightFuncs = Gen.genDraftHeightFuncs({
+const filteredHeightFuncs = Gen.genFuncsDraftHeight({
   points: [0, -200, 667, 1080, -100], // 只有 667 和 1080 是有效的
 });
 // 只生成：vh1, vh2, vhc1, vhc2, vhe1, vhe2
 
 // 跳過特定函數類型
-const onlyVhFuncs = Gen.genDraftHeightFuncs({
+const onlyVhFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080],
   nameVh: "vh",
   nameVhc: "", // 跳過限制函數
@@ -303,7 +303,7 @@ const onlyVhFuncs = Gen.genDraftHeightFuncs({
 // 只生成：vh1, vh2
 ```
 
-### `genCoreFuncs(options)`
+### `genFuncsCore(options)`
 
 生成具有自訂名稱的核心函數集合。
 
@@ -313,7 +313,7 @@ const onlyVhFuncs = Gen.genDraftHeightFuncs({
 - `nameEm`, `nameLh`, `namePercent` - 工具函數名稱（使用空字串 `''` 可排除）
 
 ```typescript
-const customCore = Gen.genCoreFuncs({
+const customCore = Gen.genFuncsCore({
   nameVw: "toVw",
   namePercent: "toPercent",
 });
@@ -322,7 +322,7 @@ customCore.toVw(20, 1440); // 等同於 Core.vw(20, 1440)
 customCore.toPercent(10, 100); // 等同於 Core.percent(10, 100)
 
 // 排除特定函數
-const minimalCore = Gen.genCoreFuncs({
+const minimalCore = Gen.genFuncsCore({
   nameVw: "vw",
   nameVh: "vh",
   nameVwc: "", // 排除限制寬度

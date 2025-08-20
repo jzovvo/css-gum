@@ -41,7 +41,7 @@ export interface PropsNameCustomOther {
  *
  * @example
  * ```typescript
- * const funcs = genDraftWidthFuncs({
+ * const funcs = genFuncsDraftWidth({
  *   points: [375, 768, 1440],
  *   firstIndex: 1
  * })
@@ -51,13 +51,13 @@ export interface PropsNameCustomOther {
  * funcs.vwe3(20)  // Extended 20px on 1440px design
  *
  * // Invalid points are automatically filtered out
- * const filteredFuncs = genDraftWidthFuncs({
+ * const filteredFuncs = genFuncsDraftWidth({
  *   points: [0, -100, 375, 768, -50] // Only 375 and 768 are valid
  * })
  * // Only generates: vw1, vw2, vwc1, vwc2, vwe1, vwe2
  * ```
  */
-export const genDraftWidthFuncs = ({
+export const genFuncsDraftWidth = ({
   points = [],
   firstIndex = 1,
   nameVw = 'vw',
@@ -107,7 +107,7 @@ export const genDraftWidthFuncs = ({
  *
  * @example
  * ```typescript
- * const funcs = genDraftHeightFuncs({
+ * const funcs = genFuncsDraftHeight({
  *   points: [667, 1080, 1440],
  *   firstIndex: 1
  * })
@@ -117,13 +117,13 @@ export const genDraftWidthFuncs = ({
  * funcs.vhe3(30)  // Extended 30px on 1440px design
  *
  * // Invalid points are automatically filtered out
- * const filteredFuncs = genDraftHeightFuncs({
+ * const filteredFuncs = genFuncsDraftHeight({
  *   points: [0, -200, 667, 1080, -100] // Only 667 and 1080 are valid
  * })
  * // Only generates: vh1, vh2, vhc1, vhc2, vhe1, vhe2
  * ```
  */
-export const genDraftHeightFuncs = ({
+export const genFuncsDraftHeight = ({
   points = [],
   firstIndex = 1,
   nameVh = 'vh',
@@ -176,7 +176,7 @@ export const genDraftHeightFuncs = ({
  *
  * @example
  * ```typescript
- * const funcs = genCoreFuncs({
+ * const funcs = genFuncsCore({
  *   nameVw: 'toVw',
  *   namePercent: 'toPercent'
  * })
@@ -186,7 +186,7 @@ export const genDraftHeightFuncs = ({
  * funcs.vh(30, 1080)        // Uses default name
  * ```
  */
-export const genCoreFuncs = ({
+export const genFuncsCore = ({
   nameEm = 'em',
   nameLh = 'lh',
   nameVh = 'vh',

@@ -36,7 +36,7 @@ export default {
       functions: {
         // Add all functions to be used for postcss-functions to intercept and replace
         // Assuming two design drafts at 375px and 1440px sizes
-        ...Gen.genDraftWidthFuncs({ points: [375, 1440] }),
+        ...Gen.genFuncsDraftWidth({ points: [375, 1440] }),
       },
     },
   },
