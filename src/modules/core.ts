@@ -1,6 +1,7 @@
 import type {DesignDraft, Percent, Pixel} from './types'
 import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc} from './utils'
 import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from './validate'
+import {consoleError} from '../utils/console'
 
 /**
  * Converts pixel values to viewport width (vw) units based on design draft width.
@@ -22,7 +23,7 @@ export const vw = (pixel: Pixel, designDraft: DesignDraft) => {
     return cssPxToVw(result.data[1])(result.data[0])
   }
 
-  console.error(new Error('[ vw error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -48,7 +49,7 @@ export const vwc = (pixel: Pixel, designDraft: DesignDraft) => {
     return cssPxToVwc(result.data[1])(result.data[0])
   }
 
-  console.error(new Error('[ vwc error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -73,7 +74,7 @@ export const vh = (pixel: Pixel, designDraft: DesignDraft) => {
     return cssPxToVh(result.data[1])(result.data[0])
   }
 
-  console.error(new Error('[ vh error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -99,7 +100,7 @@ export const vhc = (pixel: Pixel, designDraft: DesignDraft) => {
     return cssPxToVhc(result.data[1])(result.data[0])
   }
 
-  console.error(new Error('[ vhc error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -124,7 +125,7 @@ export const percent = (child: Percent, parent: Percent) => {
     return cssPercent(result.data[1])(result.data[0])
   }
 
-  console.error(new Error('[ percent error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -151,7 +152,7 @@ export const vwe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0
     return cssPxToVwe(result.data[1])(result.data[2])(result.data[0])
   }
 
-  console.error(new Error('[ vwe error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -178,7 +179,7 @@ export const vhe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0
     return cssPxToVhe(result.data[1])(result.data[2])(result.data[0])
   }
 
-  console.error(new Error('[ vhe error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -203,7 +204,7 @@ export const em = (child: Percent, parent: Percent) => {
     return cssEm(result.data[0], result.data[1])
   }
 
-  console.error(new Error('[ em error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }
@@ -228,7 +229,7 @@ export const lh = (child: Percent, parent: Percent) => {
     return cssLh(result.data[0], result.data[1])
   }
 
-  console.error(new Error('[ lh error ]\n' + result.error))
+  consoleError(result.error)
 
   return ''
 }

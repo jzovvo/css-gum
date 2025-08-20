@@ -1,4 +1,5 @@
 import type {PropsNameCustomHeight, PropsNameCustomOther, PropsNameCustomWidth} from './gen'
+import {consoleWarn} from '../utils/console'
 import fs from 'fs'
 import {dirname} from 'path'
 
@@ -30,16 +31,16 @@ const readExistingSnippets = (filePath: string): Record<string, SnippetConfig> =
       return JSON.parse(content)
     }
   } catch (error) {
-    console.warn(`Warning: Could not parse existing snippets file ${filePath}:`, error)
-    console.warn('Creating backup and starting with empty snippets')
+    consoleWarn(`Could not parse existing snippets file ${filePath}: ${error}`)
+    consoleWarn('Creating backup and starting with empty snippets')
 
     try {
       const backupPath = `${filePath}.backup`
 
       fs.copyFileSync(filePath, backupPath)
-      console.warn(`Backup created at: ${backupPath}`)
+      consoleWarn(`Backup created at: ${backupPath}`)
     } catch (backupError) {
-      console.warn('Could not create backup:', backupError)
+      consoleWarn(`Could not create backup: ${backupError}`)
     }
   }
 

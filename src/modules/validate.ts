@@ -31,9 +31,11 @@ export const checkViewportParams = (pixel: unknown, designDraft: unknown) => {
 
   return {
     data: null,
-    error:
-      `pixel expected number, received ${pixel}\n` +
+    error: [
+      `pixel expected number, received ${pixel}`,
       `designDraft expected number, received ${designDraft}`,
+      new Error().stack ?? '',
+    ].join('\n'),
   }
 }
 
@@ -67,9 +69,11 @@ export const checkPercentParams = (child: unknown, parent: unknown) => {
 
   return {
     data: null,
-    error:
-      `child expected number, received ${child}\n` +
+    error: [
+      `child expected number, received ${child}`,
       `parent expected number, received ${parent}`,
+      new Error().stack ?? '',
+    ].join('\n'),
   }
 }
 
@@ -105,9 +109,11 @@ export const checkDesignDraftScalingParams = (pixel: unknown, designDraft: unkno
 
   return {
     data: null,
-    error:
-      `pixel expected number, received ${pixel}\n` +
-      `designDraft expected number, received ${designDraft}\n` +
+    error: [
+      `pixel expected number, received ${pixel}`,
+      `designDraft expected number, received ${designDraft}`,
       `percent expected number, received ${percent}`,
+      new Error().stack ?? '',
+    ].join('\n'),
   }
 }
