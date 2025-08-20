@@ -1,4 +1,5 @@
 import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent} from './core'
+import {genVscodeSnippetCore, genVscodeSnippetDraftHeight, genVscodeSnippetDraftWidth} from './snippets'
 import type {Pixel} from './types'
 
 
@@ -78,7 +79,17 @@ export const genDraftWidthFuncs = ({
     nameVwe !== '' && (temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point))
   }
 
-  return temp
+  return {
+    core: temp,
+    genVscodeSnippet: (output: string[]) => genVscodeSnippetDraftWidth({
+      nameVw,
+      nameVwc,
+      nameVwe,
+      pointsSize: validPoints.length,
+      firstIndex,
+      output,
+    }),
+  }
 }
 
 /**
@@ -134,7 +145,17 @@ export const genDraftHeightFuncs = ({
     nameVhe !== '' && (temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point))
   }
 
-  return temp
+  return {
+    core: temp,
+    genVscodeSnippet: (output: string[]) => genVscodeSnippetDraftHeight({
+      nameVh,
+      nameVhc,
+      nameVhe,
+      pointsSize: validPoints.length,
+      firstIndex,
+      output,
+    }),
+  }
 }
 
 /**
@@ -190,5 +211,19 @@ export const genCoreFuncs = ({
 
   delete temp['']
 
-  return temp
+  return {
+    core: temp,
+    genVscodeSnippet: (output: string[]) => genVscodeSnippetCore({
+      nameEm,
+      nameLh,
+      nameVh,
+      nameVhc,
+      nameVhe,
+      nameVw,
+      nameVwc,
+      nameVwe,
+      namePercent,
+      output,
+    }),
+  }
 }

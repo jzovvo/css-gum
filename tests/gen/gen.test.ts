@@ -1,5 +1,8 @@
-import {describe, it, expect} from 'vitest'
+import {describe, it, expect, beforeEach, afterEach} from 'vitest'
 import {Gen, Core} from '../../src/index'
+import fs from 'fs'
+import path from 'path'
+import {tmpdir} from 'os'
 
 describe('Gen Module', () => {
   describe('genDraftWidthFuncs', () => {
@@ -8,12 +11,12 @@ describe('Gen Module', () => {
         points: [100, 1000],
       })
 
-      expect(funcs).toHaveProperty('vw1')
-      expect(funcs).toHaveProperty('vw2')
-      expect(funcs).toHaveProperty('vwc1')
-      expect(funcs).toHaveProperty('vwc2')
-      expect(funcs).toHaveProperty('vwe1')
-      expect(funcs).toHaveProperty('vwe2')
+      expect(funcs.core).toHaveProperty('vw1')
+      expect(funcs.core).toHaveProperty('vw2')
+      expect(funcs.core).toHaveProperty('vwc1')
+      expect(funcs.core).toHaveProperty('vwc2')
+      expect(funcs.core).toHaveProperty('vwe1')
+      expect(funcs.core).toHaveProperty('vwe2')
     })
 
     it('should generate correct vw conversions for different breakpoints', () => {
@@ -21,8 +24,8 @@ describe('Gen Module', () => {
         points: [100, 1000],
       })
 
-      expect(funcs.vw1(10)).toContain('10vw')
-      expect(funcs.vw2(10)).toContain('1vw')
+      expect(funcs.core.vw1(10)).toContain('10vw')
+      expect(funcs.core.vw2(10)).toContain('1vw')
     })
 
     it('should sort points automatically', () => {
@@ -31,9 +34,9 @@ describe('Gen Module', () => {
       })
 
       // Should be sorted as [100, 1000, 10000]
-      expect(funcs.vw1(10)).toContain('10vw')   // 100px
-      expect(funcs.vw2(10)).toContain('1vw')    // 1000px
-      expect(funcs.vw3(10)).toContain('0.1vw')  // 10000px
+      expect(funcs.core.vw1(10)).toContain('10vw')   // 100px
+      expect(funcs.core.vw2(10)).toContain('1vw')    // 1000px
+      expect(funcs.core.vw3(10)).toContain('0.1vw')  // 10000px
     })
 
     it('should respect custom function names', () => {
@@ -44,12 +47,12 @@ describe('Gen Module', () => {
         nameVwe: 'vwExtend',
       })
 
-      expect(funcs).toHaveProperty('vwNormal1')
-      expect(funcs).toHaveProperty('vwNormal2')
-      expect(funcs).toHaveProperty('vwClamp1')
-      expect(funcs).toHaveProperty('vwClamp2')
-      expect(funcs).toHaveProperty('vwExtend1')
-      expect(funcs).toHaveProperty('vwExtend2')
+      expect(funcs.core).toHaveProperty('vwNormal1')
+      expect(funcs.core).toHaveProperty('vwNormal2')
+      expect(funcs.core).toHaveProperty('vwClamp1')
+      expect(funcs.core).toHaveProperty('vwClamp2')
+      expect(funcs.core).toHaveProperty('vwExtend1')
+      expect(funcs.core).toHaveProperty('vwExtend2')
     })
 
     it('should return empty object when all points are invalid', () => {
@@ -57,7 +60,7 @@ describe('Gen Module', () => {
         points: [0, -100, -50],
       })
 
-      expect(Object.keys(funcs)).toHaveLength(0)
+      expect(Object.keys(funcs.core)).toHaveLength(0)
     })
 
     it('should respect custom firstIndex', () => {
@@ -66,9 +69,9 @@ describe('Gen Module', () => {
         firstIndex: 0,
       })
 
-      expect(funcs).toHaveProperty('vw0')
-      expect(funcs).toHaveProperty('vw1')
-      expect(funcs).not.toHaveProperty('vw2')
+      expect(funcs.core).toHaveProperty('vw0')
+      expect(funcs.core).toHaveProperty('vw1')
+      expect(funcs.core).not.toHaveProperty('vw2')
     })
 
     it('should handle empty points array', () => {
@@ -76,7 +79,7 @@ describe('Gen Module', () => {
         points: [],
       })
 
-      expect(Object.keys(funcs)).toHaveLength(0)
+      expect(Object.keys(funcs.core)).toHaveLength(0)
     })
 
     it('should skip functions with empty string names', () => {
@@ -87,9 +90,9 @@ describe('Gen Module', () => {
         nameVwe: '',
       })
 
-      expect(funcs).toHaveProperty('vwClamp1')
-      expect(funcs).toHaveProperty('vwClamp2')
-      expect(Object.keys(funcs)).toHaveLength(2)
+      expect(funcs.core).toHaveProperty('vwClamp1')
+      expect(funcs.core).toHaveProperty('vwClamp2')
+      expect(Object.keys(funcs.core)).toHaveLength(2)
     })
   })
 
@@ -99,12 +102,12 @@ describe('Gen Module', () => {
         points: [100, 1000],
       })
 
-      expect(funcs).toHaveProperty('vh1')
-      expect(funcs).toHaveProperty('vh2')
-      expect(funcs).toHaveProperty('vhc1')
-      expect(funcs).toHaveProperty('vhc2')
-      expect(funcs).toHaveProperty('vhe1')
-      expect(funcs).toHaveProperty('vhe2')
+      expect(funcs.core).toHaveProperty('vh1')
+      expect(funcs.core).toHaveProperty('vh2')
+      expect(funcs.core).toHaveProperty('vhc1')
+      expect(funcs.core).toHaveProperty('vhc2')
+      expect(funcs.core).toHaveProperty('vhe1')
+      expect(funcs.core).toHaveProperty('vhe2')
     })
 
     it('should generate correct vh conversions for different breakpoints', () => {
@@ -112,8 +115,8 @@ describe('Gen Module', () => {
         points: [100, 1000],
       })
 
-      expect(funcs.vh1(10)).toContain('10vh')
-      expect(funcs.vh2(10)).toContain('1vh')
+      expect(funcs.core.vh1(10)).toContain('10vh')
+      expect(funcs.core.vh2(10)).toContain('1vh')
     })
 
     it('should sort points automatically', () => {
@@ -122,9 +125,9 @@ describe('Gen Module', () => {
       })
 
       // Should be sorted as [100, 1000, 10000]
-      expect(funcs.vh1(10)).toContain('10vh')   // 100px
-      expect(funcs.vh2(10)).toContain('1vh')    // 1000px
-      expect(funcs.vh3(10)).toContain('0.1vh')  // 10000px
+      expect(funcs.core.vh1(10)).toContain('10vh')   // 100px
+      expect(funcs.core.vh2(10)).toContain('1vh')    // 1000px
+      expect(funcs.core.vh3(10)).toContain('0.1vh')  // 10000px
     })
 
     it('should respect custom function names', () => {
@@ -135,12 +138,12 @@ describe('Gen Module', () => {
         nameVhe: 'scaleHeight',
       })
 
-      expect(funcs).toHaveProperty('vwNormal1')
-      expect(funcs).toHaveProperty('vwNormal2')
-      expect(funcs).toHaveProperty('clampHeight1')
-      expect(funcs).toHaveProperty('clampHeight2')
-      expect(funcs).toHaveProperty('scaleHeight1')
-      expect(funcs).toHaveProperty('scaleHeight2')
+      expect(funcs.core).toHaveProperty('vwNormal1')
+      expect(funcs.core).toHaveProperty('vwNormal2')
+      expect(funcs.core).toHaveProperty('clampHeight1')
+      expect(funcs.core).toHaveProperty('clampHeight2')
+      expect(funcs.core).toHaveProperty('scaleHeight1')
+      expect(funcs.core).toHaveProperty('scaleHeight2')
     })
 
     it('should respect custom firstIndex', () => {
@@ -149,9 +152,9 @@ describe('Gen Module', () => {
         firstIndex: 0,
       })
 
-      expect(funcs).toHaveProperty('vh0')
-      expect(funcs).toHaveProperty('vh1')
-      expect(funcs).not.toHaveProperty('vh2')
+      expect(funcs.core).toHaveProperty('vh0')
+      expect(funcs.core).toHaveProperty('vh1')
+      expect(funcs.core).not.toHaveProperty('vh2')
     })
 
     it('should handle empty points array', () => {
@@ -159,7 +162,7 @@ describe('Gen Module', () => {
         points: [],
       })
 
-      expect(Object.keys(funcs)).toHaveLength(0)
+      expect(Object.keys(funcs.core)).toHaveLength(0)
     })
 
     it('should skip functions with empty string names', () => {
@@ -170,9 +173,9 @@ describe('Gen Module', () => {
         nameVhe: '',
       })
 
-      expect(funcs).toHaveProperty('vhClamp1')
-      expect(funcs).toHaveProperty('vhClamp2')
-      expect(Object.keys(funcs)).toHaveLength(2)
+      expect(funcs.core).toHaveProperty('vhClamp1')
+      expect(funcs.core).toHaveProperty('vhClamp2')
+      expect(Object.keys(funcs.core)).toHaveLength(2)
     })
 
     it('should return empty object when all height points are invalid', () => {
@@ -180,7 +183,7 @@ describe('Gen Module', () => {
         points: [0, -100, -50],
       })
 
-      expect(Object.keys(funcs)).toHaveLength(0)
+      expect(Object.keys(funcs.core)).toHaveLength(0)
     })
   })
 
@@ -188,15 +191,15 @@ describe('Gen Module', () => {
     it('should generate all core functions with default names', () => {
       const funcs = Gen.genCoreFuncs()
 
-      expect(funcs).toHaveProperty('em')
-      expect(funcs).toHaveProperty('lh')
-      expect(funcs).toHaveProperty('vh')
-      expect(funcs).toHaveProperty('vhc')
-      expect(funcs).toHaveProperty('vhe')
-      expect(funcs).toHaveProperty('vw')
-      expect(funcs).toHaveProperty('vwc')
-      expect(funcs).toHaveProperty('vwe')
-      expect(funcs).toHaveProperty('percent')
+      expect(funcs.core).toHaveProperty('em')
+      expect(funcs.core).toHaveProperty('lh')
+      expect(funcs.core).toHaveProperty('vh')
+      expect(funcs.core).toHaveProperty('vhc')
+      expect(funcs.core).toHaveProperty('vhe')
+      expect(funcs.core).toHaveProperty('vw')
+      expect(funcs.core).toHaveProperty('vwc')
+      expect(funcs.core).toHaveProperty('vwe')
+      expect(funcs.core).toHaveProperty('percent')
     })
 
     it('should respect partial custom names and use defaults for others', () => {
@@ -205,46 +208,46 @@ describe('Gen Module', () => {
         namePercent: 'customPercent',
       })
 
-      expect(funcs).toHaveProperty('customVw')
-      expect(funcs).toHaveProperty('customPercent')
-      expect(funcs).toHaveProperty('em')     // default
-      expect(funcs).toHaveProperty('lh')     // default
-      expect(funcs).toHaveProperty('vh')     // default
-      expect(funcs).toHaveProperty('vhc')    // default
-      expect(funcs).toHaveProperty('vhe')    // default
-      expect(funcs).toHaveProperty('vwc')    // default
-      expect(funcs).toHaveProperty('vwe')    // default
+      expect(funcs.core).toHaveProperty('customVw')
+      expect(funcs.core).toHaveProperty('customPercent')
+      expect(funcs.core).toHaveProperty('em')     // default
+      expect(funcs.core).toHaveProperty('lh')     // default
+      expect(funcs.core).toHaveProperty('vh')     // default
+      expect(funcs.core).toHaveProperty('vhc')    // default
+      expect(funcs.core).toHaveProperty('vhe')    // default
+      expect(funcs.core).toHaveProperty('vwc')    // default
+      expect(funcs.core).toHaveProperty('vwe')    // default
     })
 
     it('should return working core functions', () => {
       const funcs = Gen.genCoreFuncs()
 
       // Test viewport functions
-      expect(funcs.vw(10, 100)).toBe('10vw')
-      expect(funcs.vh(10, 100)).toBe('10vh')
-      expect(funcs.vwc(10, 100)).toBe('min(10px, 10vw)')
-      expect(funcs.vhc(10, 100)).toBe('min(10px, 10vh)')
-      expect(funcs.vwe(10, 100)).toBe('calc((100vw - 100px) * 0.5 + 10px)')
-      expect(funcs.vhe(10, 100)).toBe('calc((100vh - 100px) * 0.5 + 10px)')
+      expect(funcs.core.vw(10, 100)).toBe('10vw')
+      expect(funcs.core.vh(10, 100)).toBe('10vh')
+      expect(funcs.core.vwc(10, 100)).toBe('min(10px, 10vw)')
+      expect(funcs.core.vhc(10, 100)).toBe('min(10px, 10vh)')
+      expect(funcs.core.vwe(10, 100)).toBe('calc((100vw - 100px) * 0.5 + 10px)')
+      expect(funcs.core.vhe(10, 100)).toBe('calc((100vh - 100px) * 0.5 + 10px)')
 
       // Test utility functions
-      expect(funcs.em(24, 16)).toBe('1.5em')
-      expect(funcs.lh(24, 16)).toBe('1.5')
-      expect(funcs.percent(10, 100)).toBe('10%')
+      expect(funcs.core.em(24, 16)).toBe('1.5em')
+      expect(funcs.core.lh(24, 16)).toBe('1.5')
+      expect(funcs.core.percent(10, 100)).toBe('10%')
     })
 
     it('should return the exact same functions as core imports', () => {
       const funcs = Gen.genCoreFuncs()
 
-      expect(funcs.vw).toBe(Core.vw)
-      expect(funcs.vh).toBe(Core.vh)
-      expect(funcs.vwc).toBe(Core.vwc)
-      expect(funcs.vhc).toBe(Core.vhc)
-      expect(funcs.vwe).toBe(Core.vwe)
-      expect(funcs.vhe).toBe(Core.vhe)
-      expect(funcs.em).toBe(Core.em)
-      expect(funcs.lh).toBe(Core.lh)
-      expect(funcs.percent).toBe(Core.percent)
+      expect(funcs.core.vw).toBe(Core.vw)
+      expect(funcs.core.vh).toBe(Core.vh)
+      expect(funcs.core.vwc).toBe(Core.vwc)
+      expect(funcs.core.vhc).toBe(Core.vhc)
+      expect(funcs.core.vwe).toBe(Core.vwe)
+      expect(funcs.core.vhe).toBe(Core.vhe)
+      expect(funcs.core.em).toBe(Core.em)
+      expect(funcs.core.lh).toBe(Core.lh)
+      expect(funcs.core.percent).toBe(Core.percent)
     })
 
     it('should remove empty string keys', () => {
@@ -254,15 +257,15 @@ describe('Gen Module', () => {
         namePercent: '',
       })
 
-      expect(funcs).toEqual(expect.not.objectContaining({'': expect.anything()}))
-      expect(funcs).toHaveProperty('vhh')
-      expect(funcs).toHaveProperty('vwc')  // default
-      expect(funcs).toHaveProperty('vhc')  // default
-      expect(funcs).toHaveProperty('vwe')  // default
-      expect(funcs).toHaveProperty('vhe')  // default
-      expect(funcs).toHaveProperty('em')   // default
-      expect(funcs).toHaveProperty('lh')   // default
-      expect(Object.keys(funcs)).toHaveLength(7)  // 9 total - 2 empty = 7
+      expect(funcs.core).toEqual(expect.not.objectContaining({'': expect.anything()}))
+      expect(funcs.core).toHaveProperty('vhh')
+      expect(funcs.core).toHaveProperty('vwc')  // default
+      expect(funcs.core).toHaveProperty('vhc')  // default
+      expect(funcs.core).toHaveProperty('vwe')  // default
+      expect(funcs.core).toHaveProperty('vhe')  // default
+      expect(funcs.core).toHaveProperty('em')   // default
+      expect(funcs.core).toHaveProperty('lh')   // default
+      expect(Object.keys(funcs.core)).toHaveLength(7)  // 9 total - 2 empty = 7
     })
   })
 
@@ -272,13 +275,202 @@ describe('Gen Module', () => {
         points: [100, 1000],
         firstIndex: 1,
       })
-      const result1 = widthFuncs.vw1(100)
-      const result2 = widthFuncs.vwc1(100)
-      const result3 = widthFuncs.vwe1(100)
+      const result1 = widthFuncs.core.vw1(100)
+      const result2 = widthFuncs.core.vwc1(100)
+      const result3 = widthFuncs.core.vwe1(100)
 
       expect(result1).toMatch(/^\d+(\.\d+)?vw$/)
       expect(result2).toMatch(/^(min|max)\(\d+px,\s*-?\d+(\.\d+)?vw\)$/)
       expect(result3).toMatch(/^calc\(.+\)$/)
+    })
+  })
+
+  describe('genVscodeSnippet functionality', () => {
+    let tempDir: string
+    let testFile: string
+
+    beforeEach(() => {
+      tempDir = path.join(tmpdir(), '.vscode-test-gen')
+      testFile = path.join(tempDir, 'css.code-snippets')
+
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, {recursive: true})
+      }
+    })
+
+    afterEach(() => {
+      if (fs.existsSync(tempDir)) {
+        fs.rmSync(tempDir, {recursive: true, force: true})
+      }
+    })
+
+    it('should generate and write VS Code snippets for width functions', () => {
+      const widthFuncs = Gen.genDraftWidthFuncs({
+        points: [375, 768],
+        firstIndex: 1,
+      })
+      const result = widthFuncs.genVscodeSnippet([testFile])
+
+      expect(result).toBeDefined()
+      expect(fs.existsSync(testFile)).toBe(true)
+
+      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
+
+      expect(content).toHaveProperty('vw1')
+      expect(content).toHaveProperty('vw2')
+      expect(content).toHaveProperty('vwc1')
+      expect(content).toHaveProperty('vwc2')
+      expect(content).toHaveProperty('vwe1')
+      expect(content).toHaveProperty('vwe2')
+
+      // Check snippet structure
+      expect(content.vw1).toHaveProperty('prefix')
+      expect(content.vw1).toHaveProperty('body')
+      expect(content.vw1.prefix).toBe('vw1')
+      expect(content.vw1.body).toBe('vw1($1)')
+    })
+
+    it('should generate and write VS Code snippets for height functions', () => {
+      const heightFuncs = Gen.genDraftHeightFuncs({
+        points: [667, 1080],
+        firstIndex: 1,
+      })
+      const result = heightFuncs.genVscodeSnippet([testFile])
+
+      expect(result).toBeDefined()
+      expect(fs.existsSync(testFile)).toBe(true)
+
+      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
+
+      expect(content).toHaveProperty('vh1')
+      expect(content).toHaveProperty('vh2')
+      expect(content).toHaveProperty('vhc1')
+      expect(content).toHaveProperty('vhc2')
+      expect(content).toHaveProperty('vhe1')
+      expect(content).toHaveProperty('vhe2')
+
+      // Check snippet structure
+      expect(content.vh1).toHaveProperty('prefix')
+      expect(content.vh1).toHaveProperty('body')
+      expect(content.vh1.prefix).toBe('vh1')
+      expect(content.vh1.body).toBe('vh1($1)')
+    })
+
+    it('should generate and write VS Code snippets for core functions', () => {
+      const coreFuncs = Gen.genCoreFuncs()
+      const result = coreFuncs.genVscodeSnippet([testFile])
+
+      expect(result).toBeDefined()
+      expect(fs.existsSync(testFile)).toBe(true)
+
+      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
+
+      expect(content).toHaveProperty('vw')
+      expect(content).toHaveProperty('vh')
+      expect(content).toHaveProperty('em')
+      expect(content).toHaveProperty('percent')
+
+      // Check snippet structure
+      expect(content.vw).toHaveProperty('prefix')
+      expect(content.vw).toHaveProperty('body')
+      expect(content.vw.prefix).toBe('vw')
+      expect(content.vw.body).toBe('vw($1,$2)')
+      expect(content.em.body).toBe('em($1,$2)')
+      expect(content.percent.body).toBe('percent($1,$2)')
+    })
+
+    it('should handle custom names when generating snippets', () => {
+      const widthFuncs = Gen.genDraftWidthFuncs({
+        points: [375],
+        nameVw: 'customVw',
+        nameVwc: 'customVwc',
+        nameVwe: 'customVwe',
+      })
+      const result = widthFuncs.genVscodeSnippet([testFile])
+
+      expect(result).toBeDefined()
+      expect(fs.existsSync(testFile)).toBe(true)
+
+      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
+
+      expect(content).toHaveProperty('customVw1')
+      expect(content).toHaveProperty('customVwc1')
+      expect(content).toHaveProperty('customVwe1')
+
+      expect(content.customVw1.prefix).toBe('customVw1')
+      expect(content.customVwc1.prefix).toBe('customVwc1')
+      expect(content.customVwe1.prefix).toBe('customVwe1')
+
+      expect(content.customVw1.body).toBe('customVw1($1)')
+      expect(content.customVwc1.body).toBe('customVwc1($1)')
+      expect(content.customVwe1.body).toBe('customVwe1($1)')
+    })
+
+    it('should handle multiple output files', () => {
+      const file1 = path.join(tempDir, 'file1.code-snippets')
+      const file2 = path.join(tempDir, 'file2.code-snippets')
+      const coreFuncs = Gen.genCoreFuncs()
+      const result = coreFuncs.genVscodeSnippet([file1, file2])
+
+      expect(result).toBeDefined()
+      expect(fs.existsSync(file1)).toBe(true)
+      expect(fs.existsSync(file2)).toBe(true)
+
+      const content1 = JSON.parse(fs.readFileSync(file1, 'utf-8'))
+      const content2 = JSON.parse(fs.readFileSync(file2, 'utf-8'))
+
+      expect(content1).toHaveProperty('vw')
+      expect(content2).toHaveProperty('vw')
+    })
+
+    it('should merge with existing snippets in file', () => {
+      // Write initial snippets
+      const existingSnippets = {
+        customSnippet: {
+          prefix: 'custom',
+          body: 'custom()',
+        },
+      }
+
+      fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
+
+      const coreFuncs = Gen.genCoreFuncs()
+
+      coreFuncs.genVscodeSnippet([testFile])
+
+      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
+
+      // Should have both existing and new snippets
+      expect(content).toHaveProperty('customSnippet')
+      expect(content).toHaveProperty('vw')
+      expect(content).toHaveProperty('vh')
+      expect(content.customSnippet.body).toBe('custom()')
+    })
+
+    it('should handle empty output array gracefully', () => {
+      const coreFuncs = Gen.genCoreFuncs()
+
+      expect(() => {
+        coreFuncs.genVscodeSnippet([])
+      }).not.toThrow()
+    })
+
+    it('should skip functions with empty string names', () => {
+      const widthFuncs = Gen.genDraftWidthFuncs({
+        points: [375],
+        nameVw: '',
+        nameVwe: '',
+      })
+      const result = widthFuncs.genVscodeSnippet([testFile])
+
+      expect(result).toBeDefined()
+      expect(fs.existsSync(testFile)).toBe(true)
+
+      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
+
+      expect(content).toHaveProperty('vwc1')
+      expect(content).not.toHaveProperty('vw1')
+      expect(content).not.toHaveProperty('vwe1')
     })
   })
 })

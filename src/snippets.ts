@@ -11,7 +11,7 @@ interface PropsDraftFuncs {
   firstIndex?: number
 }
 
-interface SnippetConfig {
+export interface SnippetConfig {
   prefix: string
   body: string
   description?: string
