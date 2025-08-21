@@ -43,6 +43,10 @@
     "url": "https://github.com/jzovvo/css-gum/issues"
   },
   "homepage": "https://github.com/jzovvo/css-gum#readme",
+  "funding": {
+    "type": "individual",
+    "url": "https://ko-fi.com/jzovvo"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

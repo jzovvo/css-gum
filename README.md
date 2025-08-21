@@ -684,6 +684,22 @@ Supports all modern browsers that support the following features.
 - CSS `calc()` function
 - CSS `min()`/`max()` functions
 
+## Support
+
+If `css-gum` has helped stretch your designs as smoothly as chewing gum, consider buying me a coffee☕
+Your support keeps this project sticky and helps it grow even more elastic🍬
+
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-orange)](https://ko-fi.com/jzovvo)
+
+## Not Stretching Right?
+
+`css-gum` not stretching smoothly in your hands? Something feels a bit sticky? Don't worry, let's work together to make it more elastic 🍬
+
+- 🐛 [Issues](https://github.com/jzovvo/css-gum/issues)
+- 💭 [Discussions](https://github.com/jzovvo/css-gum/discussions)
+- 📮 [Mail](mailto:jzovvo@gmail.com)
+- 💻 [Site](https://jzovvo.dev)
+
 ## License
 
 MIT © [jzovvo](https://github.com/jzovvo)
