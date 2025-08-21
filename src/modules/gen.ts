@@ -1,5 +1,5 @@
 import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent} from './core'
-import {genVscodeSnippetCore, genVscodeSnippetDraftHeight, genVscodeSnippetDraftWidth} from './snippets'
+import {genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth} from './snippets'
 import type {Pixel} from './types'
 
 
@@ -81,7 +81,7 @@ export const genFuncsDraftWidth = ({
 
   return {
     core: temp,
-    genVscodeSnippet: (output: string[]) => genVscodeSnippetDraftWidth({
+    genVSCodeSnippet: (output: string[]) => genVSCodeSnippetDraftWidth({
       nameVw,
       nameVwc,
       nameVwe,
@@ -147,7 +147,7 @@ export const genFuncsDraftHeight = ({
 
   return {
     core: temp,
-    genVscodeSnippet: (output: string[]) => genVscodeSnippetDraftHeight({
+    genVSCodeSnippet: (output: string[]) => genVSCodeSnippetDraftHeight({
       nameVh,
       nameVhc,
       nameVhe,
@@ -213,7 +213,7 @@ export const genFuncsCore = ({
 
   return {
     core: temp,
-    genVscodeSnippet: (output: string[]) => genVscodeSnippetCore({
+    genVSCodeSnippet: (output: string[]) => genVSCodeSnippetCore({
       nameEm,
       nameLh,
       nameVh,

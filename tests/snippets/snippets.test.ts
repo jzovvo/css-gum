@@ -23,9 +23,9 @@ describe('Snippets Module', () => {
     }
   })
 
-  describe('genVscodeSnippetCore', () => {
+  describe('genVSCodeSnippetCore', () => {
     it('should generate core function snippets', () => {
-      const result = Snippet.genVscodeSnippetCore({
+      const result = Snippet.genVSCodeSnippetCore({
         output: [testFile],
       })
 
@@ -41,7 +41,7 @@ describe('Snippets Module', () => {
     })
 
     it('should create correct snippet structure', () => {
-      const result = Snippet.genVscodeSnippetCore({
+      const result = Snippet.genVSCodeSnippetCore({
         output: [testFile],
       })
 
@@ -57,7 +57,7 @@ describe('Snippets Module', () => {
     })
 
     it('should write snippets to file', () => {
-      Snippet.genVscodeSnippetCore({
+      Snippet.genVSCodeSnippetCore({
         output: [testFile],
       })
 
@@ -81,7 +81,7 @@ describe('Snippets Module', () => {
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
       // Generate core snippets
-      Snippet.genVscodeSnippetCore({
+      Snippet.genVSCodeSnippetCore({
         output: [testFile],
       })
 
@@ -103,7 +103,7 @@ describe('Snippets Module', () => {
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
       // Generate core snippets
-      Snippet.genVscodeSnippetCore({
+      Snippet.genVSCodeSnippetCore({
         output: [testFile],
       })
 
@@ -113,7 +113,7 @@ describe('Snippets Module', () => {
     })
 
     it('should skip empty function names', () => {
-      const result = Snippet.genVscodeSnippetCore({
+      const result = Snippet.genVSCodeSnippetCore({
         nameVw: '', // Empty name should be skipped
         nameEm: 'customEm',
         output: [testFile],
@@ -125,7 +125,7 @@ describe('Snippets Module', () => {
     })
 
     it('should use custom function names', () => {
-      const result = Snippet.genVscodeSnippetCore({
+      const result = Snippet.genVSCodeSnippetCore({
         nameVw: 'customVw',
         namePercent: 'pct',
         output: [testFile],
@@ -138,9 +138,9 @@ describe('Snippets Module', () => {
     })
   })
 
-  describe('genVscodeSnippetDraftWidth', () => {
+  describe('genVSCodeSnippetDraftWidth', () => {
     it('should generate width draft snippets', () => {
-      const result = Snippet.genVscodeSnippetDraftWidth({
+      const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 3,
         output: [testFile],
       })
@@ -157,7 +157,7 @@ describe('Snippets Module', () => {
     })
 
     it('should create correct snippet structure for width functions', () => {
-      const result = Snippet.genVscodeSnippetDraftWidth({
+      const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 2,
         output: [testFile],
       })
@@ -174,7 +174,7 @@ describe('Snippets Module', () => {
     })
 
     it('should respect firstIndex parameter', () => {
-      const result = Snippet.genVscodeSnippetDraftWidth({
+      const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 2,
         firstIndex: 10,
         output: [testFile],
@@ -187,7 +187,7 @@ describe('Snippets Module', () => {
     })
 
     it('should use custom function names', () => {
-      const result = Snippet.genVscodeSnippetDraftWidth({
+      const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 2,
         nameVw: 'width',
         nameVwc: 'widthClamp',
@@ -204,7 +204,7 @@ describe('Snippets Module', () => {
     })
 
     it('should generate zero snippets when pointsSize is 0', () => {
-      const result = Snippet.genVscodeSnippetDraftWidth({
+      const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 0,
         output: [testFile],
       })
@@ -213,9 +213,9 @@ describe('Snippets Module', () => {
     })
   })
 
-  describe('genVscodeSnippetDraftHeight', () => {
+  describe('genVSCodeSnippetDraftHeight', () => {
     it('should generate height draft snippets', () => {
-      const result = Snippet.genVscodeSnippetDraftHeight({
+      const result = Snippet.genVSCodeSnippetDraftHeight({
         pointsSize: 2,
         output: [testFile],
       })
@@ -229,7 +229,7 @@ describe('Snippets Module', () => {
     })
 
     it('should create correct snippet structure for height functions', () => {
-      const result = Snippet.genVscodeSnippetDraftHeight({
+      const result = Snippet.genVSCodeSnippetDraftHeight({
         pointsSize: 1,
         output: [testFile],
       })
@@ -246,7 +246,7 @@ describe('Snippets Module', () => {
     })
 
     it('should respect firstIndex parameter', () => {
-      const result = Snippet.genVscodeSnippetDraftHeight({
+      const result = Snippet.genVSCodeSnippetDraftHeight({
         pointsSize: 1,
         firstIndex: 5,
         output: [testFile],
@@ -257,7 +257,7 @@ describe('Snippets Module', () => {
     })
 
     it('should use custom function names', () => {
-      const result = Snippet.genVscodeSnippetDraftHeight({
+      const result = Snippet.genVSCodeSnippetDraftHeight({
         pointsSize: 1,
         nameVh: 'height',
         nameVhc: '',
@@ -275,7 +275,7 @@ describe('Snippets Module', () => {
     it('should create directory if it does not exist', () => {
       const deepFile = path.join(tempDir, 'deep', 'nested', 'test.code-snippets')
 
-      Snippet.genVscodeSnippetCore({
+      Snippet.genVSCodeSnippetCore({
         output: [deepFile],
       })
 
@@ -286,7 +286,7 @@ describe('Snippets Module', () => {
       const file1 = path.join(tempDir, 'css.code-snippets')
       const file2 = path.join(tempDir, 'sass.code-snippets')
 
-      Snippet.genVscodeSnippetCore({
+      Snippet.genVSCodeSnippetCore({
         output: [file1, file2],
       })
 
@@ -304,7 +304,7 @@ describe('Snippets Module', () => {
       fs.writeFileSync(testFile, 'invalid json{')
 
       expect(() => {
-        Snippet.genVscodeSnippetCore({
+        Snippet.genVSCodeSnippetCore({
           output: [testFile],
         })
       }).not.toThrow()
@@ -323,7 +323,7 @@ describe('Snippets Module', () => {
 
     it('should handle empty output array', () => {
       expect(() => {
-        Snippet.genVscodeSnippetCore({
+        Snippet.genVSCodeSnippetCore({
           output: [],
         })
       }).not.toThrow()

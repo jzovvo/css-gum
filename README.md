@@ -131,16 +131,16 @@ Converts to line-height ratio.
 Core.lh(24, 16); // '1.5'
 ```
 
-### Utils Module
+### Util Module
 
 #### `cssPxToVw(designDraft)(pixel)`
 
 Curried function to convert pixels to CSS vw strings.
 
 ```typescript
-import { Utils } from "css-gum";
+import { Util } from "css-gum";
 
-const toVw = Utils.cssPxToVw(1440);
+const toVw = Util.cssPxToVw(1440);
 toVw(20); // '1.39vw'
 toVw(0); // '0'
 ```
@@ -150,7 +150,7 @@ toVw(0); // '0'
 Curried function to convert pixels to CSS vh strings.
 
 ```typescript
-const toVh = Utils.cssPxToVh(1080);
+const toVh = Util.cssPxToVh(1080);
 toVh(30); // '2.78vh'
 ```
 
@@ -159,7 +159,7 @@ toVh(30); // '2.78vh'
 Curried function to convert pixels to clamped vw.
 
 ```typescript
-const toVwc = Utils.cssPxToVwc(1440);
+const toVwc = Util.cssPxToVwc(1440);
 toVwc(20); // 'min(20px, 1.39vw)'
 toVwc(-20); // 'max(-20px, -1.39vw)'
 ```
@@ -169,7 +169,7 @@ toVwc(-20); // 'max(-20px, -1.39vw)'
 Curried function to convert pixels to clamped vh.
 
 ```typescript
-const toVhc = Utils.cssPxToVhc(1080);
+const toVhc = Util.cssPxToVhc(1080);
 toVhc(30); // 'min(30px, 2.78vh)'
 ```
 
@@ -178,7 +178,7 @@ toVhc(30); // 'min(30px, 2.78vh)'
 Curried function to convert pixels to extended vw.
 
 ```typescript
-const toVwe = Utils.cssPxToVwe(1440)(0.5);
+const toVwe = Util.cssPxToVwe(1440)(0.5);
 toVwe(20); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 ```
 
@@ -187,7 +187,7 @@ toVwe(20); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 Curried function to convert pixels to extended vh.
 
 ```typescript
-const toVhe = Utils.cssPxToVhe(1080)(0.5);
+const toVhe = Util.cssPxToVhe(1080)(0.5);
 toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 ```
 
@@ -196,7 +196,7 @@ toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 Curried function to calculate percentage.
 
 ```typescript
-const getPercent = Utils.percent(100);
+const getPercent = Util.percent(100);
 getPercent(25); // 25 (number)
 ```
 
@@ -205,7 +205,7 @@ getPercent(25); // 25 (number)
 Curried function to calculate CSS percentage strings.
 
 ```typescript
-const toCssPercent = Utils.cssPercent(100);
+const toCssPercent = Util.cssPercent(100);
 toCssPercent(25); // '25%'
 toCssPercent(0); // '0' (zero values return '0')
 ```
@@ -215,7 +215,7 @@ toCssPercent(0); // '0' (zero values return '0')
 Calculates CSS em values.
 
 ```typescript
-Utils.cssEm(24, 16); // '1.5em'
+Util.cssEm(24, 16); // '1.5em'
 ```
 
 #### `cssLh(lineHeight, fontSize)`
@@ -223,7 +223,7 @@ Utils.cssEm(24, 16); // '1.5em'
 Calculates CSS line-height ratios.
 
 ```typescript
-Utils.cssLh(24, 16); // '1.5'
+Util.cssLh(24, 16); // '1.5'
 ```
 
 ### Gen Module
@@ -349,7 +349,7 @@ The Snippet module can automatically generate [VSCode Snippet](https://code.visu
 
 #### Gen
 
-All generator functions include a `genVscodeSnippet()` method that can generate corresponding VS Code snippets:
+All generator functions include a `genVSCodeSnippet()` method that can generate corresponding VS Code snippets:
 
 ```typescript
 import { Gen } from "css-gum";
@@ -358,20 +358,20 @@ const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // Generate snippets for core functions
 const coreGen = Gen.genFuncsCore();
-coreGen.genVscodeSnippet(VscodeSnippetsPath);
+coreGen.genVSCodeSnippet(VscodeSnippetsPath);
 
 // Generate snippets for width functions
 const widthGen = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440],
   firstIndex: 1,
 });
-widthGen.genVscodeSnippet(VscodeSnippetsPath);
+widthGen.genVSCodeSnippet(VscodeSnippetsPath);
 
 // Generate snippets for height functions
 const heightGen = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
-heightGen.genVscodeSnippet(VscodeSnippetsPath);
+heightGen.genVSCodeSnippet(VscodeSnippetsPath);
 ```
 
 #### Snippet
@@ -384,7 +384,7 @@ import { Snippet } from "css-gum";
 const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // Generate core function snippets
-Snippet.genVscodeSnippetCore({
+Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
   nameVh: "vh",
   namePercent: "percent",
@@ -392,7 +392,7 @@ Snippet.genVscodeSnippetCore({
 });
 
 // Generate width function snippets
-Snippet.genVscodeSnippetDraftWidth({
+Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 3,
   firstIndex: 1,
   nameVw: "vw",
@@ -402,7 +402,7 @@ Snippet.genVscodeSnippetDraftWidth({
 });
 
 // Generate height function snippets
-Snippet.genVscodeSnippetDraftHeight({
+Snippet.genVSCodeSnippetDraftHeight({
   pointsSize: 3,
   firstIndex: 1,
   nameVh: "vh",
@@ -437,7 +437,7 @@ You can skip unnecessary snippet types by using empty strings:
 
 ```typescript
 // Only generate vw-related snippets, skip vwc and vwe
-Snippet.genVscodeSnippetDraftWidth({
+Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 2,
   nameVw: "vw",
   nameVwc: "", // Skip vwc snippets

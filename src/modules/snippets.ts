@@ -105,7 +105,7 @@ const addSnippetIfEnabled = (
   }
 }
 
-export const genVscodeSnippetCore = ({
+export const genVSCodeSnippetCore = ({
   nameEm = 'em',
   nameLh = 'lh',
   nameVh = 'vh',
@@ -140,7 +140,7 @@ export const genVscodeSnippetCore = ({
  * @param params - Configuration object
  * @returns Generated snippets object
  */
-export const genVscodeSnippetDraftWidth = ({
+export const genVSCodeSnippetDraftWidth = ({
   pointsSize = 0,
   firstIndex = 1,
   nameVw = 'vw',
@@ -168,7 +168,7 @@ export const genVscodeSnippetDraftWidth = ({
  * @param params - Configuration object
  * @returns Generated snippets object
  */
-export const genVscodeSnippetDraftHeight = ({
+export const genVSCodeSnippetDraftHeight = ({
   pointsSize = 0,
   firstIndex = 1,
   nameVh = 'vh',

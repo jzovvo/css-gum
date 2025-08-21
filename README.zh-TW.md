@@ -131,16 +131,16 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
-### Utils Module
+### Util Module
 
 #### `cssPxToVw(designDraft)(pixel)`
 
 將像素轉換為 CSS vw 字串的 curried 函數。
 
 ```typescript
-import { Utils } from "css-gum";
+import { Util } from "css-gum";
 
-const toVw = Utils.cssPxToVw(1440);
+const toVw = Util.cssPxToVw(1440);
 toVw(20); // '1.39vw'
 toVw(0); // '0'
 ```
@@ -150,7 +150,7 @@ toVw(0); // '0'
 將像素轉換為 CSS vh 字串的 curried 函數。
 
 ```typescript
-const toVh = Utils.cssPxToVh(1080);
+const toVh = Util.cssPxToVh(1080);
 toVh(30); // '2.78vh'
 ```
 
@@ -159,7 +159,7 @@ toVh(30); // '2.78vh'
 將像素轉換為限制型 vw 的 curried 函數。
 
 ```typescript
-const toVwc = Utils.cssPxToVwc(1440);
+const toVwc = Util.cssPxToVwc(1440);
 toVwc(20); // 'min(20px, 1.39vw)'
 toVwc(-20); // 'max(-20px, -1.39vw)'
 ```
@@ -169,7 +169,7 @@ toVwc(-20); // 'max(-20px, -1.39vw)'
 將像素轉換為限制型 vh 的 curried 函數。
 
 ```typescript
-const toVhc = Utils.cssPxToVhc(1080);
+const toVhc = Util.cssPxToVhc(1080);
 toVhc(30); // 'min(30px, 2.78vh)'
 ```
 
@@ -178,7 +178,7 @@ toVhc(30); // 'min(30px, 2.78vh)'
 將像素轉換為延伸型 vw 的 curried 函數。
 
 ```typescript
-const toVwe = Utils.cssPxToVwe(1440)(0.5);
+const toVwe = Util.cssPxToVwe(1440)(0.5);
 toVwe(20); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 ```
 
@@ -187,7 +187,7 @@ toVwe(20); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 將像素轉換為延伸型 vh 的 curried 函數。
 
 ```typescript
-const toVhe = Utils.cssPxToVhe(1080)(0.5);
+const toVhe = Util.cssPxToVhe(1080)(0.5);
 toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 ```
 
@@ -196,7 +196,7 @@ toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 計算百分比的 curried 函數。
 
 ```typescript
-const getPercent = Utils.percent(100);
+const getPercent = Util.percent(100);
 getPercent(25); // 25 (數值)
 ```
 
@@ -205,7 +205,7 @@ getPercent(25); // 25 (數值)
 計算 CSS 百分比字串的 curried 函數。
 
 ```typescript
-const toCssPercent = Utils.cssPercent(100);
+const toCssPercent = Util.cssPercent(100);
 toCssPercent(25); // '25%'
 toCssPercent(0); // '0'（零值返回 '0'）
 ```
@@ -215,7 +215,7 @@ toCssPercent(0); // '0'（零值返回 '0'）
 計算 CSS em 值。
 
 ```typescript
-Utils.cssEm(24, 16); // '1.5em'
+Util.cssEm(24, 16); // '1.5em'
 ```
 
 #### `cssLh(lineHeight, fontSize)`
@@ -223,7 +223,7 @@ Utils.cssEm(24, 16); // '1.5em'
 計算 CSS 行高比例。
 
 ```typescript
-Utils.cssLh(24, 16); // '1.5'
+Util.cssLh(24, 16); // '1.5'
 ```
 
 ### Gen Module
@@ -349,7 +349,7 @@ Snippet 模組可以自動生成 [VSCode Snippet](https://code.visualstudio.com/
 
 #### Gen
 
-所有生成器函數都包含 `genVscodeSnippet()` 方法，可以生成對應的 VS Code 代碼片段：
+所有生成器函數都包含 `genVSCodeSnippet()` 方法，可以生成對應的 VS Code 代碼片段：
 
 ```typescript
 import { Gen } from "css-gum";
@@ -358,20 +358,20 @@ const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // 生成基礎核心函數的代碼片段
 const coreGen = Gen.genFuncsCore();
-coreGen.genVscodeSnippet(VscodeSnippetsPath);
+coreGen.genVSCodeSnippet(VscodeSnippetsPath);
 
 // 生成寬度函數的代碼片段
 const widthGen = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440],
   firstIndex: 1,
 });
-widthGen.genVscodeSnippet(VscodeSnippetsPath);
+widthGen.genVSCodeSnippet(VscodeSnippetsPath);
 
 // 生成高度函數的代碼片段
 const heightGen = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
-heightGen.genVscodeSnippet(VscodeSnippetsPath);
+heightGen.genVSCodeSnippet(VscodeSnippetsPath);
 ```
 
 #### Snippet
@@ -384,7 +384,7 @@ import { Snippet } from "css-gum";
 const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // 生成核心函數代碼片段
-Snippet.genVscodeSnippetCore({
+Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
   nameVh: "vh",
   namePercent: "percent",
@@ -392,7 +392,7 @@ Snippet.genVscodeSnippetCore({
 });
 
 // 生成寬度函數代碼片段
-Snippet.genVscodeSnippetDraftWidth({
+Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 3,
   firstIndex: 1,
   nameVw: "vw",
@@ -402,7 +402,7 @@ Snippet.genVscodeSnippetDraftWidth({
 });
 
 // 生成高度函數代碼片段
-Snippet.genVscodeSnippetDraftHeight({
+Snippet.genVSCodeSnippetDraftHeight({
   pointsSize: 3,
   firstIndex: 1,
   nameVh: "vh",
@@ -437,7 +437,7 @@ Snippet.genVscodeSnippetDraftHeight({
 
 ```typescript
 // 只生成 vw 相關的代碼片段，跳過 vwc 和 vwe
-Snippet.genVscodeSnippetDraftWidth({
+Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 2,
   nameVw: "vw",
   nameVwc: "", // 跳過 vwc 代碼片段

@@ -285,7 +285,7 @@ describe('Gen Module', () => {
     })
   })
 
-  describe('genVscodeSnippet functionality', () => {
+  describe('genVSCodeSnippet functionality', () => {
     let tempDir: string
     let testFile: string
 
@@ -309,7 +309,7 @@ describe('Gen Module', () => {
         points: [375, 768],
         firstIndex: 1,
       })
-      const result = widthFuncs.genVscodeSnippet([testFile])
+      const result = widthFuncs.genVSCodeSnippet([testFile])
 
       expect(result).toBeDefined()
       expect(fs.existsSync(testFile)).toBe(true)
@@ -335,7 +335,7 @@ describe('Gen Module', () => {
         points: [667, 1080],
         firstIndex: 1,
       })
-      const result = heightFuncs.genVscodeSnippet([testFile])
+      const result = heightFuncs.genVSCodeSnippet([testFile])
 
       expect(result).toBeDefined()
       expect(fs.existsSync(testFile)).toBe(true)
@@ -358,7 +358,7 @@ describe('Gen Module', () => {
 
     it('should generate and write VS Code snippets for core functions', () => {
       const coreFuncs = Gen.genFuncsCore()
-      const result = coreFuncs.genVscodeSnippet([testFile])
+      const result = coreFuncs.genVSCodeSnippet([testFile])
 
       expect(result).toBeDefined()
       expect(fs.existsSync(testFile)).toBe(true)
@@ -386,7 +386,7 @@ describe('Gen Module', () => {
         nameVwc: 'customVwc',
         nameVwe: 'customVwe',
       })
-      const result = widthFuncs.genVscodeSnippet([testFile])
+      const result = widthFuncs.genVSCodeSnippet([testFile])
 
       expect(result).toBeDefined()
       expect(fs.existsSync(testFile)).toBe(true)
@@ -410,7 +410,7 @@ describe('Gen Module', () => {
       const file1 = path.join(tempDir, 'file1.code-snippets')
       const file2 = path.join(tempDir, 'file2.code-snippets')
       const coreFuncs = Gen.genFuncsCore()
-      const result = coreFuncs.genVscodeSnippet([file1, file2])
+      const result = coreFuncs.genVSCodeSnippet([file1, file2])
 
       expect(result).toBeDefined()
       expect(fs.existsSync(file1)).toBe(true)
@@ -436,7 +436,7 @@ describe('Gen Module', () => {
 
       const coreFuncs = Gen.genFuncsCore()
 
-      coreFuncs.genVscodeSnippet([testFile])
+      coreFuncs.genVSCodeSnippet([testFile])
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
@@ -451,7 +451,7 @@ describe('Gen Module', () => {
       const coreFuncs = Gen.genFuncsCore()
 
       expect(() => {
-        coreFuncs.genVscodeSnippet([])
+        coreFuncs.genVSCodeSnippet([])
       }).not.toThrow()
     })
 
@@ -461,7 +461,7 @@ describe('Gen Module', () => {
         nameVw: '',
         nameVwe: '',
       })
-      const result = widthFuncs.genVscodeSnippet([testFile])
+      const result = widthFuncs.genVSCodeSnippet([testFile])
 
       expect(result).toBeDefined()
       expect(fs.existsSync(testFile)).toBe(true)
