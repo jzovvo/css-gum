@@ -82,7 +82,7 @@ export default [
         { blankLine: 'always', prev: 'switch', next: '*' },
         { blankLine: 'always', prev: 'try', next: '*' },
 
-        // 函數聲明後要空行
+        // 函式聲明後要空行
         { blankLine: 'always', prev: 'function', next: '*' },
 
         // 變數聲明群組後要空行

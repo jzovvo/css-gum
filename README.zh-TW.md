@@ -4,17 +4,17 @@
 [![codecov](https://codecov.io/gh/jzovvo/css-gum/branch/master/graph/badge.svg)](https://codecov.io/gh/jzovvo/css-gum)
 [![npm version](https://badge.fury.io/js/css-gum.svg)](https://www.npmjs.com/package/css-gum)
 
-讓你的響應式設計像口香糖一樣伸縮自如 — 在各種螢幕尺寸間完美彈性適應。這個工具包將複雜的視窗計算轉化為簡單直觀的函數，並自動生成 VS Code 代碼片段，讓你輕鬆黏合到高效的響應式開發工作流中。
+讓你的響應式設計像口香糖一樣伸縮自如——在各種螢幕尺寸間完美彈性適應。這個工具包將複雜的視窗計算轉化為簡單直觀的函式，並自動生成 VSCode 程式碼片段，讓你輕鬆黏合到高效的響應式開發工作流中。
 
 [English](./README.md)
 
 ## 功能特色
 
-- 🖥️ **視窗單位**：將像素轉換為響應式 `vw`/`vh` 單位
-- 🔒 **限制單位**：使用 `vwc`/`vhc` 限制最大/最小值
-- 📏 **延伸縮放**：適應比設計稿更大螢幕的自適應縮放
-- ⚡ **批量生成**：為多個設計稿斷點批量生成函數
-- 🎯 **Snippet**：自動生成代碼片段，提升開發效率
+- 🖥️ **視窗單位**: 將像素轉換為響應式 `vw`/`vh` 單位
+- 🔒 **限制單位**: 使用 `vwc`/`vhc` 限制最大/最小值
+- 📏 **延伸縮放**: 適應比設計稿更大螢幕的自適應縮放
+- ⚡ **批量生成**: 為多個設計稿斷點批量生成函式
+- 🎯 **Snippet**: 自動生成程式碼片段，提升開發效率
 
 ## 安裝
 
@@ -62,6 +62,13 @@ Core.lh(24, 16); // '1.5'
 
 將像素轉換為視窗寬度單位。
 
+**Parameters**
+
+- `pixel`
+  - 要轉換的像素值
+- `designDraft`
+  - 設計稿寬度像素值
+
 ```typescript
 Core.vw(20, 1440); // '1.39vw'
 ```
@@ -69,6 +76,13 @@ Core.vw(20, 1440); // '1.39vw'
 #### `vh(pixel, designDraft)`
 
 將像素轉換為視窗高度單位。
+
+**Parameters**
+
+- `pixel`
+  - 要轉換的像素值
+- `designDraft`
+  - 設計稿高度像素值
 
 ```typescript
 Core.vh(30, 1080); // '2.78vh'
@@ -78,6 +92,13 @@ Core.vh(30, 1080); // '2.78vh'
 
 有限制的視窗寬度（防止縮放超過原始尺寸）。
 
+**Parameters**
+
+- `pixel`
+  - 要轉換的像素值
+- `designDraft`
+  - 設計稿寬度像素值
+
 ```typescript
 Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
 ```
@@ -85,6 +106,13 @@ Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
 #### `vhc(pixel, designDraft)`
 
 有限制的視窗高度。
+
+**Parameters**
+
+- `pixel`
+  - 要轉換的像素值
+- `designDraft`
+  - 設計稿高度像素值
 
 ```typescript
 Core.vhc(30, 1080); // 'min(30px, 2.78vh)'
@@ -94,21 +122,50 @@ Core.vhc(30, 1080); // 'min(30px, 2.78vh)'
 
 延伸視窗寬度，適應比設計稿更大的螢幕。
 
+**Parameters**
+
+- `pixel`
+  - 要轉換的像素值
+- `designDraft`
+  - 設計稿寬度像素值
+- `percent`
+  - 大於設計稿螢幕的縮放係數
+  - 預設: 0.5
+
 ```typescript
 Core.vwe(20, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+Core.vwe(20, 1440); // 與上面相同，使用預設值 0.5
 ```
 
 #### `vhe(pixel, designDraft, percent?)`
 
 延伸視窗高度，適應比設計稿更大的螢幕。
 
+**Parameters**
+
+- `pixel`
+  - 要轉換的像素值
+- `designDraft`
+  - 設計稿高度像素值
+- `percent`
+  - 大於設計稿螢幕的縮放係數
+  - 預設: 0.5
+
 ```typescript
 Core.vhe(30, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+Core.vhe(30, 1080); // 與上面相同，使用預設值 0.5
 ```
 
 #### `percent(child, parent)`
 
 計算百分比值。
+
+**Parameters**
+
+- `child`
+  - 分子
+- `parent`
+  - 分母
 
 ```typescript
 Core.percent(10, 100); // '10%'
@@ -119,6 +176,13 @@ Core.percent(0, 100); // '0'（零值返回 '0'）
 
 轉換為 em 單位。
 
+**Parameters**
+
+- `lineSize`
+  - 目標尺寸像素值
+- `fontSize`
+  - 基礎字體大小像素值
+
 ```typescript
 Core.em(24, 16); // '1.5em'
 ```
@@ -126,6 +190,13 @@ Core.em(24, 16); // '1.5em'
 #### `lh(lineHeight, fontSize)`
 
 轉換為行高比例。
+
+**Parameters**
+
+- `lineHeight`
+  - 目標行高像素值
+- `fontSize`
+  - 基礎字體大小像素值
 
 ```typescript
 Core.lh(24, 16); // '1.5'
@@ -135,7 +206,14 @@ Core.lh(24, 16); // '1.5'
 
 #### `cssPxToVw(designDraft)(pixel)`
 
-將像素轉換為 CSS vw 字串的 curried 函數。
+將像素轉換為 CSS vw 字串的 curried 函式。
+
+**Parameters**
+
+- `designDraft`
+  - 設計稿寬度像素值
+- `pixel`
+  - 要轉換的像素值
 
 ```typescript
 import { Util } from "css-gum";
@@ -147,7 +225,14 @@ toVw(0); // '0'
 
 #### `cssPxToVh(designDraft)(pixel)`
 
-將像素轉換為 CSS vh 字串的 curried 函數。
+將像素轉換為 CSS vh 字串的 curried 函式。
+
+**Parameters**
+
+- `designDraft`
+  - 設計稿高度像素值
+- `pixel`
+  - 要轉換的像素值
 
 ```typescript
 const toVh = Util.cssPxToVh(1080);
@@ -156,7 +241,14 @@ toVh(30); // '2.78vh'
 
 #### `cssPxToVwc(designDraft)(pixel)`
 
-將像素轉換為限制型 vw 的 curried 函數。
+將像素轉換為限制型 vw 的 curried 函式。
+
+**Parameters**
+
+- `designDraft`
+  - 設計稿寬度像素值
+- `pixel`
+  - 要轉換的像素值
 
 ```typescript
 const toVwc = Util.cssPxToVwc(1440);
@@ -166,7 +258,14 @@ toVwc(-20); // 'max(-20px, -1.39vw)'
 
 #### `cssPxToVhc(designDraft)(pixel)`
 
-將像素轉換為限制型 vh 的 curried 函數。
+將像素轉換為限制型 vh 的 curried 函式。
+
+**Parameters**
+
+- `designDraft`
+  - 設計稿高度像素值
+- `pixel`
+  - 要轉換的像素值
 
 ```typescript
 const toVhc = Util.cssPxToVhc(1080);
@@ -175,7 +274,16 @@ toVhc(30); // 'min(30px, 2.78vh)'
 
 #### `cssPxToVwe(designDraft)(percent)(pixel)`
 
-將像素轉換為延伸型 vw 的 curried 函數。
+將像素轉換為延伸型 vw 的 curried 函式。
+
+**Parameters**
+
+- `designDraft`
+  - 設計稿寬度像素值
+- `percent`
+  - 大於設計稿螢幕的縮放係數
+- `pixel`
+  - 要轉換的像素值
 
 ```typescript
 const toVwe = Util.cssPxToVwe(1440)(0.5);
@@ -184,7 +292,16 @@ toVwe(20); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 
 #### `cssPxToVhe(designDraft)(percent)(pixel)`
 
-將像素轉換為延伸型 vh 的 curried 函數。
+將像素轉換為延伸型 vh 的 curried 函式。
+
+**Parameters**
+
+- `designDraft`
+  - 設計稿高度像素值
+- `percent`
+  - 大於設計稿螢幕的縮放係數
+- `pixel`
+  - 要轉換的像素值
 
 ```typescript
 const toVhe = Util.cssPxToVhe(1080)(0.5);
@@ -193,7 +310,12 @@ toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 
 #### `percent(denominator)(numerator)`
 
-計算百分比的 curried 函數。
+計算百分比的 curried 函式。
+
+**Parameters**
+
+- `denominator` - 分母值
+- `numerator` - 分子值
 
 ```typescript
 const getPercent = Util.percent(100);
@@ -202,7 +324,14 @@ getPercent(25); // 25 (數值)
 
 #### `cssPercent(parent)(child)`
 
-計算 CSS 百分比字串的 curried 函數。
+計算 CSS 百分比字串的 curried 函式。
+
+**Parameters**
+
+- `parent`
+  - 分母
+- `child`
+  - 分子
 
 ```typescript
 const toCssPercent = Util.cssPercent(100);
@@ -214,6 +343,13 @@ toCssPercent(0); // '0'（零值返回 '0'）
 
 計算 CSS em 值。
 
+**Parameters**
+
+- `lineSize`
+  - 目標尺寸像素值
+- `fontSize`
+  - 基礎字體大小像素值
+
 ```typescript
 Util.cssEm(24, 16); // '1.5em'
 ```
@@ -222,23 +358,36 @@ Util.cssEm(24, 16); // '1.5em'
 
 計算 CSS 行高比例。
 
+**Parameters**
+
+- `lineHeight`
+  - 目標行高像素值
+- `fontSize`
+  - 基礎字體大小像素值
+
 ```typescript
 Util.cssLh(24, 16); // '1.5'
 ```
 
 ### Gen Module
 
-生成器模組提供了批量創建函數和 VS Code 程式碼片段的功能，讓你可以為多個設計稿斷點快速生成對應的函數。
+生成器模組提供了批量創建函式和 VSCode 程式碼片段的功能，讓你可以為多個設計稿斷點快速生成對應的函式。
 
 #### `genFuncsDraftWidth(options)`
 
-為多個設計稿斷點生成寬度轉換函數。
+為多個設計稿斷點生成寬度轉換函式。
 
-**options**
+**Parameters**
 
-- `points` - 設計稿寬度陣列（像素）- 無效值（≤ 0）會自動被過濾
-- `firstIndex` - 起始索引號（預設：1）
-- `nameVw`, `nameVwc`, `nameVwe` - 自訂函數名稱前綴（使用空字串 `''` 可跳過生成該類型）
+- `options`
+  - `points`
+    - 設計稿寬度陣列像素值
+    - 無效值（≤ 0）會自動被過濾
+  - `firstIndex`
+    - 起始索引號（預設: 1）
+  - `nameVw`, `nameVwc`, `nameVwe`
+    - 自訂函式名稱前綴
+    - 使用空字串 `''` 可跳過生成該類型
 
 ```typescript
 import { Gen } from "css-gum";
@@ -256,28 +405,34 @@ widthFuncs.core.vwe3(20); // 1440px 設計稿上的延伸 20px
 const filteredFuncs = Gen.genFuncsDraftWidth({
   points: [0, -100, 375, 768, -50], // 只有 375 和 768 是有效的
 });
-// 只生成：core.vw1, core.vw2, core.vwc1, core.vwc2, core.vwe1, core.vwe2
+// 只生成: core.vw1, core.vw2, core.vwc1, core.vwc2, core.vwe1, core.vwe2
 
-// 使用空字串跳過特定函數類型
+// 使用空字串跳過特定函式類型
 const partialFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768],
-  nameVw: "vw", // 生成 vw 函數
-  nameVwc: "", // 跳過 vwc 函數
-  nameVwe: "extend", // 生成延伸函數
+  nameVw: "vw", // 生成 vw 函式
+  nameVwc: "", // 跳過 vwc 函式
+  nameVwe: "extend", // 生成延伸函式
 });
 
-// 只生成：core.vw1, core.vw2, core.extend1, core.extend2
+// 只生成: core.vw1, core.vw2, core.extend1, core.extend2
 ```
 
 #### `genFuncsDraftHeight(options)`
 
-為多個設計稿斷點生成高度轉換函數。
+為多個設計稿斷點生成高度轉換函式。
 
-**options**
+**Parameters**
 
-- `points` - 設計稿高度陣列（像素）- 無效值（≤ 0）會自動被過濾
-- `firstIndex` - 起始索引號（預設：1）
-- `nameVh`, `nameVhc`, `nameVhe` - 自訂函數名稱前綴（使用空字串 `''` 可跳過生成該類型）
+- `options`
+  - `points`
+    - 設計稿高度陣列像素值
+    - 無效值（≤ 0）會自動被過濾
+  - `firstIndex`
+    - 起始索引號（預設: 1）
+  - `nameVh`, `nameVhc`, `nameVhe`
+    - 自訂函式名稱前綴
+    - 使用空字串 `''` 可跳過生成該類型
 
 ```typescript
 const heightFuncs = Gen.genFuncsDraftHeight({
@@ -291,26 +446,29 @@ heightFuncs.core.vhc2(30); // 1080px 設計稿上的限制 30px
 const filteredHeightFuncs = Gen.genFuncsDraftHeight({
   points: [0, -200, 667, 1080, -100], // 只有 667 和 1080 是有效的
 });
-// 只生成：core.vh1, core.vh2, core.vhc1, core.vhc2, core.vhe1, core.vhe2
+// 只生成: core.vh1, core.vh2, core.vhc1, core.vhc2, core.vhe1, core.vhe2
 
-// 跳過特定函數類型
+// 跳過特定函式類型
 const onlyVhFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080],
   nameVh: "vh",
-  nameVhc: "", // 跳過限制函數
-  nameVhe: "", // 跳過延伸函數
+  nameVhc: "", // 跳過限制函式
+  nameVhe: "", // 跳過延伸函式
 });
 
-// 只生成：core.vh1, core.vh2
+// 只生成: core.vh1, core.vh2
 ```
 
 #### `genFuncsCore(options)`
 
-生成具有自訂名稱的核心函數集合。
+生成具有自訂名稱的核心函式集合。
 
-**options**
+**Parameters**
 
-- `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent` - 自訂函數名稱前綴（使用空字串 `''` 可排除）
+- `options`
+  - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
+    - 自訂函式名稱前綴
+    - 使用空字串 `''` 可排除
 
 ```typescript
 const customCore = Gen.genFuncsCore({
@@ -321,7 +479,7 @@ const customCore = Gen.genFuncsCore({
 customCore.core.toVw(20, 1440); // 等同於 Core.vw(20, 1440)
 customCore.core.toPercent(10, 100); // 等同於 Core.percent(10, 100)
 
-// 排除特定函數
+// 排除特定函式
 const minimalCore = Gen.genFuncsCore({
   nameVw: "vw",
   nameVh: "vh",
@@ -329,90 +487,144 @@ const minimalCore = Gen.genFuncsCore({
   nameVhc: "", // 排除限制高度
   nameVwe: "", // 排除延伸寬度
   nameVhe: "", // 排除延伸高度
-  nameEm: "", // 排除 em 函數
-  nameLh: "", // 排除行高函數
-  namePercent: "", // 排除百分比函數
+  nameEm: "", // 排除 em 函式
+  nameLh: "", // 排除行高函式
+  namePercent: "", // 排除百分比函式
 });
 
-// 只生成：core.vw, core.vh 函數
+// 只生成: core.vw, core.vh 函式
 ```
 
 ### Snippet Module
 
 ![](./assets/snippet.gif)
 
-Snippet 模組可以自動生成 [VSCode Snippet](https://code.visualstudio.com/docs/editing/userdefinedsnippets) 文件，讓你在編輯器中快速輸入 css-gum 函數。
+Snippet 模組可以自動生成 [VSCode Snippets](https://code.visualstudio.com/docs/editing/userdefinedsnippets) 文件，讓你在編輯器中快速輸入 css-gum 函式。
 
-- 🔄 **自動合併**：新代碼片段會與現有文件合併，不會覆蓋其他片段
-- 🛡️ **安全備份**：如果現有文件格式錯誤，會自動創建備份
-- 📁 **創建目錄**：如果輸出目錄不存在，會自動創建
+- 🔄 **自動合併**: 新程式碼片段會與現有文件合併，不會覆蓋其他片段
+- 🛡️ **安全備份**: 如果現有文件格式錯誤，會自動創建備份
+- 📁 **創建目錄**: 如果輸出目錄不存在，會自動創建
 
-#### Gen
+**Gen**
 
-所有生成器函數都包含 `genVSCodeSnippet()` 方法，可以生成對應的 VS Code 代碼片段：
+所有生成器函式都包含 `genVSCodeSnippet()` 方法，可以生成對應的 VSCode 程式碼片段。
+
+#### `genVSCodeSnippet(output)`
+
+**Parameters**
+
+- `output`
+  - 輸出文件路徑陣列
 
 ```typescript
 import { Gen } from "css-gum";
 
-const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
+const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
-// 生成基礎核心函數的代碼片段
+// 生成基礎核心函式的程式碼片段
 const coreGen = Gen.genFuncsCore();
-coreGen.genVSCodeSnippet(VscodeSnippetsPath);
+coreGen.genVSCodeSnippet(VSCodeSnippetsPath);
 
-// 生成寬度函數的代碼片段
+// 生成寬度函式的程式碼片段
 const widthGen = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440],
   firstIndex: 1,
 });
-widthGen.genVSCodeSnippet(VscodeSnippetsPath);
+widthGen.genVSCodeSnippet(VSCodeSnippetsPath);
 
-// 生成高度函數的代碼片段
+// 生成高度函式的程式碼片段
 const heightGen = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
-heightGen.genVSCodeSnippet(VscodeSnippetsPath);
+heightGen.genVSCodeSnippet(VSCodeSnippetsPath);
 ```
 
-#### Snippet
+**Snippet**
 
-你也可以直接使用 Snippet 模組的函數來生成代碼片段：
+你也可以直接使用 Snippet 模組的函式來生成程式碼片段。
+
+#### `genVSCodeSnippetCore(options)`
+
+生成核心函式程式碼片段。
+
+**Parameters**
+
+- `options`
+  - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
+    - 自訂函式名稱前綴
+    - 使用空字串 `''` 可跳過生成該類型
+  - `output`
+    - 輸出文件路徑陣列
+
+#### `genVSCodeSnippetDraftWidth(options)`
+
+生成寬度函式程式碼片段。
+
+**Parameters**
+
+- `options`
+  - `pointsSize`
+    - 要生成的斷點數量
+  - `firstIndex`
+    - 起始索引號（預設: 1）
+  - `nameVw`, `nameVwc`, `nameVwe`
+    - 自訂函式名稱前綴
+    - 使用空字串 `''` 可跳過生成該類型
+  - `output`
+    - 輸出文件路徑陣列
+
+#### `genVSCodeSnippetDraftHeight(options)`
+
+生成高度函式程式碼片段。
+
+**Parameters**
+
+- `options`
+  - `pointsSize`
+    - 要生成的斷點數量
+  - `firstIndex`
+    - 起始索引號（預設: 1）
+  - `nameVh`, `nameVhc`, `nameVhe`
+    - 自訂函式名稱前綴
+    - 使用空字串 `''` 可跳過生成該類型
+  - `output`
+    - 輸出文件路徑陣列
 
 ```typescript
 import { Snippet } from "css-gum";
 
-const VscodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
+const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
-// 生成核心函數代碼片段
+// 生成核心函式程式碼片段
 Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
   nameVh: "vh",
   namePercent: "percent",
-  output: VscodeSnippetsPath,
+  output: VSCodeSnippetsPath,
 });
 
-// 生成寬度函數代碼片段
+// 生成寬度函式程式碼片段
 Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 3,
   firstIndex: 1,
   nameVw: "vw",
   nameVwc: "vwc",
   nameVwe: "vwe",
-  output: VscodeSnippetsPath,
+  output: VSCodeSnippetsPath,
 });
 
-// 生成高度函數代碼片段
+// 生成高度函式程式碼片段
 Snippet.genVSCodeSnippetDraftHeight({
   pointsSize: 3,
   firstIndex: 1,
   nameVh: "vh",
   nameVhc: "vhc",
   nameVhe: "vhe",
-  output: VscodeSnippetsPath,
+  output: VSCodeSnippetsPath,
 });
 ```
 
-#### 生成的代碼片段範例
+#### 生成的程式碼片段範例
 
 ```json
 {
@@ -431,24 +643,24 @@ Snippet.genVSCodeSnippetDraftHeight({
 }
 ```
 
-#### 自定義代碼片段名稱
+#### 自定義程式碼片段名稱
 
-你可以通過空字串來跳過不需要的代碼片段類型
+你可以通過空字串來跳過不需要的程式碼片段類型。
 
 ```typescript
-// 只生成 vw 相關的代碼片段，跳過 vwc 和 vwe
+// 只生成 vw 相關的程式碼片段，跳過 vwc 和 vwe
 Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 2,
   nameVw: "vw",
-  nameVwc: "", // 跳過 vwc 代碼片段
-  nameVwe: "", // 跳過 vwe 代碼片段
+  nameVwc: "", // 跳過 vwc 程式碼片段
+  nameVwe: "", // 跳過 vwe 程式碼片段
   output: ["/path/to/.vscode/minimal.code-snippets"],
 });
 ```
 
 ## 錯誤處理
 
-所有函數都包含內建驗證和彩色錯誤訊息，對於無效輸入會返回空字串：
+所有函式都包含內建驗證和彩色錯誤訊息，對於無效輸入會返回空字串。
 
 ```typescript
 Core.vw("invalid", 1440); // 返回 ''，記錄紅色錯誤訊息
@@ -457,20 +669,20 @@ Core.vw(20, 0); // 返回 ''（零/負數設計稿被拒絕）
 Core.vw(20, -100); // 返回 ''（零/負數設計稿被拒絕）
 Core.vw(20, 1440); // 返回 '1.39vw'
 
-// 錯誤訊息包含堆疊追踪以便除錯
+// 錯誤訊息包含 stack trace 以便 debug
 Core.vw("invalid", 1920);
-// 輸出：[error] pixel expected number, received invalid
+// 輸出: [error] pixel expected number, received invalid
 //      designDraft expected number, received 1920
-//      Error: <堆疊追踪>
+//      Error: <stack trace>
 ```
 
 ## 瀏覽器支援
 
-支援所有支援以下功能的現代瀏覽器：
+支援所有支援以下功能的現代瀏覽器。
 
 - 視窗單位（`vw`、`vh`）
-- CSS `calc()` 函數
-- CSS `min()`/`max()` 函數
+- CSS `calc()` 函式
+- CSS `min()`/`max()` 函式
 
 ## 授權
 

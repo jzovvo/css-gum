@@ -70,7 +70,7 @@ describe('Snippets Module', () => {
     })
 
     it('should merge with existing snippets', () => {
-      // Write initial snippets
+
       const existingSnippets = {
         custom: {
           prefix: 'custom',
@@ -80,19 +80,19 @@ describe('Snippets Module', () => {
 
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
-      // Generate core snippets
+
       Snippet.genVSCodeSnippetCore({
         output: [testFile],
       })
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
-      expect(content).toHaveProperty('custom') // Should preserve existing
-      expect(content).toHaveProperty('vw') // Should add new
+      expect(content).toHaveProperty('custom')
+      expect(content).toHaveProperty('vw')
     })
 
     it('should override existing snippets with same key', () => {
-      // Write initial snippets with conflicting key
+
       const existingSnippets = {
         vw: {
           prefix: 'vw',
@@ -102,19 +102,19 @@ describe('Snippets Module', () => {
 
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
-      // Generate core snippets
+
       Snippet.genVSCodeSnippetCore({
         output: [testFile],
       })
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
-      expect(content.vw.body).toBe('vw($1,$2)') // Should use new value
+      expect(content.vw.body).toBe('vw($1,$2)')
     })
 
     it('should skip empty function names', () => {
       const result = Snippet.genVSCodeSnippetCore({
-        nameVw: '', // Empty name should be skipped
+        nameVw: '',
         nameEm: 'customEm',
         output: [testFile],
       })
@@ -191,7 +191,7 @@ describe('Snippets Module', () => {
         pointsSize: 2,
         nameVw: 'width',
         nameVwc: 'widthClamp',
-        nameVwe: '', // Should be skipped
+        nameVwe: '',
         output: [testFile],
       })
 
@@ -296,11 +296,11 @@ describe('Snippets Module', () => {
       const content1 = JSON.parse(fs.readFileSync(file1, 'utf-8'))
       const content2 = JSON.parse(fs.readFileSync(file2, 'utf-8'))
 
-      expect(content1).toEqual(content2) // Should have same content
+      expect(content1).toEqual(content2)
     })
 
     it('should handle invalid JSON gracefully', () => {
-      // Write invalid JSON
+
       fs.writeFileSync(testFile, 'invalid json{')
 
       expect(() => {
@@ -309,12 +309,12 @@ describe('Snippets Module', () => {
         })
       }).not.toThrow()
 
-      // Should create valid JSON file
+
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
       expect(content).toHaveProperty('vw')
 
-      // Should create backup file
+
       const backupFile = testFile + '.backup'
 
       expect(fs.existsSync(backupFile)).toBe(true)
