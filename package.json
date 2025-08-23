@@ -91,7 +91,11 @@
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "npm run lint && npm run test:run && npm run build",
-    "prepare": "husky"
+    "prepublishOnly": "npm run release:check",
+    "prepare": "husky",
+    "release:patch": "npm version patch && git push origin master --tags",
+    "release:minor": "npm version minor && git push origin master --tags",
+    "release:major": "npm version major && git push origin master --tags",
+    "release:check": "npm run lint && npm run typecheck && npm run test:coverage && npm run build"
   }
 }
