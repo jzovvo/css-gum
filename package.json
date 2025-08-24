@@ -47,9 +47,9 @@
     "type": "individual",
     "url": "https://ko-fi.com/jzovvo"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.browser.cjs",
+  "module": "./dist/index.browser.js",
+  "types": "./dist/index.browser.d.ts",
   "exports": {
     ".": {
       "browser": {
