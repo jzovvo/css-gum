@@ -98,7 +98,6 @@ export default [
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
-        project: './tsconfig.json'
       },
     },
     plugins: {
@@ -114,9 +113,9 @@ export default [
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_'
       }],
-
-      'no-unused-vars': 'off', // @typescript-eslint/no-unused-vars
-      'no-undef': 'off',       // @typescript-eslint/no-undef
+      '@typescript-eslint/triple-slash-reference': 'off',
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
     }
   },
   {
@@ -135,7 +134,8 @@ export default [
       '*.config.ts',
       '*.config.mjs',
       'test.mjs',
-      '.eslintrc.json'
+      '.eslintrc.json',
+      '**/.next/**',
     ]
   }
 ]
