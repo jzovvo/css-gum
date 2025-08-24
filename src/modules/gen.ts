@@ -81,13 +81,12 @@ export const genFuncsDraftWidth = ({
 
   return {
     core: temp,
-    genVSCodeSnippet: (output: string[]) => genVSCodeSnippetDraftWidth({
+    VSCodeSnippet: genVSCodeSnippetDraftWidth({
       nameVw,
       nameVwc,
       nameVwe,
       pointsSize: validPoints.length,
       firstIndex,
-      output,
     }),
   }
 }
@@ -147,13 +146,12 @@ export const genFuncsDraftHeight = ({
 
   return {
     core: temp,
-    genVSCodeSnippet: (output: string[]) => genVSCodeSnippetDraftHeight({
+    VSCodeSnippet: genVSCodeSnippetDraftHeight({
       nameVh,
       nameVhc,
       nameVhe,
       pointsSize: validPoints.length,
       firstIndex,
-      output,
     }),
   }
 }
@@ -213,7 +211,7 @@ export const genFuncsCore = ({
 
   return {
     core: temp,
-    genVSCodeSnippet: (output: string[]) => genVSCodeSnippetCore({
+    VSCodeSnippet: genVSCodeSnippetCore({
       nameEm,
       nameLh,
       nameVh,
@@ -223,7 +221,6 @@ export const genFuncsCore = ({
       nameVwc,
       nameVwe,
       namePercent,
-      output,
     }),
   }
 }

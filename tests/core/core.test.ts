@@ -1,5 +1,5 @@
 import {describe, it, expect, vi} from 'vitest'
-import {Core} from '../../src/index'
+import {Core} from '../../src/index.node'
 
 describe('Core Module', () => {
   describe('vw function', () => {

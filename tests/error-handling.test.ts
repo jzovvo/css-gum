@@ -1,5 +1,5 @@
 import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest'
-import {Core} from '../src/index'
+import {Core} from '../src/index.node'
 
 describe('Error Handling', () => {
   let errorSpy: ReturnType<typeof vi.spyOn>

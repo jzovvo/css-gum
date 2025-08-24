@@ -1,5 +1,5 @@
 import {describe, it, expect, beforeEach, afterEach} from 'vitest'
-import {Gen, Core} from '../../src/index'
+import {Gen, Core, Snippet} from '../../src/index.node'
 import fs from 'fs'
 import path from 'path'
 import {tmpdir} from 'os'
@@ -309,9 +309,11 @@ describe('Gen Module', () => {
         points: [375, 768],
         firstIndex: 1,
       })
-      const result = widthFuncs.genVSCodeSnippet([testFile])
+      const result = widthFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
       expect(fs.existsSync(testFile)).toBe(true)
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
@@ -335,9 +337,11 @@ describe('Gen Module', () => {
         points: [667, 1080],
         firstIndex: 1,
       })
-      const result = heightFuncs.genVSCodeSnippet([testFile])
+      const result = heightFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
       expect(fs.existsSync(testFile)).toBe(true)
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
@@ -358,9 +362,11 @@ describe('Gen Module', () => {
 
     it('should generate and write VSCode snippets for core functions', () => {
       const coreFuncs = Gen.genFuncsCore()
-      const result = coreFuncs.genVSCodeSnippet([testFile])
+      const result = coreFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
       expect(fs.existsSync(testFile)).toBe(true)
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
@@ -386,9 +392,11 @@ describe('Gen Module', () => {
         nameVwc: 'customVwc',
         nameVwe: 'customVwe',
       })
-      const result = widthFuncs.genVSCodeSnippet([testFile])
+      const result = widthFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
       expect(fs.existsSync(testFile)).toBe(true)
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
@@ -410,9 +418,11 @@ describe('Gen Module', () => {
       const file1 = path.join(tempDir, 'file1.code-snippets')
       const file2 = path.join(tempDir, 'file2.code-snippets')
       const coreFuncs = Gen.genFuncsCore()
-      const result = coreFuncs.genVSCodeSnippet([file1, file2])
+      const result = coreFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+
+      Snippet.writeSnippetsToFiles(result, [file1, file2])
       expect(fs.existsSync(file1)).toBe(true)
       expect(fs.existsSync(file2)).toBe(true)
 
@@ -435,8 +445,9 @@ describe('Gen Module', () => {
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
       const coreFuncs = Gen.genFuncsCore()
+      const result = coreFuncs.VSCodeSnippet
 
-      coreFuncs.genVSCodeSnippet([testFile])
+      Snippet.writeSnippetsToFiles(result, [testFile])
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
@@ -449,9 +460,10 @@ describe('Gen Module', () => {
 
     it('should handle empty output array gracefully', () => {
       const coreFuncs = Gen.genFuncsCore()
+      const result = coreFuncs.VSCodeSnippet
 
       expect(() => {
-        coreFuncs.genVSCodeSnippet([])
+        Snippet.writeSnippetsToFiles(result, [])
       }).not.toThrow()
     })
 
@@ -461,9 +473,11 @@ describe('Gen Module', () => {
         nameVw: '',
         nameVwe: '',
       })
-      const result = widthFuncs.genVSCodeSnippet([testFile])
+      const result = widthFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
       expect(fs.existsSync(testFile)).toBe(true)
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))

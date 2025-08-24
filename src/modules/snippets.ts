@@ -1,13 +1,7 @@
 import type {PropsNameCustomHeight, PropsNameCustomOther, PropsNameCustomWidth} from './gen'
-import {consoleWarn} from '../utils/console'
-import fs from 'fs'
-import {dirname} from 'path'
 
-interface PropFile {
-  output?: string[]
-}
 
-interface PropsDraftFuncs {
+export interface PropsDraftFuncs {
   pointsSize?: number
   firstIndex?: number
 }
@@ -18,81 +12,6 @@ export interface SnippetConfig {
   description?: string
 }
 
-/**
- * Reads existing VSCode snippets file and returns parsed JSON object.
- *
- * @param filePath - Path to the snippets file
- * @returns Parsed snippets object or empty object if file doesn't exist or is invalid
- *
- * @example
- * ```typescript
- * const snippets = readExistingSnippets('.vscode/css.code-snippets')
- * ```
- */
-const readExistingSnippets = (filePath: string): Record<string, SnippetConfig> => {
-  try {
-    if (fs.existsSync(filePath)) {
-      const content = fs.readFileSync(filePath, 'utf-8')
-
-      return JSON.parse(content)
-    }
-  } catch (error) {
-    consoleWarn(`Could not parse existing snippets file ${filePath}: ${error}`)
-    consoleWarn('Creating backup and starting with empty snippets')
-
-    try {
-      const backupPath = `${filePath}.backup`
-
-      fs.copyFileSync(filePath, backupPath)
-      consoleWarn(`Backup created at: ${backupPath}`)
-    } catch (backupError) {
-      consoleWarn(`Could not create backup: ${backupError}`)
-    }
-  }
-
-  return {}
-}
-/**
- * Merges new snippets with existing ones, removing duplicate keys.
- *
- * @param existing - Existing snippets object
- * @param newSnippets - New snippets to add
- * @returns Merged snippets object
- *
- * @example
- * ```typescript
- * const merged = mergeSnippets(existingSnippets, newSnippets)
- * ```
- */
-const mergeSnippets = (existing: Record<string, SnippetConfig>, newSnippets: Record<string, SnippetConfig>): Record<string, SnippetConfig> => {
-  return {...existing, ...newSnippets}
-}
-/**
- * Writes snippets to output files.
- *
- * @param snippets - Snippets object to write
- * @param output - Array of file paths to write to
- *
- * @example
- * ```typescript
- * writeSnippetsToFiles(snippets, ['.vscode/css.code-snippets'])
- * ```
- */
-const writeSnippetsToFiles = (snippets: Record<string, SnippetConfig>, output: string[]) => {
-  for (let i = 0; i < output.length; i++) {
-    const filePath = output[i]
-    const dir = dirname(filePath)
-    const existingSnippets = readExistingSnippets(filePath)
-    const mergedSnippets = mergeSnippets(existingSnippets, snippets)
-    const content = JSON.stringify(mergedSnippets, null, 2)
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, {recursive: true})
-    }
-
-    fs.writeFileSync(filePath, content)
-  }
-}
 /**
  * Creates a snippet configuration object.
  *
@@ -148,15 +67,13 @@ const addSnippetIfEnabled = (
  * @param params.nameVwc - Custom name for vwc function
  * @param params.nameVwe - Custom name for vwe function
  * @param params.namePercent - Custom name for percent function
- * @param params.output - Array of output file paths
  * @returns Generated snippets object
  *
  * @example
  * ```typescript
  * const snippets = genVSCodeSnippetCore({
  *   nameVw: 'vw',
- *   namePercent: 'percent',
- *   output: ['.vscode/css.code-snippets']
+ *   namePercent: 'percent'
  * })
  * ```
  */
@@ -170,8 +87,7 @@ export const genVSCodeSnippetCore = ({
   nameVwc = 'vwc',
   nameVwe = 'vwe',
   namePercent = 'percent',
-  output = [],
-}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther & PropFile = {}) => {
+}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther = {}) => {
   const snippets: Record<string, SnippetConfig> = {}
 
   addSnippetIfEnabled(snippets, nameEm, '', '$1,$2')
@@ -183,8 +99,6 @@ export const genVSCodeSnippetCore = ({
   addSnippetIfEnabled(snippets, nameVwc, '', '$1,$2')
   addSnippetIfEnabled(snippets, nameVwe, '', '$1,$2')
   addSnippetIfEnabled(snippets, namePercent, '', '$1,$2')
-
-  writeSnippetsToFiles(snippets, output)
 
   return snippets
 }
@@ -198,15 +112,13 @@ export const genVSCodeSnippetCore = ({
  * @param params.nameVw - Prefix for vw functions
  * @param params.nameVwc - Prefix for vwc functions
  * @param params.nameVwe - Prefix for vwe functions
- * @param params.output - Array of output file paths
  * @returns Generated snippets object
  *
  * @example
  * ```typescript
  * const snippets = genVSCodeSnippetDraftWidth({
  *   pointsSize: 3,
- *   nameVw: 'vw',
- *   output: ['.vscode/css.code-snippets']
+ *   nameVw: 'vw'
  * })
  * ```
  */
@@ -216,8 +128,7 @@ export const genVSCodeSnippetDraftWidth = ({
   nameVw = 'vw',
   nameVwc = 'vwc',
   nameVwe = 'vwe',
-  output = [],
-}: PropsDraftFuncs & PropsNameCustomWidth & PropFile = {}) => {
+}: PropsDraftFuncs & PropsNameCustomWidth = {}) => {
   const snippets: Record<string, SnippetConfig> = {}
 
   for (let i = 0; i < pointsSize; i++) {
@@ -227,8 +138,6 @@ export const genVSCodeSnippetDraftWidth = ({
     addSnippetIfEnabled(snippets, nameVwc, idx)
     addSnippetIfEnabled(snippets, nameVwe, idx)
   }
-
-  writeSnippetsToFiles(snippets, output)
 
   return snippets
 }
@@ -242,15 +151,13 @@ export const genVSCodeSnippetDraftWidth = ({
  * @param params.nameVh - Prefix for vh functions
  * @param params.nameVhc - Prefix for vhc functions
  * @param params.nameVhe - Prefix for vhe functions
- * @param params.output - Array of output file paths
  * @returns Generated snippets object
  *
  * @example
  * ```typescript
  * const snippets = genVSCodeSnippetDraftHeight({
  *   pointsSize: 3,
- *   nameVh: 'vh',
- *   output: ['.vscode/css.code-snippets']
+ *   nameVh: 'vh'
  * })
  * ```
  */
@@ -260,8 +167,7 @@ export const genVSCodeSnippetDraftHeight = ({
   nameVh = 'vh',
   nameVhc = 'vhc',
   nameVhe = 'vhe',
-  output = [],
-}: PropsDraftFuncs & PropsNameCustomHeight & PropFile = {}) => {
+}: PropsDraftFuncs & PropsNameCustomHeight = {}) => {
   const snippets: Record<string, SnippetConfig> = {}
 
   for (let i = 0; i < pointsSize; i++) {
@@ -271,8 +177,6 @@ export const genVSCodeSnippetDraftHeight = ({
     addSnippetIfEnabled(snippets, nameVhc, idx)
     addSnippetIfEnabled(snippets, nameVhe, idx)
   }
-
-  writeSnippetsToFiles(snippets, output)
 
   return snippets
 }

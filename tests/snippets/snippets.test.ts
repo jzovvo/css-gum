@@ -1,5 +1,5 @@
 import {describe, it, expect, beforeEach, afterEach} from 'vitest'
-import {Snippet} from '../../src/index'
+import {Snippet} from '../../src/index.node'
 import fs from 'fs'
 import path from 'path'
 import {tmpdir} from 'os'
@@ -25,9 +25,7 @@ describe('Snippets Module', () => {
 
   describe('genVSCodeSnippetCore', () => {
     it('should generate core function snippets', () => {
-      const result = Snippet.genVSCodeSnippetCore({
-        output: [testFile],
-      })
+      const result = Snippet.genVSCodeSnippetCore()
 
       expect(result).toHaveProperty('em')
       expect(result).toHaveProperty('lh')
@@ -41,9 +39,7 @@ describe('Snippets Module', () => {
     })
 
     it('should create correct snippet structure', () => {
-      const result = Snippet.genVSCodeSnippetCore({
-        output: [testFile],
-      })
+      const result = Snippet.genVSCodeSnippetCore()
 
       expect(result.vw).toEqual({
         prefix: 'vw',
@@ -57,9 +53,9 @@ describe('Snippets Module', () => {
     })
 
     it('should write snippets to file', () => {
-      Snippet.genVSCodeSnippetCore({
-        output: [testFile],
-      })
+      const result = Snippet.genVSCodeSnippetCore()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
 
       expect(fs.existsSync(testFile)).toBe(true)
 
@@ -81,9 +77,9 @@ describe('Snippets Module', () => {
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
 
-      Snippet.genVSCodeSnippetCore({
-        output: [testFile],
-      })
+      const result = Snippet.genVSCodeSnippetCore()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
@@ -103,9 +99,9 @@ describe('Snippets Module', () => {
       fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
 
 
-      Snippet.genVSCodeSnippetCore({
-        output: [testFile],
-      })
+      const result = Snippet.genVSCodeSnippetCore()
+
+      Snippet.writeSnippetsToFiles(result, [testFile])
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
@@ -116,7 +112,6 @@ describe('Snippets Module', () => {
       const result = Snippet.genVSCodeSnippetCore({
         nameVw: '',
         nameEm: 'customEm',
-        output: [testFile],
       })
 
       expect(result).not.toHaveProperty('vw')
@@ -128,7 +123,6 @@ describe('Snippets Module', () => {
       const result = Snippet.genVSCodeSnippetCore({
         nameVw: 'customVw',
         namePercent: 'pct',
-        output: [testFile],
       })
 
       expect(result).toHaveProperty('customVw')
@@ -142,7 +136,6 @@ describe('Snippets Module', () => {
     it('should generate width draft snippets', () => {
       const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 3,
-        output: [testFile],
       })
 
       expect(result).toHaveProperty('vw1')
@@ -159,7 +152,6 @@ describe('Snippets Module', () => {
     it('should create correct snippet structure for width functions', () => {
       const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 2,
-        output: [testFile],
       })
 
       expect(result.vw1).toEqual({
@@ -177,7 +169,6 @@ describe('Snippets Module', () => {
       const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 2,
         firstIndex: 10,
-        output: [testFile],
       })
 
       expect(result).toHaveProperty('vw10')
@@ -192,7 +183,6 @@ describe('Snippets Module', () => {
         nameVw: 'width',
         nameVwc: 'widthClamp',
         nameVwe: '',
-        output: [testFile],
       })
 
       expect(result).toHaveProperty('width1')
@@ -206,7 +196,6 @@ describe('Snippets Module', () => {
     it('should generate zero snippets when pointsSize is 0', () => {
       const result = Snippet.genVSCodeSnippetDraftWidth({
         pointsSize: 0,
-        output: [testFile],
       })
 
       expect(Object.keys(result)).toHaveLength(0)
@@ -217,7 +206,6 @@ describe('Snippets Module', () => {
     it('should generate height draft snippets', () => {
       const result = Snippet.genVSCodeSnippetDraftHeight({
         pointsSize: 2,
-        output: [testFile],
       })
 
       expect(result).toHaveProperty('vh1')
@@ -231,7 +219,6 @@ describe('Snippets Module', () => {
     it('should create correct snippet structure for height functions', () => {
       const result = Snippet.genVSCodeSnippetDraftHeight({
         pointsSize: 1,
-        output: [testFile],
       })
 
       expect(result.vh1).toEqual({
@@ -249,7 +236,6 @@ describe('Snippets Module', () => {
       const result = Snippet.genVSCodeSnippetDraftHeight({
         pointsSize: 1,
         firstIndex: 5,
-        output: [testFile],
       })
 
       expect(result).toHaveProperty('vh5')
@@ -262,7 +248,6 @@ describe('Snippets Module', () => {
         nameVh: 'height',
         nameVhc: '',
         nameVhe: 'heightExtend',
-        output: [testFile],
       })
 
       expect(result).toHaveProperty('height1')
@@ -274,10 +259,9 @@ describe('Snippets Module', () => {
   describe('File operations', () => {
     it('should create directory if it does not exist', () => {
       const deepFile = path.join(tempDir, 'deep', 'nested', 'test.code-snippets')
+      const result = Snippet.genVSCodeSnippetCore()
 
-      Snippet.genVSCodeSnippetCore({
-        output: [deepFile],
-      })
+      Snippet.writeSnippetsToFiles(result, [deepFile])
 
       expect(fs.existsSync(deepFile)).toBe(true)
     })
@@ -285,10 +269,9 @@ describe('Snippets Module', () => {
     it('should handle multiple output files', () => {
       const file1 = path.join(tempDir, 'css.code-snippets')
       const file2 = path.join(tempDir, 'sass.code-snippets')
+      const result = Snippet.genVSCodeSnippetCore()
 
-      Snippet.genVSCodeSnippetCore({
-        output: [file1, file2],
-      })
+      Snippet.writeSnippetsToFiles(result, [file1, file2])
 
       expect(fs.existsSync(file1)).toBe(true)
       expect(fs.existsSync(file2)).toBe(true)
@@ -304,9 +287,9 @@ describe('Snippets Module', () => {
       fs.writeFileSync(testFile, 'invalid json{')
 
       expect(() => {
-        Snippet.genVSCodeSnippetCore({
-          output: [testFile],
-        })
+        const result = Snippet.genVSCodeSnippetCore()
+
+        Snippet.writeSnippetsToFiles(result, [testFile])
       }).not.toThrow()
 
 
@@ -323,9 +306,9 @@ describe('Snippets Module', () => {
 
     it('should handle empty output array', () => {
       expect(() => {
-        Snippet.genVSCodeSnippetCore({
-          output: [],
-        })
+        const result = Snippet.genVSCodeSnippetCore()
+
+        Snippet.writeSnippetsToFiles(result, [])
       }).not.toThrow()
     })
   })

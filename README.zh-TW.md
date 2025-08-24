@@ -505,45 +505,83 @@ Snippet 模組可以自動生成 [VSCode Snippets](https://code.visualstudio.com
 - 🛡️ **安全備份**: 如果現有文件格式錯誤，會自動創建備份
 - 📁 **創建目錄**: 如果輸出目錄不存在，會自動創建
 
-**Gen**
+**使用流程**
 
-所有生成器函式都包含 `genVSCodeSnippet()` 方法，可以生成對應的 VSCode 程式碼片段。
+Snippet 模組的使用分為兩個步驟：
 
-#### `genVSCodeSnippet(output)`
+1. **生成程式碼片段**：透過各種生成函式取得 `SnippetConfig` 物件
+2. **寫入文件**：使用 `writeSnippetsToFiles` 將程式碼片段寫入 VSCode 文件
+
+#### `writeSnippetsToFiles(snippets, output)`
+
+將程式碼片段寫入 VSCode snippets 文件。
 
 **Parameters**
 
+- `snippets`
+  - 程式碼片段物件 (`SnippetConfig`)
 - `output`
   - 輸出文件路徑陣列
 
 ```typescript
-import { Gen } from "css-gum";
+import { Snippet } from "css-gum";
+
+const snippets = {
+  vw1: {
+    prefix: "vw1",
+    body: "vw1($1,$2)",
+  },
+  vwc1: {
+    prefix: "vwc1",
+    body: "vwc1($1,$2)",
+  },
+  percent: {
+    prefix: "percent",
+    body: "percent($1,$2)",
+  },
+};
+const outputPaths = ["/path/to/.vscode/css.code-snippets"];
+
+Snippet.writeSnippetsToFiles(snippets, outputPaths);
+```
+
+#### 生成 SnippetConfig
+
+有兩種方式可以生成程式碼片段物件：
+
+**使用 Gen 模組**
+
+所有生成器函式都包含 `VSCodeSnippet` 屬性，可以取得對應的程式碼片段物件。
+
+```typescript
+import { Gen, Snippet } from "css-gum";
 
 const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // 生成基礎核心函式的程式碼片段
 const coreGen = Gen.genFuncsCore();
-coreGen.genVSCodeSnippet(VSCodeSnippetsPath);
+const coreSnippets = coreGen.VSCodeSnippet;
+Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
 
 // 生成寬度函式的程式碼片段
 const widthGen = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440],
   firstIndex: 1,
 });
-widthGen.genVSCodeSnippet(VSCodeSnippetsPath);
+const widthSnippets = widthGen.VSCodeSnippet;
+Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
 
 // 生成高度函式的程式碼片段
 const heightGen = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
-heightGen.genVSCodeSnippet(VSCodeSnippetsPath);
+const heightSnippets = heightGen.VSCodeSnippet;
+Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 ```
 
-**Snippet**
+**使用 Snippet 模組**
 
-你也可以直接使用 Snippet 模組的函式來生成程式碼片段。
-
-#### `genVSCodeSnippetCore(options)`
+##### `genVSCodeSnippetCore(options)`
 
 生成核心函式程式碼片段。
 
@@ -553,10 +591,8 @@ heightGen.genVSCodeSnippet(VSCodeSnippetsPath);
   - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
     - 自訂函式名稱前綴
     - 使用空字串 `''` 可跳過生成該類型
-  - `output`
-    - 輸出文件路徑陣列
 
-#### `genVSCodeSnippetDraftWidth(options)`
+##### `genVSCodeSnippetDraftWidth(options)`
 
 生成寬度函式程式碼片段。
 
@@ -570,10 +606,8 @@ heightGen.genVSCodeSnippet(VSCodeSnippetsPath);
   - `nameVw`, `nameVwc`, `nameVwe`
     - 自訂函式名稱前綴
     - 使用空字串 `''` 可跳過生成該類型
-  - `output`
-    - 輸出文件路徑陣列
 
-#### `genVSCodeSnippetDraftHeight(options)`
+##### `genVSCodeSnippetDraftHeight(options)`
 
 生成高度函式程式碼片段。
 
@@ -587,8 +621,6 @@ heightGen.genVSCodeSnippet(VSCodeSnippetsPath);
   - `nameVh`, `nameVhc`, `nameVhe`
     - 自訂函式名稱前綴
     - 使用空字串 `''` 可跳過生成該類型
-  - `output`
-    - 輸出文件路徑陣列
 
 ```typescript
 import { Snippet } from "css-gum";
@@ -596,66 +628,47 @@ import { Snippet } from "css-gum";
 const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // 生成核心函式程式碼片段
-Snippet.genVSCodeSnippetCore({
+const coreSnippets = Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
   nameVh: "vh",
   namePercent: "percent",
-  output: VSCodeSnippetsPath,
 });
+Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
 
 // 生成寬度函式程式碼片段
-Snippet.genVSCodeSnippetDraftWidth({
+const widthSnippets = Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 3,
   firstIndex: 1,
   nameVw: "vw",
   nameVwc: "vwc",
   nameVwe: "vwe",
-  output: VSCodeSnippetsPath,
 });
+Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
 
 // 生成高度函式程式碼片段
-Snippet.genVSCodeSnippetDraftHeight({
+const heightSnippets = Snippet.genVSCodeSnippetDraftHeight({
   pointsSize: 3,
   firstIndex: 1,
   nameVh: "vh",
   nameVhc: "vhc",
   nameVhe: "vhe",
-  output: VSCodeSnippetsPath,
 });
+Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 ```
 
-#### 生成的程式碼片段範例
-
-```json
-{
-  "vw1": {
-    "prefix": "vw1",
-    "body": "vw1($1,$2)"
-  },
-  "vwc1": {
-    "prefix": "vwc1",
-    "body": "vwc1($1,$2)"
-  },
-  "percent": {
-    "prefix": "percent",
-    "body": "percent($1,$2)"
-  }
-}
-```
-
-#### 自定義程式碼片段名稱
+##### 自定義程式碼片段名稱
 
 你可以通過空字串來跳過不需要的程式碼片段類型。
 
 ```typescript
 // 只生成 vw 相關的程式碼片段，跳過 vwc 和 vwe
-Snippet.genVSCodeSnippetDraftWidth({
+const minimalSnippets = Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 2,
   nameVw: "vw",
   nameVwc: "", // 跳過 vwc 程式碼片段
   nameVwe: "", // 跳過 vwe 程式碼片段
-  output: ["/path/to/.vscode/minimal.code-snippets"],
 });
+Snippet.writeSnippetsToFiles(minimalSnippets, ["/path/to/.vscode/minimal.code-snippets"]);
 ```
 
 ## 錯誤處理

@@ -505,45 +505,83 @@ The Snippet module can automatically generate [VSCode Snippets](https://code.vis
 - 🛡️ **Safe Backup**: Automatically creates backup if existing file format is incorrect
 - 📁 **Directory Creation**: Automatically creates output directory if it doesn't exist
 
-**Gen**
+**Usage Workflow**
 
-All generator functions include a `genVSCodeSnippet()` method to generate corresponding VSCode snippets.
+The Snippet module usage is divided into two steps:
 
-#### `genVSCodeSnippet(output)`
+1. **Generate Snippets**: Get `SnippetConfig` objects through various generation functions
+2. **Write to Files**: Use `writeSnippetsToFiles` to write snippets to VSCode files
+
+#### `writeSnippetsToFiles(snippets, output)`
+
+Write snippets to VSCode snippets files.
 
 **Parameters**
 
+- `snippets`
+  - Snippet object (`SnippetConfig`)
 - `output`
   - Array of output file paths
 
 ```typescript
-import { Gen } from "css-gum";
+import { Snippet } from "css-gum";
+
+const snippets = {
+  vw1: {
+    prefix: "vw1",
+    body: "vw1($1,$2)",
+  },
+  vwc1: {
+    prefix: "vwc1",
+    body: "vwc1($1,$2)",
+  },
+  percent: {
+    prefix: "percent",
+    body: "percent($1,$2)",
+  },
+};
+const outputPaths = ["/path/to/.vscode/css.code-snippets"];
+
+Snippet.writeSnippetsToFiles(snippets, outputPaths);
+```
+
+#### Generate SnippetConfig
+
+There are two ways to generate snippet objects:
+
+**Using Gen Module**
+
+All generator functions include a `VSCodeSnippet` property to get the corresponding snippet object.
+
+```typescript
+import { Gen, Snippet } from "css-gum";
 
 const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // Generate core function snippets
 const coreGen = Gen.genFuncsCore();
-coreGen.genVSCodeSnippet(VSCodeSnippetsPath);
+const coreSnippets = coreGen.VSCodeSnippet;
+Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
 
 // Generate width function snippets
 const widthGen = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440],
   firstIndex: 1,
 });
-widthGen.genVSCodeSnippet(VSCodeSnippetsPath);
+const widthSnippets = widthGen.VSCodeSnippet;
+Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
 
 // Generate height function snippets
 const heightGen = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
-heightGen.genVSCodeSnippet(VSCodeSnippetsPath);
+const heightSnippets = heightGen.VSCodeSnippet;
+Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 ```
 
-**Snippet**
+**Using Snippet Module**
 
-You can also directly use Snippet module functions to generate snippets.
-
-#### `genVSCodeSnippetCore(options)`
+##### `genVSCodeSnippetCore(options)`
 
 Generate core function snippets.
 
@@ -553,10 +591,8 @@ Generate core function snippets.
   - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
     - Custom function name prefixes
     - Use empty string `''` to skip generating that type
-  - `output`
-    - Array of output file paths
 
-#### `genVSCodeSnippetDraftWidth(options)`
+##### `genVSCodeSnippetDraftWidth(options)`
 
 Generate width function snippets.
 
@@ -570,10 +606,8 @@ Generate width function snippets.
   - `nameVw`, `nameVwc`, `nameVwe`
     - Custom function name prefixes
     - Use empty string `''` to skip generating that type
-  - `output`
-    - Array of output file paths
 
-#### `genVSCodeSnippetDraftHeight(options)`
+##### `genVSCodeSnippetDraftHeight(options)`
 
 Generate height function snippets.
 
@@ -587,8 +621,17 @@ Generate height function snippets.
   - `nameVh`, `nameVhc`, `nameVhe`
     - Custom function name prefixes
     - Use empty string `''` to skip generating that type
-  - `output`
-    - Array of output file paths
+
+#### `writeSnippetsToFiles(snippets, output)`
+
+Write snippets to files.
+
+**Parameters**
+
+- `snippets`
+  - Snippet object
+- `output`
+  - Array of output file paths
 
 ```typescript
 import { Snippet } from "css-gum";
@@ -596,66 +639,47 @@ import { Snippet } from "css-gum";
 const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
 // Generate core function snippets
-Snippet.genVSCodeSnippetCore({
+const coreSnippets = Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
   nameVh: "vh",
   namePercent: "percent",
-  output: VSCodeSnippetsPath,
 });
+Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
 
 // Generate width function snippets
-Snippet.genVSCodeSnippetDraftWidth({
+const widthSnippets = Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 3,
   firstIndex: 1,
   nameVw: "vw",
   nameVwc: "vwc",
   nameVwe: "vwe",
-  output: VSCodeSnippetsPath,
 });
+Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
 
 // Generate height function snippets
-Snippet.genVSCodeSnippetDraftHeight({
+const heightSnippets = Snippet.genVSCodeSnippetDraftHeight({
   pointsSize: 3,
   firstIndex: 1,
   nameVh: "vh",
   nameVhc: "vhc",
   nameVhe: "vhe",
-  output: VSCodeSnippetsPath,
 });
+Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 ```
 
-#### Generated Snippet Examples
-
-```json
-{
-  "vw1": {
-    "prefix": "vw1",
-    "body": "vw1($1,$2)"
-  },
-  "vwc1": {
-    "prefix": "vwc1",
-    "body": "vwc1($1,$2)"
-  },
-  "percent": {
-    "prefix": "percent",
-    "body": "percent($1,$2)"
-  }
-}
-```
-
-#### Customize Snippet Names
+##### Customize Snippet Names
 
 You can use empty strings to skip unwanted snippet types.
 
 ```typescript
 // Only generate vw-related snippets, skip vwc and vwe
-Snippet.genVSCodeSnippetDraftWidth({
+const minimalSnippets = Snippet.genVSCodeSnippetDraftWidth({
   pointsSize: 2,
   nameVw: "vw",
   nameVwc: "", // Skip vwc snippets
   nameVwe: "", // Skip vwe snippets
-  output: ["/path/to/.vscode/minimal.code-snippets"],
 });
+Snippet.writeSnippetsToFiles(minimalSnippets, ["/path/to/.vscode/minimal.code-snippets"]);
 ```
 
 ## Error Handling

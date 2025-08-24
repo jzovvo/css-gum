@@ -4,7 +4,8 @@ export default defineConfig((options) => (
   {
     clean: true,
     entry: [
-      'src/index.ts'
+      'src/index.browser.ts',
+      'src/index.node.ts'
     ],
     minify: !options.watch,
     format: [

@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest'
-import {Util} from '../../src/index'
+import {Util} from '../../src/index.node'
 
 describe('Util Module', () => {
   describe('Basic conversion functions', () => {
