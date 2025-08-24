@@ -13,7 +13,7 @@ export default defineConfig((options) => (
       'cjs',
     ],
     target: [
-      'es6'
+      'es2020',
     ],
     treeshake: true,
     dts: true,
