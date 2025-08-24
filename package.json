@@ -1,6 +1,6 @@
 {
   "name": "css-gum",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Make your responsive designs stretch like gum – seamlessly elastic across all screen sizes. This toolkit transforms complex viewport calculations into simple, intuitive functions, and automatically generates VSCode snippets, allowing you to effortlessly integrate efficient responsive workflows.",
   "type": "module",
   "author": {
