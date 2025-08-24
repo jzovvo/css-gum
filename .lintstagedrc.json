@@ -1,7 +1,7 @@
 {
   "*.{ts,tsx,js,jsx}": [
     "eslint --fix",
-    "bash -c 'npm run test:run -- --run'"
+    "bash -c 'npm run test:run'"
   ],
   "*.json": [
     "prettier --write"
