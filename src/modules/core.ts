@@ -1,4 +1,4 @@
-import type {DesignDraft, Percent, Pixel} from './types'
+import type {DesignDraft, Percent, Pixel, SpaceFlag} from './types'
 import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc} from './utils'
 import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from './validate'
 import {consoleError} from '../utils/console'
@@ -8,19 +8,24 @@ import {consoleError} from '../utils/console'
  *
  * @param pixel - The pixel value to convert
  * @param designDraft - The design draft width in pixels
+ * @param space - Whether to add trailing space for Tailwind multi-value support (1 = with space, 0 = no space, default: 1)
  * @returns CSS vw value as string, or empty string if validation fails
  *
  * @example
  * ```typescript
- * vw(20, 1440) // Returns '1.39vw'
- * vw(0, 1440)  // Returns '0'
+ * vw(20, 1440)    // Returns '1.39vw ' (with space for Tailwind)
+ * vw(20, 1440, 1) // Returns '1.39vw ' (with space)
+ * vw(20, 1440, 0) // Returns '1.39vw' (no space)
+ * vw(0, 1440)     // Returns '0'
  * ```
  */
-export const vw = (pixel: Pixel, designDraft: DesignDraft) => {
+export const vw = (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 1) => {
   const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
-    return cssPxToVw(result.data[1])(result.data[0])
+    const baseResult = cssPxToVw(result.data[1])(result.data[0])
+
+    return baseResult === '' ? '' : baseResult + (space === 1 ? ' ' : '')
   }
 
   consoleError(result.error)
@@ -59,19 +64,24 @@ export const vwc = (pixel: Pixel, designDraft: DesignDraft) => {
  *
  * @param pixel - The pixel value to convert
  * @param designDraft - The design draft height in pixels
+ * @param space - Whether to add trailing space for Tailwind multi-value support (1 = with space, 0 = no space, default: 1)
  * @returns CSS vh value as string, or empty string if validation fails
  *
  * @example
  * ```typescript
- * vh(30, 1080) // Returns '2.78vh'
- * vh(0, 1080)  // Returns '0'
+ * vh(30, 1080)    // Returns '2.78vh ' (with space for Tailwind)
+ * vh(30, 1080, 1) // Returns '2.78vh ' (with space)
+ * vh(30, 1080, 0) // Returns '2.78vh' (no space)
+ * vh(0, 1080)     // Returns '0'
  * ```
  */
-export const vh = (pixel: Pixel, designDraft: DesignDraft) => {
+export const vh = (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 1) => {
   const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
-    return cssPxToVh(result.data[1])(result.data[0])
+    const baseResult = cssPxToVh(result.data[1])(result.data[0])
+
+    return baseResult === '' ? '' : baseResult + (space === 1 ? ' ' : '')
   }
 
   consoleError(result.error)

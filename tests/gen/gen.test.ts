@@ -223,8 +223,8 @@ describe('Gen Module', () => {
       const funcs = Gen.genFuncsCore()
 
 
-      expect(funcs.core.vw(10, 100)).toBe('10vw')
-      expect(funcs.core.vh(10, 100)).toBe('10vh')
+      expect(funcs.core.vw(10, 100)).toBe('10vw ')
+      expect(funcs.core.vh(10, 100)).toBe('10vh ')
       expect(funcs.core.vwc(10, 100)).toBe('min(10px, 10vw)')
       expect(funcs.core.vhc(10, 100)).toBe('min(10px, 10vh)')
       expect(funcs.core.vwe(10, 100)).toBe('calc((100vw - 100px) * 0.5 + 10px)')
@@ -279,7 +279,7 @@ describe('Gen Module', () => {
       const result2 = widthFuncs.core.vwc1(100)
       const result3 = widthFuncs.core.vwe1(100)
 
-      expect(result1).toMatch(/^\d+(\.\d+)?vw$/)
+      expect(result1).toMatch(/^\d+(\.\d+)?vw\s$/)
       expect(result2).toMatch(/^(min|max)\(\d+px,\s*-?\d+(\.\d+)?vw\)$/)
       expect(result3).toMatch(/^calc\(.+\)$/)
     })

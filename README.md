@@ -27,9 +27,13 @@ npm install css-gum
 ```typescript
 import { Core } from "css-gum";
 
-// Basic viewport units
-Core.vw(20, 1440); // '1.39vw' - 20px on 1440px design
-Core.vh(30, 1080); // '2.78vh' - 30px on 1080px design
+// Basic viewport units (default Tailwind compatible with trailing spaces)
+Core.vw(20, 1440); // '1.39vw ' - 20px on 1440px design
+Core.vh(30, 1080); // '2.78vh ' - 30px on 1080px design
+
+// Control space parameter (for different use cases)
+Core.vw(20, 1440, 1); // '1.39vw ' - explicitly with space
+Core.vw(20, 1440, 0); // '1.39vw'  - explicitly without space
 
 // Constrained units (prevent scaling beyond design size)
 Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
@@ -46,53 +50,6 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
-## 🌐 Environment Support
-
-css-gum automatically detects your environment and provides the appropriate functionality:
-
-### 📱 Browser Environment
-
-```typescript
-import { Core, Gen, Util, Snippet } from "css-gum";
-
-// ✅ Available: All core functions
-Core.vw(20, 1440);
-Gen.genFuncsDraftWidth({ points: [375, 768] });
-Util.cssPxToVw(1440)(20);
-
-// ✅ Available: Snippet generation
-const snippets = Snippet.genVSCodeSnippetCore();
-
-// ❌ Not available: File writing
-// Snippet.writeSnippetsToFiles() // This function won't exist
-```
-
-### 🖥️ Node.js Environment
-
-```typescript
-import { Core, Gen, Util, Snippet } from "css-gum";
-
-// ✅ Available: All browser features +
-const snippets = Gen.genFuncsDraftWidth({ points: [375, 768] }).VSCodeSnippet;
-
-// ✅ Available: File operations
-Snippet.writeSnippetsToFiles(snippets, [".vscode/css.code-snippets"]);
-```
-
-### 🔍 Runtime Detection
-
-```typescript
-import { Snippet } from "css-gum";
-
-if ("writeSnippetsToFiles" in Snippet) {
-  // Running in Node.js - can write files
-  Snippet.writeSnippetsToFiles(snippets, paths);
-} else {
-  // Running in browser - file operations not available
-  console.log("Generated snippets:", snippets);
-}
-```
-
 ## Usage Examples
 
 ### With [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
@@ -105,7 +62,7 @@ if ("writeSnippetsToFiles" in Snippet) {
 
 ### Core Module
 
-#### `vw(pixel, designDraft)`
+#### `vw(pixel, designDraft, space?)`
 
 Convert pixels to viewport width units.
 
@@ -115,12 +72,17 @@ Convert pixels to viewport width units.
   - Pixel value to convert
 - `designDraft`
   - Design draft width in pixels
+- `space`
+  - Whether to add trailing space for Tailwind multi-value syntax
+  - `1` = with space, `0` = no space, default: `1`
 
 ```typescript
-Core.vw(20, 1440); // '1.39vw'
+Core.vw(20, 1440); // '1.39vw ' (default with space, Tailwind compatible)
+Core.vw(20, 1440, 1); // '1.39vw ' (explicitly with space)
+Core.vw(20, 1440, 0); // '1.39vw'  (explicitly without space)
 ```
 
-#### `vh(pixel, designDraft)`
+#### `vh(pixel, designDraft, space?)`
 
 Convert pixels to viewport height units.
 
@@ -130,9 +92,14 @@ Convert pixels to viewport height units.
   - Pixel value to convert
 - `designDraft`
   - Design draft height in pixels
+- `space`
+  - Whether to add trailing space for Tailwind multi-value syntax
+  - `1` = with space, `0` = no space, default: `1`
 
 ```typescript
-Core.vh(30, 1080); // '2.78vh'
+Core.vh(30, 1080); // '2.78vh ' (default with space, Tailwind compatible)
+Core.vh(30, 1080, 1); // '2.78vh ' (explicitly with space)
+Core.vh(30, 1080, 0); // '2.78vh'  (explicitly without space)
 ```
 
 #### `vwc(pixel, designDraft)`
@@ -444,9 +411,10 @@ const widthFuncs = Gen.genFuncsDraftWidth({
   firstIndex: 1,
 });
 
-widthFuncs.core.vw1(20); // 20px on 375px design
-widthFuncs.core.vwc2(20); // constrained 20px on 768px design
-widthFuncs.core.vwe3(20); // extended 20px on 1440px design
+widthFuncs.core.vw1(20); // '5.33vw ' - 20px on 375px design (default with space)
+widthFuncs.core.vw1(20, 0); // '5.33vw'  - 20px on 375px design (without space)
+widthFuncs.core.vwc2(20); // 'min(20px, 2.60vw)' - constrained 20px on 768px design
+widthFuncs.core.vwe3(20); // extended function - extended 20px on 1440px design
 
 // Invalid breakpoints will be automatically filtered
 const filteredFuncs = Gen.genFuncsDraftWidth({
@@ -486,8 +454,9 @@ const heightFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
 
-heightFuncs.core.vh1(30); // 30px on 667px design
-heightFuncs.core.vhc2(30); // constrained 30px on 1080px design
+heightFuncs.core.vh1(30); // '4.50vh ' - 30px on 667px design (default with space)
+heightFuncs.core.vh1(30, 0); // '4.50vh'  - 30px on 667px design (without space)
+heightFuncs.core.vhc2(30); // 'min(30px, 2.78vh)' - constrained 30px on 1080px design
 
 // Invalid breakpoints will be automatically filtered
 const filteredHeightFuncs = Gen.genFuncsDraftHeight({
@@ -523,7 +492,8 @@ const customCore = Gen.genFuncsCore({
   namePercent: "toPercent",
 });
 
-customCore.core.toVw(20, 1440); // Equivalent to Core.vw(20, 1440)
+customCore.core.toVw(20, 1440); // Equivalent to Core.vw(20, 1440) - default with space
+customCore.core.toVw(20, 1440, 0); // Equivalent to Core.vw(20, 1440, 0) - without space
 customCore.core.toPercent(10, 100); // Equivalent to Core.percent(10, 100)
 
 // Exclude specific functions
@@ -561,7 +531,8 @@ The Snippet module usage is divided into two steps:
 
 #### `writeSnippetsToFiles(snippets, output)`
 
-Write snippets to VSCode snippets files.
+- Write snippets to VSCode snippets files.
+- Not available in browser environment because browser environment doesn't have `fs` module
 
 **Parameters**
 
@@ -669,17 +640,6 @@ Generate height function snippets.
     - Custom function name prefixes
     - Use empty string `''` to skip generating that type
 
-#### `writeSnippetsToFiles(snippets, output)`
-
-Write snippets to files.
-
-**Parameters**
-
-- `snippets`
-  - Snippet object
-- `output`
-  - Array of output file paths
-
 ```typescript
 import { Snippet } from "css-gum";
 
@@ -738,7 +698,7 @@ Core.vw("invalid", 1440); // Returns '', logs red error message
 Core.vw(20, "invalid"); // Returns '', logs red error message
 Core.vw(20, 0); // Returns '' (zero/negative design draft rejected)
 Core.vw(20, -100); // Returns '' (zero/negative design draft rejected)
-Core.vw(20, 1440); // Returns '1.39vw'
+Core.vw(20, 1440); // Returns '1.39vw ' (default with space)
 
 // Error messages include stack trace for debug
 Core.vw("invalid", 1920);
@@ -757,14 +717,14 @@ Supports all modern browsers that support the following features.
 
 ## Support
 
-If `css-gum` has helped stretch your designs as smoothly as chewing gum, consider buying me a coffee☕
-Your support keeps this project sticky and helps it grow even more elastic🍬
+If `css-gum` makes your design stretch like gum with perfect elasticity, consider buying me a coffee☕
+Your support keeps this project sticky and helps it become even more flexible🍬
 
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-orange)](https://ko-fi.com/jzovvo)
 
 ## Not Stretching Right?
 
-`css-gum` not stretching smoothly in your hands? Something feels a bit sticky? Don't worry, let's work together to make it more elastic 🍬
+Is `css-gum` not stretching smoothly in your hands? Something feels a bit sticky? Don't worry, let's work together to make it more elastic 🍬
 
 - 🐛 [Issues](https://github.com/jzovvo/css-gum/issues)
 - 💭 [Discussions](https://github.com/jzovvo/css-gum/discussions)
@@ -774,3 +734,22 @@ Your support keeps this project sticky and helps it grow even more elastic🍬
 ## License
 
 MIT © [jzovvo](https://github.com/jzovvo)
+
+## Q&A
+
+### Why do we need the space parameter?
+
+When using `Tailwind CSS` multi-value syntax, if CSS function return values don't have trailing spaces, the compiled values sometimes concatenate together after build, for unknown reasons.
+
+```html
+<!-- ❌ Compilation result may be: padding: 1.39vw2.08vw; -->
+<div class="p-[vw(20,1440)_vw(30,1440)]"></div>
+```
+
+So adding a space in the output directly solves this problem `padding: 1.39vw 2.08vw ;`
+If you're a bit of a formatting perfectionist, you can add a `0` parameter to the last function to avoid trailing spaces.
+
+```html
+<!-- ✅ Compilation result: padding: 1.39vw 2.08vw; -->
+<div class="p-[vw(20,1440)_vw(30,1440,0)]"></div>
+```

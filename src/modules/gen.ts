@@ -1,6 +1,6 @@
 import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent} from './core'
 import {genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth} from './snippets'
-import type {Pixel} from './types'
+import type {Pixel, SpaceFlag} from './types'
 
 
 interface PropsDraftFuncs {
@@ -46,9 +46,10 @@ export interface PropsNameCustomOther {
  *   firstIndex: 1
  * })
  *
- * funcs.core.vw1(20)   // 20px on 375px design
- * funcs.core.vwc2(20)  // Clamped 20px on 768px design
- * funcs.core.vwe3(20)  // Extended 20px on 1440px design
+ * funcs.core.vw1(20)     // 20px on 375px design, with space
+ * funcs.core.vw1(20, 0) // 20px on 375px design, no space
+ * funcs.core.vwc2(20)   // Clamped 20px on 768px design
+ * funcs.core.vwe3(20)   // Extended 20px on 1440px design
  *
  * // Invalid points are automatically filtered out
  * const filteredFuncs = genFuncsDraftWidth({
@@ -74,7 +75,7 @@ export const genFuncsDraftWidth = ({
     const idx = i + firstIndex
     const point = validPoints[i]
 
-    nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel) => vw(pixel, point))
+    nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel, space: SpaceFlag = 1) => vw(pixel, point, space))
     nameVwc !== '' && (temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point))
     nameVwe !== '' && (temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point))
   }
@@ -111,9 +112,10 @@ export const genFuncsDraftWidth = ({
  *   firstIndex: 1
  * })
  *
- * funcs.core.vh1(30)   // 30px on 667px design
- * funcs.core.vhc2(30)  // Clamped 30px on 1080px design
- * funcs.core.vhe3(30)  // Extended 30px on 1440px design
+ * funcs.core.vh1(30)     // 30px on 667px design, with space
+ * funcs.core.vh1(30, 0) // 30px on 667px design, no space
+ * funcs.core.vhc2(30)   // Clamped 30px on 1080px design
+ * funcs.core.vhe3(30)   // Extended 30px on 1440px design
  *
  * // Invalid points are automatically filtered out
  * const filteredFuncs = genFuncsDraftHeight({
@@ -139,7 +141,7 @@ export const genFuncsDraftHeight = ({
     const idx = i + firstIndex
     const point = validPoints[i]
 
-    nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel) => vh(pixel, point))
+    nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel, space: SpaceFlag = 1) => vh(pixel, point, space))
     nameVhc !== '' && (temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point))
     nameVhe !== '' && (temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point))
   }

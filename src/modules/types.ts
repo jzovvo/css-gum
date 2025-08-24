@@ -11,3 +11,5 @@ export type Pixel = z.infer<typeof pixelSchema>
 export type DesignDraft = z.infer<typeof designDraftSchema>
 
 export type Percent = z.infer<typeof percentSchema>
+
+export type SpaceFlag = 1 | 0

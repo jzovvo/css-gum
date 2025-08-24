@@ -27,9 +27,13 @@ npm install css-gum
 ```typescript
 import { Core } from "css-gum";
 
-// 基本視窗單位
-Core.vw(20, 1440); // '1.39vw' - 1440px 設計稿上的 20px
-Core.vh(30, 1080); // '2.78vh' - 1080px 設計稿上的 30px
+// 基本視窗單位（預設為 Tailwind 相容，帶有尾隨空格）
+Core.vw(20, 1440); // '1.39vw ' - 1440px 設計稿上的 20px
+Core.vh(30, 1080); // '2.78vh ' - 1080px 設計稿上的 30px
+
+// 控制空格參數（適用於不同使用場景）
+Core.vw(20, 1440, 1); // '1.39vw ' - 明確指定帶空格
+Core.vw(20, 1440, 0); // '1.39vw'  - 明確指定不帶空格
 
 // 限制單位（防止縮放超過設計尺寸）
 Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
@@ -46,53 +50,6 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
-## 🌐 環境支援
-
-css-gum 會自動檢測你的環境並提供對應的功能：
-
-### 📱 瀏覽器環境
-
-```typescript
-import { Core, Gen, Util, Snippet } from "css-gum";
-
-// ✅ 可用：所有核心函式
-Core.vw(20, 1440);
-Gen.genFuncsDraftWidth({ points: [375, 768] });
-Util.cssPxToVw(1440)(20);
-
-// ✅ 可用：程式碼片段生成
-const snippets = Snippet.genVSCodeSnippetCore();
-
-// ❌ 不可用：檔案寫入
-// Snippet.writeSnippetsToFiles() // 此函式不存在
-```
-
-### 🖥️ Node.js 環境
-
-```typescript
-import { Core, Gen, Util, Snippet } from "css-gum";
-
-// ✅ 可用：所有瀏覽器功能 +
-const snippets = Gen.genFuncsDraftWidth({ points: [375, 768] }).VSCodeSnippet;
-
-// ✅ 可用：檔案操作
-Snippet.writeSnippetsToFiles(snippets, [".vscode/css.code-snippets"]);
-```
-
-### 🔍 執行時檢測
-
-```typescript
-import { Snippet } from "css-gum";
-
-if ("writeSnippetsToFiles" in Snippet) {
-  // 在 Node.js 中執行 - 可以寫入檔案
-  Snippet.writeSnippetsToFiles(snippets, paths);
-} else {
-  // 在瀏覽器中執行 - 檔案操作不可用
-  console.log("生成的程式碼片段:", snippets);
-}
-```
-
 ## 使用場景範例
 
 ### 搭配 [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
@@ -105,7 +62,7 @@ if ("writeSnippetsToFiles" in Snippet) {
 
 ### Core Module
 
-#### `vw(pixel, designDraft)`
+#### `vw(pixel, designDraft, space?)`
 
 將像素轉換為視窗寬度單位。
 
@@ -115,12 +72,17 @@ if ("writeSnippetsToFiles" in Snippet) {
   - 要轉換的像素值
 - `designDraft`
   - 設計稿寬度像素值
+- `space`
+  - 是否添加尾隨空格以支援 Tailwind 多值語法
+  - `1` = 帶空格, `0` = 不帶空格, 預設: `1`
 
 ```typescript
-Core.vw(20, 1440); // '1.39vw'
+Core.vw(20, 1440); // '1.39vw ' (預設帶空格，適合 Tailwind)
+Core.vw(20, 1440, 1); // '1.39vw ' (明確指定帶空格)
+Core.vw(20, 1440, 0); // '1.39vw'  (明確指定不帶空格)
 ```
 
-#### `vh(pixel, designDraft)`
+#### `vh(pixel, designDraft, space?)`
 
 將像素轉換為視窗高度單位。
 
@@ -130,9 +92,14 @@ Core.vw(20, 1440); // '1.39vw'
   - 要轉換的像素值
 - `designDraft`
   - 設計稿高度像素值
+- `space`
+  - 是否添加尾隨空格以支援 Tailwind 多值語法
+  - `1` = 帶空格, `0` = 不帶空格, 預設: `1`
 
 ```typescript
-Core.vh(30, 1080); // '2.78vh'
+Core.vh(30, 1080); // '2.78vh ' (預設帶空格，適合 Tailwind)
+Core.vh(30, 1080, 1); // '2.78vh ' (明確指定帶空格)
+Core.vh(30, 1080, 0); // '2.78vh'  (明確指定不帶空格)
 ```
 
 #### `vwc(pixel, designDraft)`
@@ -444,9 +411,10 @@ const widthFuncs = Gen.genFuncsDraftWidth({
   firstIndex: 1,
 });
 
-widthFuncs.core.vw1(20); // 375px 設計稿上的 20px
-widthFuncs.core.vwc2(20); // 768px 設計稿上的限制 20px
-widthFuncs.core.vwe3(20); // 1440px 設計稿上的延伸 20px
+widthFuncs.core.vw1(20); // '5.33vw ' - 375px 設計稿上的 20px (預設帶空格)
+widthFuncs.core.vw1(20, 0); // '5.33vw'  - 375px 設計稿上的 20px (不帶空格)
+widthFuncs.core.vwc2(20); // 'min(20px, 2.60vw)' - 768px 設計稿上的限制 20px
+widthFuncs.core.vwe3(20); // 延伸函式 - 1440px 設計稿上的延伸 20px
 
 // 無效的斷點會自動被過濾
 const filteredFuncs = Gen.genFuncsDraftWidth({
@@ -486,8 +454,9 @@ const heightFuncs = Gen.genFuncsDraftHeight({
   points: [667, 1080, 1440],
 });
 
-heightFuncs.core.vh1(30); // 667px 設計稿上的 30px
-heightFuncs.core.vhc2(30); // 1080px 設計稿上的限制 30px
+heightFuncs.core.vh1(30); // '4.50vh ' - 667px 設計稿上的 30px (預設帶空格)
+heightFuncs.core.vh1(30, 0); // '4.50vh'  - 667px 設計稿上的 30px (不帶空格)
+heightFuncs.core.vhc2(30); // 'min(30px, 2.78vh)' - 1080px 設計稿上的限制 30px
 
 // 無效的斷點會自動被過濾
 const filteredHeightFuncs = Gen.genFuncsDraftHeight({
@@ -523,7 +492,8 @@ const customCore = Gen.genFuncsCore({
   namePercent: "toPercent",
 });
 
-customCore.core.toVw(20, 1440); // 等同於 Core.vw(20, 1440)
+customCore.core.toVw(20, 1440); // 等同於 Core.vw(20, 1440) - 預設帶空格
+customCore.core.toVw(20, 1440, 0); // 等同於 Core.vw(20, 1440, 0) - 不帶空格
 customCore.core.toPercent(10, 100); // 等同於 Core.percent(10, 100)
 
 // 排除特定函式
@@ -561,7 +531,8 @@ Snippet 模組的使用分為兩個步驟：
 
 #### `writeSnippetsToFiles(snippets, output)`
 
-將程式碼片段寫入 VSCode snippets 文件。
+- 將程式碼片段寫入 VSCode snippets 文件。
+- 瀏覽器環境不可使用，因為瀏覽器環境沒有 `fs` 模塊
 
 **Parameters**
 
@@ -727,7 +698,7 @@ Core.vw("invalid", 1440); // 返回 ''，記錄紅色錯誤訊息
 Core.vw(20, "invalid"); // 返回 ''，記錄紅色錯誤訊息
 Core.vw(20, 0); // 返回 ''（零/負數設計稿被拒絕）
 Core.vw(20, -100); // 返回 ''（零/負數設計稿被拒絕）
-Core.vw(20, 1440); // 返回 '1.39vw'
+Core.vw(20, 1440); // 返回 '1.39vw ' (預設帶空格)
 
 // 錯誤訊息包含 stack trace 以便 debug
 Core.vw("invalid", 1920);
@@ -763,3 +734,22 @@ Core.vw("invalid", 1920);
 ## 授權
 
 MIT © [jzovvo](https://github.com/jzovvo)
+
+## Q&A
+
+### 為什麼需要空格參數？
+
+在使用 `Tailwind CSS` 的多值語法時，如果 CSS 函式返回值沒有尾隨空格，build 後編譯出來的值有時候會連接在一起，原因不詳
+
+```html
+<!-- ❌ 編譯的結果可能會是 padding: 1.39vw2.08vw; -->
+<div class="p-[vw(20,1440)_vw(30,1440)]"></div>
+```
+
+所以在輸出時直接加上一個空格就能解決這個問題 `padding: 1.39vw 2.08vw ;`
+如果有點格式潔癖，可以在最後一個函式加上 `0` 參數來避免尾隨空格。
+
+```html
+<!-- ✅ 編譯結果：padding: 1.39vw 2.08vw; -->
+<div class="p-[vw(20,1440)_vw(30,1440,0)]"></div>
+```

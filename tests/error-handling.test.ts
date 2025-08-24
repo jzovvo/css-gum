@@ -215,7 +215,7 @@ describe('Error Handling', () => {
       const result1 = Core.vw(null as any, 1920)
       const result2 = Core.vh(undefined as any, 1080)
 
-      expect(result1).toBe('0')
+      expect(result1).toBe('0 ')
       expect(result2).toBe('')
       expect(errorSpy).toHaveBeenCalled()
     })
@@ -224,7 +224,7 @@ describe('Error Handling', () => {
       const result1 = Core.vw(0, 1920)
       const result2 = Core.percent(0, 100)
 
-      expect(result1).toBe('0')
+      expect(result1).toBe('0 ')
       expect(result2).toBe('0')
       expect(errorSpy).not.toHaveBeenCalled()
     })

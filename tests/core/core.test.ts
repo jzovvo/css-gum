@@ -4,7 +4,7 @@ import {Core} from '../../src/index.node'
 describe('Core Module', () => {
   describe('vw function', () => {
     it('should convert pixels to vw correctly', () => {
-      const result = Core.vw(10, 100)
+      const result = Core.vw(10, 100, 0)
 
       expect(result).toBe('10vw')
     })
@@ -12,19 +12,37 @@ describe('Core Module', () => {
     it('should handle zero pixel value', () => {
       const result = Core.vw(0, 100)
 
-      expect(result).toBe('0')
+      expect(result).toBe('0 ')
     })
 
     it('should reject zero design width', () => {
-      const result = Core.vw(100, 0)
+      const result = Core.vw(100, 0, 0)
 
       expect(result).toBe('')
     })
 
     it('should reject negative design width', () => {
-      const result = Core.vw(-100, 0)
+      const result = Core.vw(-100, 0, 0)
 
       expect(result).toBe('')
+    })
+
+    it('should add space by default for Tailwind compatibility', () => {
+      const result = Core.vw(10, 100)
+
+      expect(result).toBe('10vw ')
+    })
+
+    it('should handle space parameter correctly', () => {
+      const withSpace = Core.vw(10, 100, 1)
+      const withoutSpace = Core.vw(10, 100, 0)
+      const zeroWithSpace = Core.vw(0, 100, 1)
+      const zeroWithoutSpace = Core.vw(0, 100, 0)
+
+      expect(withSpace).toBe('10vw ')
+      expect(withoutSpace).toBe('10vw')
+      expect(zeroWithSpace).toBe('0 ')
+      expect(zeroWithoutSpace).toBe('0')
     })
 
     it('should handle invalid input and return empty string', () => {
@@ -40,7 +58,7 @@ describe('Core Module', () => {
 
   describe('vh function', () => {
     it('should convert pixels to vh correctly', () => {
-      const result = Core.vh(10, 100)
+      const result = Core.vh(10, 100, 0)
 
       expect(result).toBe('10vh')
     })
@@ -48,19 +66,37 @@ describe('Core Module', () => {
     it('should handle zero pixel value', () => {
       const result = Core.vh(0, 100)
 
-      expect(result).toBe('0')
+      expect(result).toBe('0 ')
     })
 
     it('should reject zero design height', () => {
-      const result = Core.vh(100, 0)
+      const result = Core.vh(100, 0, 0)
 
       expect(result).toBe('')
     })
 
     it('should reject negative design height', () => {
-      const result = Core.vh(-100, 0)
+      const result = Core.vh(-100, 0, 0)
 
       expect(result).toBe('')
+    })
+
+    it('should add space by default for Tailwind compatibility', () => {
+      const result = Core.vh(10, 100)
+
+      expect(result).toBe('10vh ')
+    })
+
+    it('should handle space parameter correctly', () => {
+      const withSpace = Core.vh(10, 100, 1)
+      const withoutSpace = Core.vh(10, 100, 0)
+      const zeroWithSpace = Core.vh(0, 100, 1)
+      const zeroWithoutSpace = Core.vh(0, 100, 0)
+
+      expect(withSpace).toBe('10vh ')
+      expect(withoutSpace).toBe('10vh')
+      expect(zeroWithSpace).toBe('0 ')
+      expect(zeroWithoutSpace).toBe('0')
     })
   })
 
