@@ -5,12 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0]
+## [1.1.1] - 2025-08-25
+
+### Added
+
+- **Space Parameter**: Added optional `space` parameter to `vw()` and `vh()` functions for Tailwind CSS compatibility
+  - `space: 1` (default) - Adds trailing space for multi-value syntax
+  - `space: 0` - No trailing space for single values
+  - Fixes Tailwind CSS compilation issue where values concatenate without spaces
+- New `SpaceFlag` type (1 | 0) for space parameter
+- Comprehensive Q&A section explaining space parameter rationale
+- Enhanced documentation with Tailwind CSS usage examples
+
+### Changed
+
+- **Breaking**: Updated `vw(pixel, designDraft, space?)` signature with optional space parameter
+- **Breaking**: Updated `vh(pixel, designDraft, space?)` signature with optional space parameter
+- Generated functions from Gen module now include space parameter support
+- Enhanced README documentation in both English and Traditional Chinese
+- Updated all test cases to match new API with space parameter
 
 ### Fixed
 
-- Browser compatibility issue with `fs` module resolution
-- Separated Node.js file operations from browser code using conditional exports
+- **Critical**: Tailwind CSS multi-value syntax compilation issue (`padding: 1.39vw2.08vw` → `padding: 1.39vw 2.08vw`)
+
+## [1.1.0] - 2025-08-24
+
+### Added
+
+- Conditional exports in package.json for browser/node environments
+- New `writeSnippetsToFiles` function for Node.js environments
+- Comprehensive project documentation and release guide
 
 ### Changed
 
@@ -20,11 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated dependencies to match package-lock.json versions
 - Improved tsup configuration consistency with TypeScript target
 
-### Added
+### Fixed
 
-- Conditional exports in package.json for browser/node environments
-- New `writeSnippetsToFiles` function for Node.js environments
-- Comprehensive project documentation and release guide
+- Browser compatibility issue with `fs` module resolution
+- Separated Node.js file operations from browser code using conditional exports
 
 ### Removed
 
