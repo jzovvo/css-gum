@@ -50,3 +50,12 @@ jobs:
             ```bash
             npm install css-gum@${{ github.ref_name }}
             ```
+
+            ### 📚 Documentation
+            - [README](https://github.com/jzovvo/css-gum#readme)
+            - [API Reference](https://github.com/jzovvo/css-gum#api)
+            - [CHANGELOG](https://github.com/jzovvo/css-gum/blob/master/CHANGELOG.md)
+
+            ### 🔗 Links
+            - [npm package](https://www.npmjs.com/package/css-gum)
+            - [GitHub repository](https://github.com/jzovvo/css-gum)
