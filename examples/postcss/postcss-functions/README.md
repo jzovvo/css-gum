@@ -11,7 +11,7 @@ pnpm dev
 
 ## Example Overview
 
-![Demo](./assets/demo.gif)
+![Demo](../_assets/demo.gif)
 
 - This example includes comparisons of three scaling modes:
   1. **SCALE** - Pure scaling, elements scale infinitely with viewport size
@@ -84,19 +84,18 @@ Number suffixes correspond to design draft sizes:
 
 ## Snippet
 
-- `genVSCodeSnippet` automatically generates VSCode code snippets, allowing you to quickly input css-gum functions in the editor.
+- `genFuncsDraftWidth` returns an object containing the `VSCodeSnippet` property
+- Use `Snippet.writeSnippetsToFiles` to write the `VSCodeSnippet` to the specified file
 
-```js
-import { Gen } from "css-gum";
+```ts
+import { Gen, Snippet } from "css-gum";
 import { join } from "path";
 
-const points = [375, 1440];
-const snippetUrl = [
-  join(import.meta.dirname, ".vscode/css.code-snippets"), // Target output
-];
-const { genVSCodeSnippet } = Gen.genFuncsDraftWidth({ points: points });
+const draftWidthPoints = [375, 1440];
+const snippetOutput = [join(import.meta.dirname, ".vscode/css.code-snippets")];
+const { core, VSCodeSnippet } = Gen.genFuncsDraftWidth({ points: draftWidthPoints });
 
-genVSCodeSnippet(snippetUrl);
+Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
 ```
 
 ### Usage Instructions
@@ -104,7 +103,7 @@ genVSCodeSnippet(snippetUrl);
 - Depending on the snippet file type you specify, the effective file scope will vary. For details, see [VSCode Snippet Documentation](https://code.visualstudio.com/docs/editing/userdefinedsnippets)
 - Using `css.code-snippets` as an example, after generation, you'll have suggestions in CSS files. Press Tab to auto-complete function calls, and the cursor will automatically position to the parameter location.
 
-![](./assets/snippet.gif)
+![](../_assets/snippet.gif)
 
 - After running `pnpm dev`, the following snippets will be automatically generated in `.vscode/css.code-snippets`:
 

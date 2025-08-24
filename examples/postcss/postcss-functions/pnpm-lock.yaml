@@ -12,8 +12,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       css-gum:
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.1.1
+        version: 1.1.1
       postcss-functions:
         specifier: ^4.0.2
         version: 4.0.2(postcss@8.5.6)
@@ -401,8 +401,8 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  css-gum@1.0.0:
-    resolution: {integrity: sha512-YF3vDFgi/45TnolDd4dwUfZr93O+tSenCSWwj/yqbT25+Q+Ht3zI4cPEnFbsPO6cl+VpH7SCmTIONKwm4X871w==}
+  css-gum@1.1.1:
+    resolution: {integrity: sha512-1f9a7OTToXW0ZG+eq1CGS2ehcMj31OdUVEKKY1tMe4cc9GHKJW7b+YJbJfV91Ga1nZlRsmd1SMshxlF8Fbaqhw==}
 
   detect-libc@2.0.4:
     resolution: {integrity: sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==}
@@ -610,8 +610,8 @@ packages:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
 
-  zod@4.1.0:
-    resolution: {integrity: sha512-UWxluYj2IDX9MHRXTMbB/2eeWrAMmmMSESM+MfT9MQw8U1qo9q5ASW08anoJh6AJ7pkt099fLdNFmfI+4aChHg==}
+  zod@4.1.1:
+    resolution: {integrity: sha512-SgMZK/h8Tigt9nnKkfJMvB/mKjiJXaX26xegP4sa+0wHIFVFWVlsQGdhklDmuargBD3Hsi3rsQRIzwJIhTPJHA==}
 
 snapshots:
 
@@ -854,9 +854,9 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  css-gum@1.0.0:
+  css-gum@1.1.1:
     dependencies:
-      zod: 4.1.0
+      zod: 4.1.1
 
   detect-libc@2.0.4: {}
 
@@ -1042,4 +1042,4 @@ snapshots:
 
   yallist@5.0.0: {}
 
-  zod@4.1.0: {}
+  zod@4.1.1: {}

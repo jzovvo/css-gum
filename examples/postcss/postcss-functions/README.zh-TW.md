@@ -11,7 +11,7 @@ pnpm dev
 
 ## 範例說明
 
-![Demo](./assets/demo.gif)
+![Demo](../_assets/demo.gif)
 
 - 本範例包含三種縮放模式的對比：
   1. **SCALE** - 純縮放，元素會無限制地根據視窗大小變化
@@ -84,19 +84,18 @@ export default {
 
 ## Snippet
 
-- `genVSCodeSnippet` 自動產生 VSCode 程式碼片段，讓你可以在編輯器中快速輸入 css-gum 函式。
+- `genFuncsDraftWidth` 會在返回物件中包含 `VSCodeSnippet` 屬性
+- 利用 `Snippet.writeSnippetsToFiles` 將 `VSCodeSnippet` 寫入到指定的檔案即可
 
-```js
-import { Gen } from "css-gum";
+```ts
+import { Gen, Snippet } from "css-gum";
 import { join } from "path";
 
-const points = [375, 1440];
-const snippetUrl = [
-  join(import.meta.dirname, ".vscode/css.code-snippets"), // 目標 output
-];
-const { genVSCodeSnippet } = Gen.genFuncsDraftWidth({ points: points });
+const draftWidthPoints = [375, 1440];
+const snippetOutput = [join(import.meta.dirname, ".vscode/css.code-snippets")];
+const { core, VSCodeSnippet } = Gen.genFuncsDraftWidth({ points: draftWidthPoints });
 
-genVSCodeSnippet(snippetUrl);
+Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
 ```
 
 ### 使用說明
@@ -104,7 +103,7 @@ genVSCodeSnippet(snippetUrl);
 - 根據你指定的 snippet 檔案類型不同，生效的檔案範圍也會不同，詳情請看 [VSCode Snippet 文件](https://code.visualstudio.com/docs/editing/userdefinedsnippets)
 - 這裡以 `css.code-snippets` 為例，產生後在 CSS 檔案中就會有提示，按下 Tab 鍵即可自動補全函式呼叫，游標會自動定位到參數位置。
 
-![](./assets/snippet.gif)
+![](../_assets/snippet.gif)
 
 - 執行 `pnpm dev` 後，會在 `.vscode/css.code-snippets` 自動產生以下片段：
 

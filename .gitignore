@@ -10,3 +10,4 @@ coverage
 .idea
 *.tgz
 .vitest
+.next

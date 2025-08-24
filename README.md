@@ -54,9 +54,9 @@ Core.lh(24, 16); // '1.5'
 
 ### With [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
 
-![Demo](./examples/vite/assets/demo.gif)
+![Demo](./examples/postcss/_assets/demo.gif)
 
-[View Complete Example →](./examples/vite/README.md)
+[View Complete Example →](./examples/postcss/postcss-functions/README.md)
 
 ## API
 
@@ -514,7 +514,7 @@ const minimalCore = Gen.genFuncsCore({
 
 ### Snippet Module
 
-![](./assets/snippet.gif)
+![](./examples/postcss/_assets/snippet.gif)
 
 The Snippet module can automatically generate [VSCode Snippets](https://code.visualstudio.com/docs/editing/userdefinedsnippets) files, allowing you to quickly input css-gum functions in the editor.
 

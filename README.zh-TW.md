@@ -54,9 +54,9 @@ Core.lh(24, 16); // '1.5'
 
 ### 搭配 [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
 
-![Demo](./examples/vite/assets/demo.gif)
+![Demo](./examples/postcss/_assets/demo.gif)
 
-[查看完整範例 →](./examples/vite/README.zh-TW.md)
+[查看完整範例 →](./examples/postcss/postcss-functions/README.zh-TW.md)
 
 ## API
 
@@ -514,7 +514,7 @@ const minimalCore = Gen.genFuncsCore({
 
 ### Snippet Module
 
-![](./assets/snippet.gif)
+![](./examples/postcss/_assets/snippet.gif)
 
 Snippet 模組可以自動生成 [VSCode Snippets](https://code.visualstudio.com/docs/editing/userdefinedsnippets) 文件，讓你在編輯器中快速輸入 css-gum 函式。
 

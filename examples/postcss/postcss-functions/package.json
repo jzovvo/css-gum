@@ -3,7 +3,7 @@
   "packageManager": "pnpm@10.12.1",
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.12",
-    "css-gum": "^1.0.0",
+    "css-gum": "^1.1.1",
     "postcss-functions": "^4.0.2",
     "tailwindcss": "^4.1.12",
     "vite": "^7.1.2"
