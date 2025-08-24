@@ -46,6 +46,53 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
+## 🌐 環境支援
+
+css-gum 會自動檢測你的環境並提供對應的功能：
+
+### 📱 瀏覽器環境
+
+```typescript
+import { Core, Gen, Util, Snippet } from "css-gum";
+
+// ✅ 可用：所有核心函式
+Core.vw(20, 1440);
+Gen.genFuncsDraftWidth({ points: [375, 768] });
+Util.cssPxToVw(1440)(20);
+
+// ✅ 可用：程式碼片段生成
+const snippets = Snippet.genVSCodeSnippetCore();
+
+// ❌ 不可用：檔案寫入
+// Snippet.writeSnippetsToFiles() // 此函式不存在
+```
+
+### 🖥️ Node.js 環境
+
+```typescript
+import { Core, Gen, Util, Snippet } from "css-gum";
+
+// ✅ 可用：所有瀏覽器功能 +
+const snippets = Gen.genFuncsDraftWidth({ points: [375, 768] }).VSCodeSnippet;
+
+// ✅ 可用：檔案操作
+Snippet.writeSnippetsToFiles(snippets, [".vscode/css.code-snippets"]);
+```
+
+### 🔍 執行時檢測
+
+```typescript
+import { Snippet } from "css-gum";
+
+if ("writeSnippetsToFiles" in Snippet) {
+  // 在 Node.js 中執行 - 可以寫入檔案
+  Snippet.writeSnippetsToFiles(snippets, paths);
+} else {
+  // 在瀏覽器中執行 - 檔案操作不可用
+  console.log("生成的程式碼片段:", snippets);
+}
+```
+
 ## 使用場景範例
 
 ### 搭配 [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)

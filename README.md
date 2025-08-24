@@ -46,6 +46,53 @@ Core.em(24, 16); // '1.5em'
 Core.lh(24, 16); // '1.5'
 ```
 
+## 🌐 Environment Support
+
+css-gum automatically detects your environment and provides the appropriate functionality:
+
+### 📱 Browser Environment
+
+```typescript
+import { Core, Gen, Util, Snippet } from "css-gum";
+
+// ✅ Available: All core functions
+Core.vw(20, 1440);
+Gen.genFuncsDraftWidth({ points: [375, 768] });
+Util.cssPxToVw(1440)(20);
+
+// ✅ Available: Snippet generation
+const snippets = Snippet.genVSCodeSnippetCore();
+
+// ❌ Not available: File writing
+// Snippet.writeSnippetsToFiles() // This function won't exist
+```
+
+### 🖥️ Node.js Environment
+
+```typescript
+import { Core, Gen, Util, Snippet } from "css-gum";
+
+// ✅ Available: All browser features +
+const snippets = Gen.genFuncsDraftWidth({ points: [375, 768] }).VSCodeSnippet;
+
+// ✅ Available: File operations
+Snippet.writeSnippetsToFiles(snippets, [".vscode/css.code-snippets"]);
+```
+
+### 🔍 Runtime Detection
+
+```typescript
+import { Snippet } from "css-gum";
+
+if ("writeSnippetsToFiles" in Snippet) {
+  // Running in Node.js - can write files
+  Snippet.writeSnippetsToFiles(snippets, paths);
+} else {
+  // Running in browser - file operations not available
+  console.log("Generated snippets:", snippets);
+}
+```
+
 ## Usage Examples
 
 ### With [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)
