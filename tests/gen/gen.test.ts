@@ -223,8 +223,8 @@ describe('Gen Module', () => {
       const funcs = Gen.genFuncsCore()
 
 
-      expect(funcs.core.vw(10, 100)).toBe('10vw ')
-      expect(funcs.core.vh(10, 100)).toBe('10vh ')
+      expect(funcs.core.vw(10, 100)).toBe('10vw')
+      expect(funcs.core.vh(10, 100)).toBe('10vh')
       expect(funcs.core.vwc(10, 100)).toBe('min(10px, 10vw)')
       expect(funcs.core.vhc(10, 100)).toBe('min(10px, 10vh)')
       expect(funcs.core.vwe(10, 100)).toBe('calc((100vw - 100px) * 0.5 + 10px)')
@@ -236,18 +236,18 @@ describe('Gen Module', () => {
       expect(funcs.core.percent(10, 100)).toBe('10%')
     })
 
-    it('should return the exact same functions as core imports', () => {
+    it('should have same functionality as core imports', () => {
       const funcs = Gen.genFuncsCore()
 
-      expect(funcs.core.vw).toBe(Core.vw)
-      expect(funcs.core.vh).toBe(Core.vh)
-      expect(funcs.core.vwc).toBe(Core.vwc)
-      expect(funcs.core.vhc).toBe(Core.vhc)
-      expect(funcs.core.vwe).toBe(Core.vwe)
-      expect(funcs.core.vhe).toBe(Core.vhe)
-      expect(funcs.core.em).toBe(Core.em)
-      expect(funcs.core.lh).toBe(Core.lh)
-      expect(funcs.core.percent).toBe(Core.percent)
+      expect(funcs.core.vw(10, 100)).toBe(Core.vw(10, 100))
+      expect(funcs.core.vh(10, 100)).toBe(Core.vh(10, 100))
+      expect(funcs.core.vwc(10, 100)).toBe(Core.vwc(10, 100))
+      expect(funcs.core.vhc(10, 100)).toBe(Core.vhc(10, 100))
+      expect(funcs.core.vwe(10, 100)).toBe(Core.vwe(10, 100))
+      expect(funcs.core.vhe(10, 100)).toBe(Core.vhe(10, 100))
+      expect(funcs.core.em(24, 16)).toBe(Core.em(24, 16))
+      expect(funcs.core.lh(24, 16)).toBe(Core.lh(24, 16))
+      expect(funcs.core.percent(10, 100)).toBe(Core.percent(10, 100))
     })
 
     it('should remove empty string keys', () => {
@@ -279,9 +279,79 @@ describe('Gen Module', () => {
       const result2 = widthFuncs.core.vwc1(100)
       const result3 = widthFuncs.core.vwe1(100)
 
-      expect(result1).toMatch(/^\d+(\.\d+)?vw\s$/)
+      expect(result1).toMatch(/^\d+(\.\d+)?vw$/)
       expect(result2).toMatch(/^(min|max)\(\d+px,\s*-?\d+(\.\d+)?vw\)$/)
       expect(result3).toMatch(/^calc\(.+\)$/)
+    })
+  })
+
+  describe('Space parameter in generation functions', () => {
+    it('should use space parameter in genFuncsDraftWidth', () => {
+      const funcsWithSpace = Gen.genFuncsDraftWidth({
+        points: [100],
+        space: 1,
+      })
+      const funcsWithoutSpace = Gen.genFuncsDraftWidth({
+        points: [100],
+        space: 0,
+      })
+
+      expect(funcsWithSpace.core.vw1(10)).toBe('10vw ')
+      expect(funcsWithoutSpace.core.vw1(10)).toBe('10vw')
+    })
+
+    it('should allow space override in generated width functions', () => {
+      const funcs = Gen.genFuncsDraftWidth({
+        points: [100],
+        space: 1,
+      })
+
+      expect(funcs.core.vw1(10)).toBe('10vw ')
+      expect(funcs.core.vw1(10, 0)).toBe('10vw')
+      expect(funcs.core.vw1(10, 1)).toBe('10vw ')
+    })
+
+    it('should use space parameter in genFuncsDraftHeight', () => {
+      const funcsWithSpace = Gen.genFuncsDraftHeight({
+        points: [100],
+        space: 1,
+      })
+      const funcsWithoutSpace = Gen.genFuncsDraftHeight({
+        points: [100],
+        space: 0,
+      })
+
+      expect(funcsWithSpace.core.vh1(10)).toBe('10vh ')
+      expect(funcsWithoutSpace.core.vh1(10)).toBe('10vh')
+    })
+
+    it('should allow space override in generated height functions', () => {
+      const funcs = Gen.genFuncsDraftHeight({
+        points: [100],
+        space: 1,
+      })
+
+      expect(funcs.core.vh1(10)).toBe('10vh ')
+      expect(funcs.core.vh1(10, 0)).toBe('10vh')
+      expect(funcs.core.vh1(10, 1)).toBe('10vh ')
+    })
+
+    it('should use space parameter in genFuncsCore', () => {
+      const funcsWithSpace = Gen.genFuncsCore({space: 1})
+      const funcsWithoutSpace = Gen.genFuncsCore({space: 0})
+
+      expect(funcsWithSpace.core.vw(10, 100)).toBe('10vw ')
+      expect(funcsWithoutSpace.core.vw(10, 100)).toBe('10vw')
+      expect(funcsWithSpace.core.vh(10, 100)).toBe('10vh ')
+      expect(funcsWithoutSpace.core.vh(10, 100)).toBe('10vh')
+    })
+
+    it('should allow space override in core wrapper functions', () => {
+      const funcs = Gen.genFuncsCore({space: 0})
+
+      expect(funcs.core.vw(10, 100)).toBe('10vw')
+      expect(funcs.core.vw(10, 100, 1)).toBe('10vw ')
+      expect(funcs.core.vh(10, 100, 1)).toBe('10vh ')
     })
   })
 

@@ -1,12 +1,15 @@
 import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent} from './core'
 import {genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth} from './snippets'
-import type {Pixel, SpaceFlag} from './types'
+import type {Pixel, SpaceFlag, DesignDraft} from './types'
 
+interface PropsSpace {
+  space?: SpaceFlag
+}
 
-interface PropsDraftFuncs {
+type PropsDraftFuncs = {
   points?: number[]
   firstIndex?: number
-}
+} & PropsSpace
 
 export interface PropsNameCustomWidth {
   nameVw?: string
@@ -46,8 +49,8 @@ export interface PropsNameCustomOther {
  *   firstIndex: 1
  * })
  *
- * funcs.core.vw1(20)     // 20px on 375px design, with space
- * funcs.core.vw1(20, 0) // 20px on 375px design, no space
+ * funcs.core.vw1(20)     // 20px on 375px design, no space
+ * funcs.core.vw1(20, 1) // 20px on 375px design, with space
  * funcs.core.vwc2(20)   // Clamped 20px on 768px design
  * funcs.core.vwe3(20)   // Extended 20px on 1440px design
  *
@@ -64,18 +67,19 @@ export const genFuncsDraftWidth = ({
   nameVw = 'vw',
   nameVwc = 'vwc',
   nameVwe = 'vwe',
+  space = 0,
 }: PropsDraftFuncs & PropsNameCustomWidth) => {
   const validPoints = points.filter(point => point > 0)
 
   validPoints.sort((a, b) => a - b)
 
-  const temp: Record<string, (pixel: Pixel) => string> = {}
+  const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
 
   for (let i = 0; i < validPoints.length; i++) {
     const idx = i + firstIndex
     const point = validPoints[i]
 
-    nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel, space: SpaceFlag = 1) => vw(pixel, point, space))
+    nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vw(pixel, point, spaceOverride ?? space))
     nameVwc !== '' && (temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point))
     nameVwe !== '' && (temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point))
   }
@@ -112,8 +116,8 @@ export const genFuncsDraftWidth = ({
  *   firstIndex: 1
  * })
  *
- * funcs.core.vh1(30)     // 30px on 667px design, with space
- * funcs.core.vh1(30, 0) // 30px on 667px design, no space
+ * funcs.core.vh1(30)     // 30px on 667px design, no space
+ * funcs.core.vh1(30, 1) // 30px on 667px design, with space
  * funcs.core.vhc2(30)   // Clamped 30px on 1080px design
  * funcs.core.vhe3(30)   // Extended 30px on 1440px design
  *
@@ -130,18 +134,19 @@ export const genFuncsDraftHeight = ({
   nameVh = 'vh',
   nameVhc = 'vhc',
   nameVhe = 'vhe',
+  space = 0,
 }: PropsDraftFuncs & PropsNameCustomHeight) => {
   const validPoints = points.filter(point => point > 0)
 
   validPoints.sort((a, b) => a - b)
 
-  const temp: Record<string, (pixel: Pixel) => string> = {}
+  const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
 
   for (let i = 0; i < validPoints.length; i++) {
     const idx = i + firstIndex
     const point = validPoints[i]
 
-    nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel, space: SpaceFlag = 1) => vh(pixel, point, space))
+    nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vh(pixel, point, spaceOverride ?? space))
     nameVhc !== '' && (temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point))
     nameVhe !== '' && (temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point))
   }
@@ -196,14 +201,15 @@ export const genFuncsCore = ({
   nameVwc = 'vwc',
   nameVwe = 'vwe',
   namePercent = 'percent',
-}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther = {}) => {
+  space = 0,
+}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther & PropsSpace = {}) => {
   const temp = {
     [nameEm]: em,
     [nameLh]: lh,
-    [nameVh]: vh,
+    [nameVh]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => vh(pixel, designDraft, spaceOverride ?? space),
     [nameVhc]: vhc,
     [nameVhe]: vhe,
-    [nameVw]: vw,
+    [nameVw]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => vw(pixel, designDraft, spaceOverride ?? space),
     [nameVwc]: vwc,
     [nameVwe]: vwe,
     [namePercent]: percent,

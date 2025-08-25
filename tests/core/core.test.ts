@@ -12,7 +12,7 @@ describe('Core Module', () => {
     it('should handle zero pixel value', () => {
       const result = Core.vw(0, 100)
 
-      expect(result).toBe('0 ')
+      expect(result).toBe('0')
     })
 
     it('should reject zero design width', () => {
@@ -27,10 +27,10 @@ describe('Core Module', () => {
       expect(result).toBe('')
     })
 
-    it('should add space by default for Tailwind compatibility', () => {
+    it('should not add space by default', () => {
       const result = Core.vw(10, 100)
 
-      expect(result).toBe('10vw ')
+      expect(result).toBe('10vw')
     })
 
     it('should handle space parameter correctly', () => {
@@ -66,7 +66,7 @@ describe('Core Module', () => {
     it('should handle zero pixel value', () => {
       const result = Core.vh(0, 100)
 
-      expect(result).toBe('0 ')
+      expect(result).toBe('0')
     })
 
     it('should reject zero design height', () => {
@@ -81,10 +81,10 @@ describe('Core Module', () => {
       expect(result).toBe('')
     })
 
-    it('should add space by default for Tailwind compatibility', () => {
+    it('should not add space by default', () => {
       const result = Core.vh(10, 100)
 
-      expect(result).toBe('10vh ')
+      expect(result).toBe('10vh')
     })
 
     it('should handle space parameter correctly', () => {
