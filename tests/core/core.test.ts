@@ -47,7 +47,7 @@ describe('Core Module', () => {
 
     it('should handle invalid input and return empty string', () => {
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-      const result = Core.vw('not-a-number' as any, 1920)
+      const result = Core.vw('not-a-number' as any, 1000)
 
       expect(result).toBe('')
       expect(consoleSpy).toHaveBeenCalled()
@@ -201,6 +201,58 @@ describe('Core Module', () => {
       const result = Core.lh(24, 16)
 
       expect(result).toBe('1.5')
+    })
+
+    it('should handle invalid input and return empty string', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const result = Core.lh('invalid' as any, 16)
+
+      expect(result).toBe('')
+      expect(consoleSpy).toHaveBeenCalled()
+
+      consoleSpy.mockRestore()
+    })
+  })
+
+  describe('Error handling for uncovered paths', () => {
+    it('should handle vwe function errors', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const result = Core.vwe('invalid' as any, 1920, 0.5)
+
+      expect(result).toBe('')
+      expect(consoleSpy).toHaveBeenCalled()
+
+      consoleSpy.mockRestore()
+    })
+
+    it('should handle vhe function errors', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const result = Core.vhe('invalid' as any, 1080, 0.5)
+
+      expect(result).toBe('')
+      expect(consoleSpy).toHaveBeenCalled()
+
+      consoleSpy.mockRestore()
+    })
+
+    it('should handle invalid design draft in vwe', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const result = Core.vwe(20, 'invalid' as any, 0.5)
+
+      expect(result).toBe('')
+      expect(consoleSpy).toHaveBeenCalled()
+
+      consoleSpy.mockRestore()
+    })
+
+    it('should handle invalid percent in vhe', () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const result = Core.vhe(20, 1080, 'invalid' as any)
+
+      expect(result).toBe('')
+      expect(consoleSpy).toHaveBeenCalled()
+
+      consoleSpy.mockRestore()
     })
   })
 })

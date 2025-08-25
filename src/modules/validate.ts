@@ -29,11 +29,14 @@ export const checkViewportParams = (pixel: unknown, designDraft: unknown) => {
     }
   }
 
+  const safePixelStr = typeof pixel === 'symbol' ? pixel.toString() : String(pixel)
+  const safeDesignDraftStr = typeof designDraft === 'symbol' ? designDraft.toString() : String(designDraft)
+
   return {
     data: null,
     error: [
-      `pixel expected number, received ${pixel}`,
-      `designDraft expected number, received ${designDraft}`,
+      `pixel expected number, received ${safePixelStr}`,
+      `designDraft expected number, received ${safeDesignDraftStr}`,
       new Error().stack ?? '',
     ].join('\n'),
   }
@@ -67,11 +70,14 @@ export const checkPercentParams = (child: unknown, parent: unknown) => {
     }
   }
 
+  const safeChildStr = typeof child === 'symbol' ? child.toString() : String(child)
+  const safeParentStr = typeof parent === 'symbol' ? parent.toString() : String(parent)
+
   return {
     data: null,
     error: [
-      `child expected number, received ${child}`,
-      `parent expected number, received ${parent}`,
+      `child expected number, received ${safeChildStr}`,
+      `parent expected number, received ${safeParentStr}`,
       new Error().stack ?? '',
     ].join('\n'),
   }
@@ -107,12 +113,16 @@ export const checkDesignDraftScalingParams = (pixel: unknown, designDraft: unkno
     }
   }
 
+  const safePixelStr = typeof pixel === 'symbol' ? pixel.toString() : String(pixel)
+  const safeDesignDraftStr = typeof designDraft === 'symbol' ? designDraft.toString() : String(designDraft)
+  const safePercentStr = typeof percent === 'symbol' ? percent.toString() : String(percent)
+
   return {
     data: null,
     error: [
-      `pixel expected number, received ${pixel}`,
-      `designDraft expected number, received ${designDraft}`,
-      `percent expected number, received ${percent}`,
+      `pixel expected number, received ${safePixelStr}`,
+      `designDraft expected number, received ${safeDesignDraftStr}`,
+      `percent expected number, received ${safePercentStr}`,
       new Error().stack ?? '',
     ].join('\n'),
   }

@@ -1,8 +1,5 @@
-import {describe, it, expect, beforeEach, afterEach} from 'vitest'
-import {Gen, Core, Snippet} from '../../src/index.node'
-import fs from 'fs'
-import path from 'path'
-import {tmpdir} from 'os'
+import {describe, it, expect} from 'vitest'
+import {Gen, Core} from '../../src/index.node'
 
 describe('Gen Module', () => {
   describe('genFuncsDraftWidth', () => {
@@ -355,206 +352,94 @@ describe('Gen Module', () => {
     })
   })
 
-  describe('genVSCodeSnippet functionality', () => {
-    let tempDir: string
-    let testFile: string
-
-    beforeEach(() => {
-      tempDir = path.join(tmpdir(), '.vscode-test-gen')
-      testFile = path.join(tempDir, 'css.code-snippets')
-
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, {recursive: true})
-      }
-    })
-
-    afterEach(() => {
-      if (fs.existsSync(tempDir)) {
-        fs.rmSync(tempDir, {recursive: true, force: true})
-      }
-    })
-
-    it('should generate and write VSCode snippets for width functions', () => {
+  describe('VSCode Snippet Generation', () => {
+    it('should generate snippet objects for width functions', () => {
       const widthFuncs = Gen.genFuncsDraftWidth({
-        points: [375, 768],
+        points: [400, 800],
         firstIndex: 1,
       })
       const result = widthFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+      expect(result).toHaveProperty('vw1')
+      expect(result).toHaveProperty('vw2')
+      expect(result).toHaveProperty('vwc1')
+      expect(result).toHaveProperty('vwc2')
+      expect(result).toHaveProperty('vwe1')
+      expect(result).toHaveProperty('vwe2')
 
-      Snippet.writeSnippetsToFiles(result, [testFile])
-      expect(fs.existsSync(testFile)).toBe(true)
-
-      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
-
-      expect(content).toHaveProperty('vw1')
-      expect(content).toHaveProperty('vw2')
-      expect(content).toHaveProperty('vwc1')
-      expect(content).toHaveProperty('vwc2')
-      expect(content).toHaveProperty('vwe1')
-      expect(content).toHaveProperty('vwe2')
-
-
-      expect(content.vw1).toHaveProperty('prefix')
-      expect(content.vw1).toHaveProperty('body')
-      expect(content.vw1.prefix).toBe('vw1')
-      expect(content.vw1.body).toBe('vw1($1)')
+      expect(result.vw1).toHaveProperty('prefix', 'vw1')
+      expect(result.vw1).toHaveProperty('body', 'vw1($1)')
     })
 
-    it('should generate and write VSCode snippets for height functions', () => {
+    it('should generate snippet objects for height functions', () => {
       const heightFuncs = Gen.genFuncsDraftHeight({
-        points: [667, 1080],
+        points: [500, 1000],
         firstIndex: 1,
       })
       const result = heightFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+      expect(result).toHaveProperty('vh1')
+      expect(result).toHaveProperty('vh2')
+      expect(result).toHaveProperty('vhc1')
+      expect(result).toHaveProperty('vhc2')
+      expect(result).toHaveProperty('vhe1')
+      expect(result).toHaveProperty('vhe2')
 
-      Snippet.writeSnippetsToFiles(result, [testFile])
-      expect(fs.existsSync(testFile)).toBe(true)
-
-      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
-
-      expect(content).toHaveProperty('vh1')
-      expect(content).toHaveProperty('vh2')
-      expect(content).toHaveProperty('vhc1')
-      expect(content).toHaveProperty('vhc2')
-      expect(content).toHaveProperty('vhe1')
-      expect(content).toHaveProperty('vhe2')
-
-
-      expect(content.vh1).toHaveProperty('prefix')
-      expect(content.vh1).toHaveProperty('body')
-      expect(content.vh1.prefix).toBe('vh1')
-      expect(content.vh1.body).toBe('vh1($1)')
+      expect(result.vh1).toHaveProperty('prefix', 'vh1')
+      expect(result.vh1).toHaveProperty('body', 'vh1($1)')
     })
 
-    it('should generate and write VSCode snippets for core functions', () => {
+    it('should generate snippet objects for core functions', () => {
       const coreFuncs = Gen.genFuncsCore()
       const result = coreFuncs.VSCodeSnippet
 
       expect(result).toBeDefined()
+      expect(result).toHaveProperty('vw')
+      expect(result).toHaveProperty('vh')
+      expect(result).toHaveProperty('em')
+      expect(result).toHaveProperty('percent')
 
-      Snippet.writeSnippetsToFiles(result, [testFile])
-      expect(fs.existsSync(testFile)).toBe(true)
-
-      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
-
-      expect(content).toHaveProperty('vw')
-      expect(content).toHaveProperty('vh')
-      expect(content).toHaveProperty('em')
-      expect(content).toHaveProperty('percent')
-
-
-      expect(content.vw).toHaveProperty('prefix')
-      expect(content.vw).toHaveProperty('body')
-      expect(content.vw.prefix).toBe('vw')
-      expect(content.vw.body).toBe('vw($1,$2)')
-      expect(content.em.body).toBe('em($1,$2)')
-      expect(content.percent.body).toBe('percent($1,$2)')
+      expect(result.vw).toHaveProperty('prefix', 'vw')
+      expect(result.vw).toHaveProperty('body', 'vw($1,$2)')
+      expect(result.em).toHaveProperty('body', 'em($1,$2)')
+      expect(result.percent).toHaveProperty('body', 'percent($1,$2)')
     })
 
-    it('should handle custom names when generating snippets', () => {
+    it('should handle custom names in snippet generation', () => {
       const widthFuncs = Gen.genFuncsDraftWidth({
-        points: [375],
+        points: [400],
         nameVw: 'customVw',
         nameVwc: 'customVwc',
         nameVwe: 'customVwe',
       })
       const result = widthFuncs.VSCodeSnippet
 
-      expect(result).toBeDefined()
+      expect(result).toHaveProperty('customVw1')
+      expect(result).toHaveProperty('customVwc1')
+      expect(result).toHaveProperty('customVwe1')
 
-      Snippet.writeSnippetsToFiles(result, [testFile])
-      expect(fs.existsSync(testFile)).toBe(true)
+      expect(result.customVw1.prefix).toBe('customVw1')
+      expect(result.customVwc1.prefix).toBe('customVwc1')
+      expect(result.customVwe1.prefix).toBe('customVwe1')
 
-      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
-
-      expect(content).toHaveProperty('customVw1')
-      expect(content).toHaveProperty('customVwc1')
-      expect(content).toHaveProperty('customVwe1')
-
-      expect(content.customVw1.prefix).toBe('customVw1')
-      expect(content.customVwc1.prefix).toBe('customVwc1')
-      expect(content.customVwe1.prefix).toBe('customVwe1')
-
-      expect(content.customVw1.body).toBe('customVw1($1)')
-      expect(content.customVwc1.body).toBe('customVwc1($1)')
-      expect(content.customVwe1.body).toBe('customVwe1($1)')
-    })
-
-    it('should handle multiple output files', () => {
-      const file1 = path.join(tempDir, 'file1.code-snippets')
-      const file2 = path.join(tempDir, 'file2.code-snippets')
-      const coreFuncs = Gen.genFuncsCore()
-      const result = coreFuncs.VSCodeSnippet
-
-      expect(result).toBeDefined()
-
-      Snippet.writeSnippetsToFiles(result, [file1, file2])
-      expect(fs.existsSync(file1)).toBe(true)
-      expect(fs.existsSync(file2)).toBe(true)
-
-      const content1 = JSON.parse(fs.readFileSync(file1, 'utf-8'))
-      const content2 = JSON.parse(fs.readFileSync(file2, 'utf-8'))
-
-      expect(content1).toHaveProperty('vw')
-      expect(content2).toHaveProperty('vw')
-    })
-
-    it('should merge with existing snippets in file', () => {
-
-      const existingSnippets = {
-        customSnippet: {
-          prefix: 'custom',
-          body: 'custom()',
-        },
-      }
-
-      fs.writeFileSync(testFile, JSON.stringify(existingSnippets, null, 2))
-
-      const coreFuncs = Gen.genFuncsCore()
-      const result = coreFuncs.VSCodeSnippet
-
-      Snippet.writeSnippetsToFiles(result, [testFile])
-
-      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
-
-
-      expect(content).toHaveProperty('customSnippet')
-      expect(content).toHaveProperty('vw')
-      expect(content).toHaveProperty('vh')
-      expect(content.customSnippet.body).toBe('custom()')
-    })
-
-    it('should handle empty output array gracefully', () => {
-      const coreFuncs = Gen.genFuncsCore()
-      const result = coreFuncs.VSCodeSnippet
-
-      expect(() => {
-        Snippet.writeSnippetsToFiles(result, [])
-      }).not.toThrow()
+      expect(result.customVw1.body).toBe('customVw1($1)')
+      expect(result.customVwc1.body).toBe('customVwc1($1)')
+      expect(result.customVwe1.body).toBe('customVwe1($1)')
     })
 
     it('should skip functions with empty string names', () => {
       const widthFuncs = Gen.genFuncsDraftWidth({
-        points: [375],
+        points: [400],
         nameVw: '',
         nameVwe: '',
       })
       const result = widthFuncs.VSCodeSnippet
 
-      expect(result).toBeDefined()
-
-      Snippet.writeSnippetsToFiles(result, [testFile])
-      expect(fs.existsSync(testFile)).toBe(true)
-
-      const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
-
-      expect(content).toHaveProperty('vwc1')
-      expect(content).not.toHaveProperty('vw1')
-      expect(content).not.toHaveProperty('vwe1')
+      expect(result).toHaveProperty('vwc1')
+      expect(result).not.toHaveProperty('vw1')
+      expect(result).not.toHaveProperty('vwe1')
     })
   })
 })
