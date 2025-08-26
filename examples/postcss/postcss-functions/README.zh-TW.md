@@ -5,8 +5,8 @@
 ## 執行範例
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 ## 範例說明
@@ -105,7 +105,7 @@ Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
 
 ![](../_assets/snippet.gif)
 
-- 執行 `pnpm dev` 後，會在 `.vscode/css.code-snippets` 自動產生以下片段：
+- 執行 `npm run dev` 後，會在 `.vscode/css.code-snippets` 自動產生以下片段：
 
 ```json
 {

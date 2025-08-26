@@ -5,8 +5,8 @@ This example demonstrates how to use css-gum with [PostCSS Functions](https://ww
 ## Running the Example
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 ## Example Overview
@@ -105,7 +105,7 @@ Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
 
 ![](../_assets/snippet.gif)
 
-- After running `pnpm dev`, the following snippets will be automatically generated in `.vscode/css.code-snippets`:
+- After running `npm run dev`, the following snippets will be automatically generated in `.vscode/css.code-snippets`:
 
 ```json
 {

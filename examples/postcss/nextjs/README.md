@@ -6,6 +6,6 @@ For detailed usage instructions and API documentation, please refer to [example:
 ## Running the Example
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```

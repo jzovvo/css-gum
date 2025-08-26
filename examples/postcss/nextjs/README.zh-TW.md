@@ -6,6 +6,6 @@
 ## 運行範例
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
