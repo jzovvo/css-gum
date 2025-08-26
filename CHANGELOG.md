@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-08-26
+
+### Changed
+
+- **Breaking**: Space parameter default value changed from `1` to `0`
+  - `vw()` and `vh()` functions now default to no trailing space
+  - This aligns better with common usage patterns where single values don't need trailing spaces
+  - Use `space: 1` parameter explicitly if trailing space is needed for multi-value contexts
+- **Gen Module Enhancement**: Added `space` parameter to generation functions
+  - `genFuncsDraftWidth()`, `genFuncsDraftHeight()`, and `genFuncsCore()` now accept optional `space` parameter
+  - Allows generating functions with pre-configured space behavior
+  - Generated functions can still override space parameter at call time
+
+### Added
+
+- Enhanced cspell configuration for better spell checking
+- Comprehensive test suite reorganization with improved coverage
+  - New `browser-index.test.ts` for browser environment testing
+  - New `console-utils.test.ts` for console utility validation
+  - New `file-operations.test.ts` for file system operations
+  - New `integration.test.ts` for end-to-end testing
+  - New `validate.test.ts` for input validation testing
+- Improved error handling and validation logic
+- NextJS integration example documentation
+
+### Fixed
+
+- Test organization and maintainability improvements
+- Better separation of concerns in test files
+- Enhanced validation error messages and handling
+
 ## [1.1.1] - 2025-08-25
 
 ### Added
