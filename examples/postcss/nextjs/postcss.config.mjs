@@ -4,7 +4,7 @@ const draftWidthPoints = [375, 1440]
 const snippetOutput = [
   './.vscode/css.code-snippets',
 ]
-const {core, VSCodeSnippet} = Gen.genFuncsDraftWidth({points: draftWidthPoints})
+const {core, VSCodeSnippet} = Gen.genFuncsDraftWidth({points: draftWidthPoints, space: 1})
 
 Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput)
 

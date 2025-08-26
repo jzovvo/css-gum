@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "css-gum": "^1.2.0",
     "next": "15.5.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
@@ -17,7 +18,6 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "css-gum": "^1.1.1",
     "postcss-functions": "^4.0.2",
     "tailwindcss": "^4",
     "typescript": "^5"
