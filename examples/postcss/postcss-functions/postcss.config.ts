@@ -1,5 +1,6 @@
 import {Gen, Snippet} from 'css-gum'
 import {join} from 'path'
+import type {Config} from 'postcss-load-config'
 
 const draftWidthPoints = [375, 1440]
 const snippetOutput = [
@@ -18,4 +19,4 @@ export default {
       },
     },
   },
-}
+} satisfies Config
