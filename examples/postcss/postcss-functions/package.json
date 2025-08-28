@@ -8,6 +8,7 @@
     "vite": "^7.1.2"
   },
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build"
   }
 }
