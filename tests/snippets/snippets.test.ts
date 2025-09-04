@@ -44,11 +44,13 @@ describe('Snippets Module', () => {
       expect(result.vw).toEqual({
         prefix: 'vw',
         body: 'vw($1,$2)$0',
+        scope: 'html,css,sass,scss,less,stylus',
       })
 
       expect(result.em).toEqual({
         prefix: 'em',
         body: 'em($1,$2)$0',
+        scope: 'html,css,sass,scss,less,stylus',
       })
     })
 
@@ -130,6 +132,15 @@ describe('Snippets Module', () => {
       expect(result.customVw.prefix).toBe('customVw')
       expect(result.customVw.body).toBe('customVw($1,$2)$0')
     })
+
+    it('should use custom scope', () => {
+      const result = Snippet.genVSCodeSnippetCore({
+        nameVw: 'vw',
+        scope: 'css,scss',
+      })
+
+      expect(result.vw.scope).toBe('css,scss')
+    })
   })
 
   describe('genVSCodeSnippetDraftWidth', () => {
@@ -157,11 +168,13 @@ describe('Snippets Module', () => {
       expect(result.vw1).toEqual({
         prefix: 'vw1',
         body: 'vw1($1)$0',
+        scope: 'html,css,sass,scss,less,stylus',
       })
 
       expect(result.vwc2).toEqual({
         prefix: 'vwc2',
         body: 'vwc2($1)$0',
+        scope: 'html,css,sass,scss,less,stylus',
       })
     })
 
@@ -200,6 +213,15 @@ describe('Snippets Module', () => {
 
       expect(Object.keys(result)).toHaveLength(0)
     })
+
+    it('should use custom scope for width functions', () => {
+      const result = Snippet.genVSCodeSnippetDraftWidth({
+        pointsSize: 1,
+        scope: 'less,stylus',
+      })
+
+      expect(result.vw1.scope).toBe('less,stylus')
+    })
   })
 
   describe('genVSCodeSnippetDraftHeight', () => {
@@ -224,11 +246,13 @@ describe('Snippets Module', () => {
       expect(result.vh1).toEqual({
         prefix: 'vh1',
         body: 'vh1($1)$0',
+        scope: 'html,css,sass,scss,less,stylus',
       })
 
       expect(result.vhc1).toEqual({
         prefix: 'vhc1',
         body: 'vhc1($1)$0',
+        scope: 'html,css,sass,scss,less,stylus',
       })
     })
 
@@ -253,6 +277,15 @@ describe('Snippets Module', () => {
       expect(result).toHaveProperty('height1')
       expect(result).toHaveProperty('heightExtend1')
       expect(result).not.toHaveProperty('vhc1')
+    })
+
+    it('should use custom scope for height functions', () => {
+      const result = Snippet.genVSCodeSnippetDraftHeight({
+        pointsSize: 1,
+        scope: 'sass',
+      })
+
+      expect(result.vh1.scope).toBe('sass')
     })
   })
 

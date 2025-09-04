@@ -1,5 +1,5 @@
 import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent} from './core'
-import {genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth} from './snippets'
+import {DEFAULT_SNIPPET, genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth, SnippetConfig} from './snippets'
 import type {Pixel, SpaceFlag, DesignDraft} from './types'
 
 interface PropsSpace {
@@ -40,13 +40,16 @@ export interface PropsNameCustomOther {
  * @param params.nameVw - Prefix for vw functions (default: 'vw')
  * @param params.nameVwc - Prefix for vwc functions (default: 'vwc')
  * @param params.nameVwe - Prefix for vwe functions (default: 'vwe')
+ * @param params.space - Default space flag for generated functions (default: 0)
+ * @param params.scope - VSCode snippet scope for generated snippets (default: 'html,css,sass,scss,less,stylus')
  * @returns Object with generated functions
  *
  * @example
  * ```typescript
  * const funcs = genFuncsDraftWidth({
  *   points: [375, 768, 1440],
- *   firstIndex: 1
+ *   firstIndex: 1,
+ *   scope: 'css'
  * })
  *
  * funcs.core.vw1(20)     // 20px on 375px design, no space
@@ -68,7 +71,8 @@ export const genFuncsDraftWidth = ({
   nameVwc = 'vwc',
   nameVwe = 'vwe',
   space = 0,
-}: PropsDraftFuncs & PropsNameCustomWidth) => {
+  scope = DEFAULT_SNIPPET.SCOPE,
+}: PropsDraftFuncs & PropsNameCustomWidth & Pick<SnippetConfig, 'scope'>) => {
   const validPoints = points.filter(point => point > 0)
 
   validPoints.sort((a, b) => a - b)
@@ -92,6 +96,7 @@ export const genFuncsDraftWidth = ({
       nameVwe,
       pointsSize: validPoints.length,
       firstIndex,
+      scope,
     }),
   }
 }
@@ -107,13 +112,16 @@ export const genFuncsDraftWidth = ({
  * @param params.nameVh - Prefix for vh functions (default: 'vh')
  * @param params.nameVhc - Prefix for vhc functions (default: 'vhc')
  * @param params.nameVhe - Prefix for vhe functions (default: 'vhe')
+ * @param params.space - Default space flag for generated functions (default: 0)
+ * @param params.scope - VSCode snippet scope for generated snippets (default: 'html,css,sass,scss,less,stylus')
  * @returns Object with generated functions
  *
  * @example
  * ```typescript
  * const funcs = genFuncsDraftHeight({
  *   points: [667, 1080, 1440],
- *   firstIndex: 1
+ *   firstIndex: 1,
+ *   scope: 'scss'
  * })
  *
  * funcs.core.vh1(30)     // 30px on 667px design, no space
@@ -135,7 +143,8 @@ export const genFuncsDraftHeight = ({
   nameVhc = 'vhc',
   nameVhe = 'vhe',
   space = 0,
-}: PropsDraftFuncs & PropsNameCustomHeight) => {
+  scope = DEFAULT_SNIPPET.SCOPE,
+}: PropsDraftFuncs & PropsNameCustomHeight & Pick<SnippetConfig, 'scope'>) => {
   const validPoints = points.filter(point => point > 0)
 
   validPoints.sort((a, b) => a - b)
@@ -159,6 +168,7 @@ export const genFuncsDraftHeight = ({
       nameVhe,
       pointsSize: validPoints.length,
       firstIndex,
+      scope,
     }),
   }
 }
@@ -177,13 +187,16 @@ export const genFuncsDraftHeight = ({
  * @param params.nameEm - Custom name for em function (default: 'em')
  * @param params.nameLh - Custom name for lh function (default: 'lh')
  * @param params.namePercent - Custom name for percent function (default: 'percent')
+ * @param params.space - Default space flag for generated functions (default: 0)
+ * @param params.scope - VSCode snippet scope for generated snippets (default: 'html,css,sass,scss,less,stylus')
  * @returns Object with all core functions using specified names
  *
  * @example
  * ```typescript
  * const funcs = genFuncsCore({
  *   nameVw: 'toVw',
- *   namePercent: 'toPercent'
+ *   namePercent: 'toPercent',
+ *   scope: 'css,scss'
  * })
  *
  * funcs.core.toVw(20, 1440)      // Same as Core.vw
@@ -202,7 +215,8 @@ export const genFuncsCore = ({
   nameVwe = 'vwe',
   namePercent = 'percent',
   space = 0,
-}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther & PropsSpace = {}) => {
+  scope = DEFAULT_SNIPPET.SCOPE,
+}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther & PropsSpace & Pick<SnippetConfig, 'scope'> = {}) => {
   const temp = {
     [nameEm]: em,
     [nameLh]: lh,
@@ -229,6 +243,7 @@ export const genFuncsCore = ({
       nameVwc,
       nameVwe,
       namePercent,
+      scope,
     }),
   }
 }

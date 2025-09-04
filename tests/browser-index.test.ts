@@ -72,6 +72,7 @@ describe('Browser Entry Point', () => {
       expect(snippets.vw).toEqual({
         prefix: 'vw',
         body: 'vw($1,$2)$0',
+        scope: 'html,css,sass,scss,less,stylus',
       })
     })
   })
