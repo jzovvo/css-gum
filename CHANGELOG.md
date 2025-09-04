@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2025-09-04
+
+### Added
+
+- **Snippet Scope Parameter**: Added `scope` parameter to all VSCode Snippet generation functions
+  - `genVSCodeSnippetCore()`, `genVSCodeSnippetDraftWidth()`, `genVSCodeSnippetDraftHeight()` now accept optional `scope` parameter
+  - `genFuncsDraftWidth()`, `genFuncsDraftHeight()`, `genFuncsCore()` now accept optional `scope` parameter for generated snippets
+  - Default scope: `'html,css,sass,scss,less,stylus'` covers most style-related file types
+  - Allows precise control over which file types can trigger VSCode snippets
+  - Enhanced documentation with scope parameter usage examples and Q&A section
+
+### Changed
+
+- **Snippet Body Enhancement**: All generated VSCode snippets now include `$0` cursor position marker
+  - Improves snippet user experience by positioning cursor at the end after expansion
+  - Follows VSCode snippet best practices
+- **Code Refactoring**: Reorganized `snippets.ts` module with improved structure
+  - Functions now use object parameters instead of positional parameters for better maintainability
+  - Enhanced JSDoc documentation with complete parameter descriptions
+  - Improved type definitions and interfaces
+
+### Fixed
+
+- Enhanced test coverage for scope parameter functionality
+- Updated all tests to expect `$0` marker in snippet bodies
+- Improved code organization and maintainability
+
+### Documentation
+
+- **Complete README Updates**: Both English and Traditional Chinese versions updated
+  - Added comprehensive scope parameter documentation
+  - Enhanced examples showing scope parameter usage
+  - New Q&A section explaining scope parameter benefits
+  - Updated API documentation with complete parameter lists
+
 ## [1.2.0] - 2025-08-26
 
 ### Changed
