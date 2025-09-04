@@ -2,7 +2,7 @@ import {Gen, Snippet} from 'css-gum'
 
 const draftWidthPoints = [375, 1440]
 const snippetOutput = [
-  './.vscode/css.code-snippets',
+  './.vscode/css-gum.code-snippets',
 ]
 const {core, VSCodeSnippet} = Gen.genFuncsDraftWidth({points: draftWidthPoints, space: 1})
 

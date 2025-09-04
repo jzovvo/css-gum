@@ -23,10 +23,11 @@ npm run dev
 ## Core
 
 - 藉由 `postcss-functions` 可以執行函式並將返回值替換的特性，將需要使用的函式都寫入 `postcss-functions` 配置中來攔截，以達成攔截函式並替換成 CSS 值
-- 在 `postcss.config.js` 中設定 css-gum 函數：
+- 在 `postcss.config.ts` 中設定 css-gum 函數：
 
-```js
+```ts
 import { Gen } from "css-gum";
+import type { Config } from "postcss-load-config";
 
 export default {
   plugins: {
@@ -39,7 +40,7 @@ export default {
       },
     },
   },
-};
+} satisfies Config;
 ```
 
 這個配置會產生以下函式：
@@ -92,7 +93,7 @@ import { Gen, Snippet } from "css-gum";
 import { join } from "path";
 
 const draftWidthPoints = [375, 1440];
-const snippetOutput = [join(import.meta.dirname, ".vscode/css.code-snippets")];
+const snippetOutput = [join(import.meta.dirname, ".vscode/css-gum.code-snippets")];
 const { core, VSCodeSnippet } = Gen.genFuncsDraftWidth({ points: draftWidthPoints });
 
 Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
@@ -105,33 +106,39 @@ Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
 
 ![](../_assets/snippet.gif)
 
-- 執行 `npm run dev` 後，會在 `.vscode/css.code-snippets` 自動產生以下片段：
+- 執行 `npm run dev` 後，會在 `.vscode/css-gum.code-snippets` 自動產生以下片段：
 
 ```json
 {
   "vw1": {
     "prefix": "vw1",
-    "body": "vw1($1)"
+    "body": "vw1($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwc1": {
     "prefix": "vwc1",
-    "body": "vwc1($1)"
+    "body": "vwc1($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwe1": {
     "prefix": "vwe1",
-    "body": "vwe1($1)"
+    "body": "vwe1($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vw2": {
     "prefix": "vw2",
-    "body": "vw2($1)"
+    "body": "vw2($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwc2": {
     "prefix": "vwc2",
-    "body": "vwc2($1)"
+    "body": "vwc2($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwe2": {
     "prefix": "vwe2",
-    "body": "vwe2($1)"
+    "body": "vwe2($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   }
 }
 ```

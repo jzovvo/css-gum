@@ -4,7 +4,7 @@ import type {Config} from 'postcss-load-config'
 
 const draftWidthPoints = [375, 1440]
 const snippetOutput = [
-  join(import.meta.dirname, '.vscode/css.code-snippets'),
+  join(import.meta.dirname, '.vscode/css-gum.code-snippets'),
 ]
 const {core, VSCodeSnippet} = Gen.genFuncsDraftWidth({points: draftWidthPoints, space: 1})
 

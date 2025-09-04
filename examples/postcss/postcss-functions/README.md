@@ -23,10 +23,11 @@ npm run dev
 ## Core
 
 - By leveraging `postcss-functions`' ability to execute functions and replace their return values, we add the functions to the `postcss-functions` configuration to intercept and replace them with CSS values
-- Configure css-gum functions in `postcss.config.js`:
+- Configure css-gum functions in `postcss.config.ts`:
 
-```js
+```ts
 import { Gen } from "css-gum";
+import type { Config } from "postcss-load-config";
 
 export default {
   plugins: {
@@ -39,7 +40,7 @@ export default {
       },
     },
   },
-};
+} satisfies Config;
 ```
 
 This configuration generates the following functions:
@@ -92,7 +93,7 @@ import { Gen, Snippet } from "css-gum";
 import { join } from "path";
 
 const draftWidthPoints = [375, 1440];
-const snippetOutput = [join(import.meta.dirname, ".vscode/css.code-snippets")];
+const snippetOutput = [join(import.meta.dirname, ".vscode/css-gum.code-snippets")];
 const { core, VSCodeSnippet } = Gen.genFuncsDraftWidth({ points: draftWidthPoints });
 
 Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
@@ -105,33 +106,39 @@ Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
 
 ![](../_assets/snippet.gif)
 
-- After running `npm run dev`, the following snippets will be automatically generated in `.vscode/css.code-snippets`:
+- After running `npm run dev`, the following snippets will be automatically generated in `.vscode/css-gum.code-snippets`:
 
 ```json
 {
   "vw1": {
     "prefix": "vw1",
-    "body": "vw1($1)"
+    "body": "vw1($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwc1": {
     "prefix": "vwc1",
-    "body": "vwc1($1)"
+    "body": "vwc1($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwe1": {
     "prefix": "vwe1",
-    "body": "vwe1($1)"
+    "body": "vwe1($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vw2": {
     "prefix": "vw2",
-    "body": "vw2($1)"
+    "body": "vw2($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwc2": {
     "prefix": "vwc2",
-    "body": "vwc2($1)"
+    "body": "vwc2($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   },
   "vwe2": {
     "prefix": "vwe2",
-    "body": "vwe2($1)"
+    "body": "vwe2($1)$0",
+    "scope": "html,css,sass,scss,less,stylus"
   }
 }
 ```
