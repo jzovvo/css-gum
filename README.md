@@ -409,6 +409,8 @@ Generate width conversion functions for multiple design draft breakpoints.
   - `nameVw`, `nameVwc`, `nameVwe`
     - Custom function name prefixes
     - Use empty string `''` to skip that type
+  - `scope`
+    - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
 
 ```typescript
 import { Gen } from "css-gum";
@@ -416,6 +418,12 @@ import { Gen } from "css-gum";
 const widthFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440, 1920],
   firstIndex: 1,
+});
+
+// Custom Snippet scope range
+const cssOnlyFuncs = Gen.genFuncsDraftWidth({
+  points: [375, 768, 1440],
+  scope: "css,scss", // Only show in CSS and SCSS files
 });
 
 widthFuncs.core.vw1(20); // '5.33vw' - 20px on 375px design draft
@@ -466,6 +474,8 @@ Generate height conversion functions for multiple design draft breakpoints.
   - `nameVh`, `nameVhc`, `nameVhe`
     - Custom function name prefixes
     - Use empty string `''` to skip that type
+  - `scope`
+    - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
 
 ```typescript
 const heightFuncs = Gen.genFuncsDraftHeight({
@@ -514,6 +524,8 @@ Generate core function collections with custom names.
   - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
     - Custom function name prefixes
     - Use empty string `''` to exclude
+  - `scope`
+    - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
 
 ```typescript
 const customCore = Gen.genFuncsCore({
@@ -648,6 +660,8 @@ Generate core function Snippets.
   - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
     - Custom function name prefixes
     - Use empty string `''` to skip that type
+  - `scope`
+    - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
 
 ##### `genVSCodeSnippetDraftWidth(options)`
 
@@ -663,6 +677,8 @@ Generate width function Snippets.
   - `nameVw`, `nameVwc`, `nameVwe`
     - Custom function name prefixes
     - Use empty string `''` to skip that type
+  - `scope`
+    - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
 
 ##### `genVSCodeSnippetDraftHeight(options)`
 
@@ -678,6 +694,8 @@ Generate height function Snippets.
   - `nameVh`, `nameVhc`, `nameVhe`
     - Custom function name prefixes
     - Use empty string `''` to skip that type
+  - `scope`
+    - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
 
 ```typescript
 import { Snippet } from "css-gum";
@@ -691,6 +709,14 @@ const coreSnippets = Snippet.genVSCodeSnippetCore({
   namePercent: "percent",
 });
 Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
+
+// Generate Snippets that only show in specific file types
+const cssOnlySnippets = Snippet.genVSCodeSnippetCore({
+  nameVw: "vw",
+  namePercent: "percent",
+  scope: "css,scss", // Only trigger in CSS and SCSS files
+});
+Snippet.writeSnippetsToFiles(cssOnlySnippets, VSCodeSnippetsPath);
 
 // Generate width function Snippets
 const widthSnippets = Snippet.genVSCodeSnippetDraftWidth({
@@ -800,3 +826,22 @@ Or only use spaces in middle functions, not the last one:
 <!-- ✅ Compilation result: padding: 1.39vw 2.08vw; -->
 <div class="p-[vw(20,1440,1)_vw(30,1440)]"></div>
 ```
+
+### What is the scope parameter?
+
+The `scope` parameter is used to control which file types VSCode Snippets can be triggered in. This allows you to:
+
+- 🎯 **Precise control**: Only show relevant Snippets in the file types you need
+- 🗂️ **Avoid interference**: Prevent useless Snippet suggestions in unrelated files
+- 🎨 **Categorized management**: Create dedicated Snippets for different file types
+
+**Common scope values**:
+
+```typescript
+scope: "css"; // Only show in CSS files
+scope: "scss,sass"; // Only show in SCSS and Sass files
+scope: "css,scss,less"; // Show in CSS, SCSS, Less files
+scope: "html"; // Only show in HTML files (suitable for Tailwind CSS)
+```
+
+**Default value** `'html,css,sass,scss,less,stylus'` covers most style-related file types, see [official documentation](https://code.visualstudio.com/docs/editing/userdefinedsnippets) for details.

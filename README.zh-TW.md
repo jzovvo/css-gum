@@ -409,6 +409,8 @@ Util.cssLh(24, 16); // '1.5'
   - `nameVw`, `nameVwc`, `nameVwe`
     - 自訂 function 名稱前綴
     - 使用空字串 `''` 跳過該類型
+  - `scope`
+    - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
 
 ```typescript
 import { Gen } from "css-gum";
@@ -416,6 +418,12 @@ import { Gen } from "css-gum";
 const widthFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440, 1920],
   firstIndex: 1,
+});
+
+// 自訂 Snippet scope 範圍
+const cssOnlyFuncs = Gen.genFuncsDraftWidth({
+  points: [375, 768, 1440],
+  scope: "css,scss", // 只在 CSS 和 SCSS 檔案中顯示
 });
 
 widthFuncs.core.vw1(20); // '5.33vw' - 375px design draft 的 20px
@@ -466,6 +474,8 @@ const partialFuncs = Gen.genFuncsDraftWidth({
   - `nameVh`, `nameVhc`, `nameVhe`
     - 自訂 function 名稱前綴
     - 使用空字串 `''` 跳過該類型
+  - `scope`
+    - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
 
 ```typescript
 const heightFuncs = Gen.genFuncsDraftHeight({
@@ -514,6 +524,8 @@ const onlyVhFuncs = Gen.genFuncsDraftHeight({
   - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
     - 自訂 function 名稱前綴
     - 使用空字串 `''` 排除
+  - `scope`
+    - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
 
 ```typescript
 const customCore = Gen.genFuncsCore({
@@ -648,6 +660,8 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
   - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
     - 自訂 function 名稱前綴
     - 使用空字串 `''` 跳過該類型
+  - `scope`
+    - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
 
 ##### `genVSCodeSnippetDraftWidth(options)`
 
@@ -663,6 +677,8 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
   - `nameVw`, `nameVwc`, `nameVwe`
     - 自訂 function 名稱前綴
     - 使用空字串 `''` 跳過該類型
+  - `scope`
+    - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
 
 ##### `genVSCodeSnippetDraftHeight(options)`
 
@@ -678,6 +694,8 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
   - `nameVh`, `nameVhc`, `nameVhe`
     - 自訂 function 名稱前綴
     - 使用空字串 `''` 跳過該類型
+  - `scope`
+    - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
 
 ```typescript
 import { Snippet } from "css-gum";
@@ -691,6 +709,14 @@ const coreSnippets = Snippet.genVSCodeSnippetCore({
   namePercent: "percent",
 });
 Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
+
+// 生成只在特定檔案類型中顯示的 Snippet
+const cssOnlySnippets = Snippet.genVSCodeSnippetCore({
+  nameVw: "vw",
+  namePercent: "percent",
+  scope: "css,scss", // 只在 CSS 和 SCSS 檔案中觸發
+});
+Snippet.writeSnippetsToFiles(cssOnlySnippets, VSCodeSnippetsPath);
 
 // 生成寬度 function Snippet
 const widthSnippets = Snippet.genVSCodeSnippetDraftWidth({
@@ -800,3 +826,22 @@ MIT © [jzovvo](https://github.com/jzovvo)
 <!-- ✅ 編譯結果：padding: 1.39vw 2.08vw; -->
 <div class="p-[vw(20,1440,1)_vw(30,1440)]"></div>
 ```
+
+### 什麼是 scope 參數？
+
+`scope` 參數用於控制 VSCode Snippet 在哪些檔案類型中可以觸發。這讓你能夠：
+
+- 🎯 **精準控制**：只在需要的檔案類型中顯示相關 Snippet
+- 🗂️ **避免干擾**：防止在不相關的檔案中出現無用的 Snippet 提示
+- 🎨 **分類管理**：為不同的檔案類型創建專門的 Snippet
+
+**常用的 scope 值**：
+
+```typescript
+scope: "css"; // 只在 CSS 檔案中顯示
+scope: "scss,sass"; // 只在 SCSS 和 Sass 檔案中顯示
+scope: "css,scss,less"; // 在 CSS、SCSS、Less 檔案中顯示
+scope: "html"; // 只在 HTML 檔案中顯示（適用於 Tailwind CSS）
+```
+
+**預設值** `'html,css,sass,scss,less,stylus'` 涵蓋了大部分樣式相關的檔案類型，詳情請看[官方文件](https://code.visualstudio.com/docs/editing/userdefinedsnippets)。
