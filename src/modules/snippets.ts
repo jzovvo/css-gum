@@ -1,9 +1,22 @@
 import type {PropsNameCustomHeight, PropsNameCustomOther, PropsNameCustomWidth} from './gen'
 
-
-export interface PropsDraftFuncs {
-  pointsSize?: number
-  firstIndex?: number
+const DEFAULT_NAME = {
+  EM: 'em',
+  LH: 'lh',
+  VH: 'vh',
+  VHC: 'vhc',
+  VHE: 'vhe',
+  VW: 'vw',
+  VWC: 'vwc',
+  VWE: 'vwe',
+  PERCENT: 'percent',
+}
+const DEFAULT_DRAFT_FUNC = {
+  POINTS_SIZE: 0,
+  FIRST_INDEX: 1,
+}
+const DEFAULT_SNIPPET = {
+  ARGS: '$1',
 }
 
 export interface SnippetConfig {
@@ -12,45 +25,70 @@ export interface SnippetConfig {
   description?: string
 }
 
+type Snippets = Record<string, SnippetConfig>
+
+export interface PropsDraftFuncs {
+  pointsSize?: number
+  firstIndex?: number
+}
+
 /**
  * Creates a snippet configuration object.
  *
- * @param prefix - The snippet prefix (trigger)
- * @param body - The snippet body (content)
+ * @param params - Configuration object
+ * @param params.prefix - The snippet prefix (trigger)
+ * @param params.body - The snippet body (content)
  * @returns Snippet configuration object
  *
  * @example
  * ```typescript
- * const snippet = createSnippet('vw1', 'vw1($1,$2)')
+ * const snippet = createSnippet({prefix: 'vw1', body: 'vw1($1,$2)'})
  * ```
  */
-const createSnippet = (prefix: string, body: string): SnippetConfig => ({
+interface PropsCreateSnippet {
+  prefix: string;
+  body: string;
+}
+
+const createSnippet = ({prefix, body}: PropsCreateSnippet): SnippetConfig => ({
   prefix,
   body,
 })
 /**
  * Adds a snippet to the collection if the name is not empty.
  *
- * @param snippets - Snippets collection to add to
- * @param name - Function name prefix
- * @param index - Index to append to name
- * @param args - Arguments for the snippet body
+ * @param params - Configuration object
+ * @param params.snippets - Snippets collection to add to
+ * @param params.name - Function name prefix
+ * @param params.suffix - Suffix to append to name
+ * @param params.args - Arguments for the snippet body
  *
  * @example
  * ```typescript
- * addSnippetIfEnabled(snippets, 'vw', 1, '$1,$2')
+ * addSnippetIfEnabled({snippets, name: 'vw', suffix: 1, args: '$1,$2'})
  * ```
  */
-const addSnippetIfEnabled = (
-  snippets: Record<string, SnippetConfig>,
-  name: string,
-  index: number | string = '',
-  args: string = '$1',
-) => {
-  if (name !== '') {
-    const key = name + index
 
-    snippets[key] = createSnippet(key, `${key}(${args})`)
+interface PropsAddSnippet {
+  snippets: Snippets;
+  name: string;
+  suffix?: number | string;
+  args?: string;
+}
+
+const addSnippetIfEnabled = ({
+  snippets,
+  name,
+  suffix = '',
+  args = DEFAULT_SNIPPET.ARGS,
+}: PropsAddSnippet) => {
+  if (name !== '') {
+    const key = name + suffix
+
+    snippets[key] = createSnippet({
+      prefix: key,
+      body: `${key}(${args})$0`,
+    })
   }
 }
 
@@ -78,27 +116,27 @@ const addSnippetIfEnabled = (
  * ```
  */
 export const genVSCodeSnippetCore = ({
-  nameEm = 'em',
-  nameLh = 'lh',
-  nameVh = 'vh',
-  nameVhc = 'vhc',
-  nameVhe = 'vhe',
-  nameVw = 'vw',
-  nameVwc = 'vwc',
-  nameVwe = 'vwe',
-  namePercent = 'percent',
+  nameEm = DEFAULT_NAME.EM,
+  nameLh = DEFAULT_NAME.LH,
+  nameVh = DEFAULT_NAME.VH,
+  nameVhc = DEFAULT_NAME.VHC,
+  nameVhe = DEFAULT_NAME.VHE,
+  nameVw = DEFAULT_NAME.VW,
+  nameVwc = DEFAULT_NAME.VWC,
+  nameVwe = DEFAULT_NAME.VWE,
+  namePercent = DEFAULT_NAME.PERCENT,
 }: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther = {}) => {
-  const snippets: Record<string, SnippetConfig> = {}
+  const snippets: Snippets = {}
 
-  addSnippetIfEnabled(snippets, nameEm, '', '$1,$2')
-  addSnippetIfEnabled(snippets, nameLh, '', '$1,$2')
-  addSnippetIfEnabled(snippets, nameVh, '', '$1,$2')
-  addSnippetIfEnabled(snippets, nameVhc, '', '$1,$2')
-  addSnippetIfEnabled(snippets, nameVhe, '', '$1,$2')
-  addSnippetIfEnabled(snippets, nameVw, '', '$1,$2')
-  addSnippetIfEnabled(snippets, nameVwc, '', '$1,$2')
-  addSnippetIfEnabled(snippets, nameVwe, '', '$1,$2')
-  addSnippetIfEnabled(snippets, namePercent, '', '$1,$2')
+  addSnippetIfEnabled({snippets, name: nameEm, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: nameLh, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: nameVh, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: nameVhc, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: nameVhe, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: nameVw, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: nameVwc, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: nameVwe, args: '$1,$2'})
+  addSnippetIfEnabled({snippets, name: namePercent, args: '$1,$2'})
 
   return snippets
 }
@@ -123,20 +161,20 @@ export const genVSCodeSnippetCore = ({
  * ```
  */
 export const genVSCodeSnippetDraftWidth = ({
-  pointsSize = 0,
-  firstIndex = 1,
-  nameVw = 'vw',
-  nameVwc = 'vwc',
-  nameVwe = 'vwe',
+  pointsSize = DEFAULT_DRAFT_FUNC.POINTS_SIZE,
+  firstIndex = DEFAULT_DRAFT_FUNC.FIRST_INDEX,
+  nameVw = DEFAULT_NAME.VW,
+  nameVwc = DEFAULT_NAME.VWC,
+  nameVwe = DEFAULT_NAME.VWE,
 }: PropsDraftFuncs & PropsNameCustomWidth = {}) => {
-  const snippets: Record<string, SnippetConfig> = {}
+  const snippets: Snippets = {}
 
   for (let i = 0; i < pointsSize; i++) {
     const idx = i + firstIndex
 
-    addSnippetIfEnabled(snippets, nameVw, idx)
-    addSnippetIfEnabled(snippets, nameVwc, idx)
-    addSnippetIfEnabled(snippets, nameVwe, idx)
+    addSnippetIfEnabled({snippets, name: nameVw, suffix: idx})
+    addSnippetIfEnabled({snippets, name: nameVwc, suffix: idx})
+    addSnippetIfEnabled({snippets, name: nameVwe, suffix: idx})
   }
 
   return snippets
@@ -162,20 +200,20 @@ export const genVSCodeSnippetDraftWidth = ({
  * ```
  */
 export const genVSCodeSnippetDraftHeight = ({
-  pointsSize = 0,
-  firstIndex = 1,
-  nameVh = 'vh',
-  nameVhc = 'vhc',
-  nameVhe = 'vhe',
+  pointsSize = DEFAULT_DRAFT_FUNC.POINTS_SIZE,
+  firstIndex = DEFAULT_DRAFT_FUNC.FIRST_INDEX,
+  nameVh = DEFAULT_NAME.VH,
+  nameVhc = DEFAULT_NAME.VHC,
+  nameVhe = DEFAULT_NAME.VHE,
 }: PropsDraftFuncs & PropsNameCustomHeight = {}) => {
-  const snippets: Record<string, SnippetConfig> = {}
+  const snippets: Snippets = {}
 
   for (let i = 0; i < pointsSize; i++) {
     const idx = i + firstIndex
 
-    addSnippetIfEnabled(snippets, nameVh, idx)
-    addSnippetIfEnabled(snippets, nameVhc, idx)
-    addSnippetIfEnabled(snippets, nameVhe, idx)
+    addSnippetIfEnabled({snippets, name: nameVh, suffix: idx})
+    addSnippetIfEnabled({snippets, name: nameVhc, suffix: idx})
+    addSnippetIfEnabled({snippets, name: nameVhe, suffix: idx})
   }
 
   return snippets

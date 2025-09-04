@@ -43,12 +43,12 @@ describe('Snippets Module', () => {
 
       expect(result.vw).toEqual({
         prefix: 'vw',
-        body: 'vw($1,$2)',
+        body: 'vw($1,$2)$0',
       })
 
       expect(result.em).toEqual({
         prefix: 'em',
-        body: 'em($1,$2)',
+        body: 'em($1,$2)$0',
       })
     })
 
@@ -105,7 +105,7 @@ describe('Snippets Module', () => {
 
       const content = JSON.parse(fs.readFileSync(testFile, 'utf-8'))
 
-      expect(content.vw.body).toBe('vw($1,$2)')
+      expect(content.vw.body).toBe('vw($1,$2)$0')
     })
 
     it('should skip empty function names', () => {
@@ -128,7 +128,7 @@ describe('Snippets Module', () => {
       expect(result).toHaveProperty('customVw')
       expect(result).toHaveProperty('pct')
       expect(result.customVw.prefix).toBe('customVw')
-      expect(result.customVw.body).toBe('customVw($1,$2)')
+      expect(result.customVw.body).toBe('customVw($1,$2)$0')
     })
   })
 
@@ -156,12 +156,12 @@ describe('Snippets Module', () => {
 
       expect(result.vw1).toEqual({
         prefix: 'vw1',
-        body: 'vw1($1)',
+        body: 'vw1($1)$0',
       })
 
       expect(result.vwc2).toEqual({
         prefix: 'vwc2',
-        body: 'vwc2($1)',
+        body: 'vwc2($1)$0',
       })
     })
 
@@ -223,12 +223,12 @@ describe('Snippets Module', () => {
 
       expect(result.vh1).toEqual({
         prefix: 'vh1',
-        body: 'vh1($1)',
+        body: 'vh1($1)$0',
       })
 
       expect(result.vhc1).toEqual({
         prefix: 'vhc1',
-        body: 'vhc1($1)',
+        body: 'vhc1($1)$0',
       })
     })
 

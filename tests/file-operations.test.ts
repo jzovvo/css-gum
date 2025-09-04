@@ -171,7 +171,7 @@ describe('File Operations', () => {
       const snippets = {
         testSnippet: {
           prefix: 'test',
-          body: 'test($1, $2)',
+          body: 'test($1, $2)$0',
           description: 'Test snippet with parameters',
         },
       }

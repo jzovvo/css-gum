@@ -71,7 +71,7 @@ describe('Browser Entry Point', () => {
       expect(snippets).toHaveProperty('vw')
       expect(snippets.vw).toEqual({
         prefix: 'vw',
-        body: 'vw($1,$2)',
+        body: 'vw($1,$2)$0',
       })
     })
   })

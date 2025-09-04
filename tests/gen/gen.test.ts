@@ -369,7 +369,7 @@ describe('Gen Module', () => {
       expect(result).toHaveProperty('vwe2')
 
       expect(result.vw1).toHaveProperty('prefix', 'vw1')
-      expect(result.vw1).toHaveProperty('body', 'vw1($1)')
+      expect(result.vw1).toHaveProperty('body', 'vw1($1)$0')
     })
 
     it('should generate snippet objects for height functions', () => {
@@ -388,7 +388,7 @@ describe('Gen Module', () => {
       expect(result).toHaveProperty('vhe2')
 
       expect(result.vh1).toHaveProperty('prefix', 'vh1')
-      expect(result.vh1).toHaveProperty('body', 'vh1($1)')
+      expect(result.vh1).toHaveProperty('body', 'vh1($1)$0')
     })
 
     it('should generate snippet objects for core functions', () => {
@@ -402,9 +402,9 @@ describe('Gen Module', () => {
       expect(result).toHaveProperty('percent')
 
       expect(result.vw).toHaveProperty('prefix', 'vw')
-      expect(result.vw).toHaveProperty('body', 'vw($1,$2)')
-      expect(result.em).toHaveProperty('body', 'em($1,$2)')
-      expect(result.percent).toHaveProperty('body', 'percent($1,$2)')
+      expect(result.vw).toHaveProperty('body', 'vw($1,$2)$0')
+      expect(result.em).toHaveProperty('body', 'em($1,$2)$0')
+      expect(result.percent).toHaveProperty('body', 'percent($1,$2)$0')
     })
 
     it('should handle custom names in snippet generation', () => {
@@ -424,9 +424,9 @@ describe('Gen Module', () => {
       expect(result.customVwc1.prefix).toBe('customVwc1')
       expect(result.customVwe1.prefix).toBe('customVwe1')
 
-      expect(result.customVw1.body).toBe('customVw1($1)')
-      expect(result.customVwc1.body).toBe('customVwc1($1)')
-      expect(result.customVwe1.body).toBe('customVwe1($1)')
+      expect(result.customVw1.body).toBe('customVw1($1)$0')
+      expect(result.customVwc1.body).toBe('customVwc1($1)$0')
+      expect(result.customVwe1.body).toBe('customVwe1($1)$0')
     })
 
     it('should skip functions with empty string names', () => {
