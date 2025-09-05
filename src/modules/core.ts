@@ -1,246 +1,94 @@
 import type {DesignDraft, Percent, Pixel, SpaceFlag} from './types'
-import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc} from './utils'
+import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc, cssPxToDvw, cssPxToLvw, cssPxToSvw, cssPxToDvh, cssPxToLvh, cssPxToSvh, cssPxToDvwc, cssPxToLvwc, cssPxToSvwc, cssPxToDvhc, cssPxToLvhc, cssPxToSvhc, cssPxToDvwe, cssPxToLvwe, cssPxToSvwe, cssPxToDvhe, cssPxToLvhe, cssPxToSvhe} from './utils'
 import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from './validate'
 import {consoleError} from '../utils/console'
 
-/**
- * Converts pixel values to viewport width (vw) units based on design draft width.
- *
- * @param pixel - The pixel value to convert
- * @param designDraft - The design draft width in pixels
- * @param space - Whether to add trailing space for Tailwind multi-value support (1 = with space, 0 = no space, default: 0)
- * @returns CSS vw value as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * vw(20, 1440)    // Returns '1.39vw' (no space by default)
- * vw(20, 1440, 1) // Returns '1.39vw ' (with space)
- * vw(20, 1440, 0) // Returns '1.39vw' (no space)
- * vw(0, 1440)     // Returns '0'
- * ```
- */
-export const vw = (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
+const genCssViewport = (utilsFunction: typeof cssPxToVw) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
   const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
-    const baseResult = cssPxToVw(result.data[1])(result.data[0])
-
+    const baseResult = utilsFunction(result.data[1])(result.data[0])
     return baseResult === '' ? '' : baseResult + (space === 1 ? ' ' : '')
   }
 
   consoleError(result.error)
-
   return ''
 }
 
-/**
- * Converts pixel values to clamped viewport width units that won't scale beyond the original pixel size.
- *
- * @param pixel - The pixel value to convert
- * @param designDraft - The design draft width in pixels
- * @returns CSS min/max expression as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * vwc(20, 1440)  // Returns 'min(20px, 1.39vw)'
- * vwc(-20, 1440) // Returns 'max(-20px, -1.39vw)'
- * vwc(0, 1440)   // Returns '0'
- * ```
- */
-export const vwc = (pixel: Pixel, designDraft: DesignDraft) => {
+const genCssClamp = (utilsFunction: typeof cssPxToVwc) => (pixel: Pixel, designDraft: DesignDraft) => {
   const result = checkViewportParams(pixel, designDraft)
 
   if (result.data) {
-    return cssPxToVwc(result.data[1])(result.data[0])
+    return utilsFunction(result.data[1])(result.data[0])
   }
 
   consoleError(result.error)
-
   return ''
 }
 
-/**
- * Converts pixel values to viewport height (vh) units based on design draft height.
- *
- * @param pixel - The pixel value to convert
- * @param designDraft - The design draft height in pixels
- * @param space - Whether to add trailing space for Tailwind multi-value support (1 = with space, 0 = no space, default: 0)
- * @returns CSS vh value as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * vh(30, 1080)    // Returns '2.78vh' (no space by default)
- * vh(30, 1080, 1) // Returns '2.78vh ' (with space)
- * vh(30, 1080, 0) // Returns '2.78vh' (no space)
- * vh(0, 1080)     // Returns '0'
- * ```
- */
-export const vh = (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
-  const result = checkViewportParams(pixel, designDraft)
-
-  if (result.data) {
-    const baseResult = cssPxToVh(result.data[1])(result.data[0])
-
-    return baseResult === '' ? '' : baseResult + (space === 1 ? ' ' : '')
-  }
-
-  consoleError(result.error)
-
-  return ''
-}
-
-/**
- * Converts pixel values to clamped viewport height units that won't scale beyond the original pixel size.
- *
- * @param pixel - The pixel value to convert
- * @param designDraft - The design draft height in pixels
- * @returns CSS min/max expression as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * vhc(30, 1080)  // Returns 'min(30px, 2.78vh)'
- * vhc(-30, 1080) // Returns 'max(-30px, -2.78vh)'
- * vhc(0, 1080)   // Returns '0'
- * ```
- */
-export const vhc = (pixel: Pixel, designDraft: DesignDraft) => {
-  const result = checkViewportParams(pixel, designDraft)
-
-  if (result.data) {
-    return cssPxToVhc(result.data[1])(result.data[0])
-  }
-
-  consoleError(result.error)
-
-  return ''
-}
-
-/**
- * Calculates percentage value from child and parent values.
- *
- * @param child - The child value (numerator)
- * @param parent - The parent value (denominator)
- * @returns CSS percentage value as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * percent(10, 100) // Returns '10%'
- * percent(25, 200) // Returns '12.5%'
- * percent(0, 100)  // Returns '0' (zero values return '0' not '0%')
- * ```
- */
-export const percent = (child: Percent, parent: Percent) => {
-  const result = checkPercentParams(child, parent)
-
-  if (result.data) {
-    return cssPercent(result.data[1])(result.data[0])
-  }
-
-  consoleError(result.error)
-
-  return ''
-}
-
-/**
- * Converts pixel values to extended viewport width units for screens larger than design draft.
- * Uses calc() to add proportional spacing based on excess viewport width.
- *
- * @param pixel - The pixel value to convert
- * @param designDraft - The design draft width in pixels
- * @param percent - The scaling factor for excess width (default: 0.5)
- * @returns CSS calc expression as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * vwe(20, 1440, 0.5) // Returns 'calc((100vw - 1440px) * 0.5 + 20px)'
- * vwe(20, 1440, 0.3) // Returns 'calc((100vw - 1440px) * 0.3 + 20px)'
- * ```
- */
-export const vwe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5) => {
+const genCssExtend = (utilsFunction: typeof cssPxToVwe) => (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5) => {
   const result = checkDesignDraftScalingParams(pixel, designDraft, percent)
 
   if (result.data) {
-    return cssPxToVwe(result.data[1])(result.data[2])(result.data[0])
+    return utilsFunction(result.data[1])(result.data[2])(result.data[0])
   }
 
   consoleError(result.error)
-
   return ''
 }
 
-/**
- * Converts pixel values to extended viewport height units for screens larger than design draft.
- * Uses calc() to add proportional spacing based on excess viewport height.
- *
- * @param pixel - The pixel value to convert
- * @param designDraft - The design draft height in pixels
- * @param percent - The scaling factor for excess height (default: 0.5)
- * @returns CSS calc expression as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * vhe(30, 1080, 0.5) // Returns 'calc((100vh - 1080px) * 0.5 + 30px)'
- * vhe(30, 1080, 0.3) // Returns 'calc((100vh - 1080px) * 0.3 + 30px)'
- * ```
- */
-export const vhe = (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5) => {
-  const result = checkDesignDraftScalingParams(pixel, designDraft, percent)
-
-  if (result.data) {
-    return cssPxToVhe(result.data[1])(result.data[2])(result.data[0])
-  }
-
-  consoleError(result.error)
-
-  return ''
-}
-
-/**
- * Converts line size and font size to em units.
- *
- * @param child - The line size value
- * @param parent - The font size value
- * @returns CSS em value as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * em(24, 16) // Returns '1.5em'
- * em(18, 12) // Returns '1.5em'
- * ```
- */
-export const em = (child: Percent, parent: Percent) => {
+const genCssPercent = (utilsFunction: typeof cssPercent) => (child: Percent, parent: Percent) => {
   const result = checkPercentParams(child, parent)
 
   if (result.data) {
-    return cssEm(result.data[0], result.data[1])
+    return utilsFunction(result.data[1])(result.data[0])
   }
 
   consoleError(result.error)
-
   return ''
 }
 
-/**
- * Converts line height and font size to unit-less line-height ratio.
- *
- * @param child - The line height value
- * @param parent - The font size value
- * @returns CSS line-height ratio as string, or empty string if validation fails
- *
- * @example
- * ```typescript
- * lh(24, 16) // Returns '1.5'
- * lh(20, 16) // Returns '1.25'
- * ```
- */
-export const lh = (child: Percent, parent: Percent) => {
+const genCssFont = (utilsFunction: typeof cssEm) => (child: Percent, parent: Percent) => {
   const result = checkPercentParams(child, parent)
 
   if (result.data) {
-    return cssLh(result.data[0], result.data[1])
+    return utilsFunction(result.data[0], result.data[1])
   }
 
   consoleError(result.error)
-
   return ''
 }
+
+export const vw = genCssViewport(cssPxToVw)
+export const dvw = genCssViewport(cssPxToDvw)
+export const lvw = genCssViewport(cssPxToLvw)
+export const svw = genCssViewport(cssPxToSvw)
+
+export const vwc = genCssClamp(cssPxToVwc)
+export const dvwc = genCssClamp(cssPxToDvwc)
+export const lvwc = genCssClamp(cssPxToLvwc)
+export const svwc = genCssClamp(cssPxToSvwc)
+
+export const vwe = genCssExtend(cssPxToVwe)
+export const dvwe = genCssExtend(cssPxToDvwe)
+export const lvwe = genCssExtend(cssPxToLvwe)
+export const svwe = genCssExtend(cssPxToSvwe)
+
+export const vh = genCssViewport(cssPxToVh)
+export const dvh = genCssViewport(cssPxToDvh)
+export const lvh = genCssViewport(cssPxToLvh)
+export const svh = genCssViewport(cssPxToSvh)
+
+export const vhc = genCssClamp(cssPxToVhc)
+export const dvhc = genCssClamp(cssPxToDvhc)
+export const lvhc = genCssClamp(cssPxToLvhc)
+export const svhc = genCssClamp(cssPxToSvhc)
+
+export const vhe = genCssExtend(cssPxToVhe)
+export const dvhe = genCssExtend(cssPxToDvhe)
+export const lvhe = genCssExtend(cssPxToLvhe)
+export const svhe = genCssExtend(cssPxToSvhe)
+
+export const percent = genCssPercent(cssPercent)
+export const em = genCssFont(cssEm)
+export const lh = genCssFont(cssLh)

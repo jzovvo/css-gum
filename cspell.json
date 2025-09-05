@@ -2,7 +2,19 @@
   "version": "0.2",
   "language": "en",
   "words": [
-    "jzovvo"
+    "jzovvo",
+    "Dvwc",
+    "Lvwc",
+    "Svwc",
+    "Dvhc",
+    "Lvhc",
+    "Svhc",
+    "Dvwe",
+    "Lvwe",
+    "Svwe",
+    "Dvhe",
+    "Lvhe",
+    "Svhe"
   ],
   "ignorePaths": [
     "node_modules/**",

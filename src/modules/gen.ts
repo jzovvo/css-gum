@@ -1,7 +1,6 @@
-import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent} from './core'
+import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent, lvw, svw, dvw, dvh, lvh, svh, dvwc, svwc, lvwc, dvwe, lvwe, svwe, dvhc, lvhc, svhc, dvhe, lvhe, svhe} from './core'
 import {DEFAULT_SNIPPET, genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth, SnippetConfig} from './snippets'
 import type {Pixel, SpaceFlag, DesignDraft} from './types'
-
 interface PropsSpace {
   space?: SpaceFlag
 }
@@ -11,68 +10,107 @@ type PropsDraftFuncs = {
   firstIndex?: number
 } & PropsSpace
 
-export interface PropsNameCustomWidth {
+export interface GenFuncsNameCustomWidth {
   nameVw?: string
+  nameDvw?: string
+  nameLvw?: string
+  nameSvw?: string
+
   nameVwc?: string
+  nameDvwc?: string
+  nameLvwc?: string
+  nameSvwc?: string
+
   nameVwe?: string
+  nameDvwe?: string
+  nameLvwe?: string
+  nameSvwe?: string
 }
 
-export interface PropsNameCustomHeight {
+export interface GenFuncsNameCustomHeight {
   nameVh?: string
+  nameDvh?: string
+  nameLvh?: string
+  nameSvh?: string
+
   nameVhc?: string
+  nameDvhc?: string
+  nameLvhc?: string
+  nameSvhc?: string
+
   nameVhe?: string
+  nameDvhe?: string
+  nameLvhe?: string
+  nameSvhe?: string
 }
 
-export interface PropsNameCustomOther {
+export interface GenFuncsNameCustomOther {
   nameEm?: string
   nameLh?: string
   namePercent?: string
 }
 
-/**
- * Generates width conversion functions for multiple design draft breakpoints.
- * Creates vw, vwc, and vwe functions for each breakpoint with indexed names.
- * Automatically filters out invalid design draft widths (≤ 0).
- *
- * @param params - Configuration object
- * @param params.points - Array of design draft widths in pixels (invalid values ≤ 0 are automatically filtered out)
- * @param params.firstIndex - Starting index for generated function names (default: 1)
- * @param params.nameVw - Prefix for vw functions (default: 'vw')
- * @param params.nameVwc - Prefix for vwc functions (default: 'vwc')
- * @param params.nameVwe - Prefix for vwe functions (default: 'vwe')
- * @param params.space - Default space flag for generated functions (default: 0)
- * @param params.scope - VSCode snippet scope for generated snippets (default: 'html,css,sass,scss,less,stylus')
- * @returns Object with generated functions
- *
- * @example
- * ```typescript
- * const funcs = genFuncsDraftWidth({
- *   points: [375, 768, 1440],
- *   firstIndex: 1,
- *   scope: 'css'
- * })
- *
- * funcs.core.vw1(20)     // 20px on 375px design, no space
- * funcs.core.vw1(20, 1) // 20px on 375px design, with space
- * funcs.core.vwc2(20)   // Clamped 20px on 768px design
- * funcs.core.vwe3(20)   // Extended 20px on 1440px design
- *
- * // Invalid points are automatically filtered out
- * const filteredFuncs = genFuncsDraftWidth({
- *   points: [0, -100, 375, 768, -50] // Only 375 and 768 are valid
- * })
- * // Only generates: vw1, vw2, vwc1, vwc2, vwe1, vwe2
- * ```
- */
+export const DEFAULT: Required<PropsDraftFuncs & GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther> = {
+  space: 0,
+  firstIndex: 1,
+  points: [],
+
+  nameEm: 'em',
+  nameLh: 'lh',
+  namePercent: 'percent',
+
+  nameVw: 'vw',
+  nameDvw: 'dvw',
+  nameLvw: 'lvw',
+  nameSvw: 'svw',
+
+  nameVwc: 'vwc',
+  nameDvwc: 'dvwc',
+  nameLvwc: 'lvwc',
+  nameSvwc: 'svwc',
+
+  nameVwe: 'vwe',
+  nameDvwe: 'dvwe',
+  nameLvwe: 'lvwe',
+  nameSvwe: 'svwe',
+
+  nameVh: 'vh',
+  nameDvh: 'dvh',
+  nameLvh: 'lvh',
+  nameSvh: 'svh',
+
+  nameVhc: 'vhc',
+  nameDvhc: 'dvhc',
+  nameLvhc: 'lvhc',
+  nameSvhc: 'svhc',
+
+  nameVhe: 'vhe',
+  nameDvhe: 'dvhe',
+  nameLvhe: 'lvhe',
+  nameSvhe: 'svhe',
+}
+
 export const genFuncsDraftWidth = ({
-  points = [],
-  firstIndex = 1,
-  nameVw = 'vw',
-  nameVwc = 'vwc',
-  nameVwe = 'vwe',
-  space = 0,
+  space = DEFAULT.space,
   scope = DEFAULT_SNIPPET.SCOPE,
-}: PropsDraftFuncs & PropsNameCustomWidth & Pick<SnippetConfig, 'scope'>) => {
+  points = DEFAULT.points,
+  firstIndex = DEFAULT.firstIndex,
+
+  nameVw = DEFAULT.nameVw,
+  nameDvw = DEFAULT.nameDvw,
+  nameLvw = DEFAULT.nameLvw,
+  nameSvw = DEFAULT.nameSvw,
+
+  nameVwc = DEFAULT.nameVwc,
+  nameDvwc = DEFAULT.nameDvwc,
+  nameLvwc = DEFAULT.nameLvwc,
+  nameSvwc = DEFAULT.nameSvwc,
+
+  nameVwe = DEFAULT.nameVwe,
+  nameDvwe = DEFAULT.nameDvwe,
+  nameLvwe = DEFAULT.nameLvwe,
+  nameSvwe = DEFAULT.nameSvwe,
+}: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<SnippetConfig, 'scope'>) => {
   const validPoints = points.filter(point => point > 0)
 
   validPoints.sort((a, b) => a - b)
@@ -84,67 +122,67 @@ export const genFuncsDraftWidth = ({
     const point = validPoints[i]
 
     nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vw(pixel, point, spaceOverride ?? space))
+    nameDvw !== '' && (temp[nameDvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvw(pixel, point, spaceOverride ?? space))
+    nameLvw !== '' && (temp[nameLvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvw(pixel, point, spaceOverride ?? space))
+    nameSvw !== '' && (temp[nameSvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svw(pixel, point, spaceOverride ?? space))
+
     nameVwc !== '' && (temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point))
+    nameDvwc !== '' && (temp[nameDvwc + idx] = (pixel: Pixel) => dvwc(pixel, point))
+    nameLvwc !== '' && (temp[nameLvwc + idx] = (pixel: Pixel) => lvwc(pixel, point))
+    nameSvwc !== '' && (temp[nameSvwc + idx] = (pixel: Pixel) => svwc(pixel, point))
+
     nameVwe !== '' && (temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point))
+    nameDvwe !== '' && (temp[nameDvwe + idx] = (pixel: Pixel) => dvwe(pixel, point))
+    nameLvwe !== '' && (temp[nameLvwe + idx] = (pixel: Pixel) => lvwe(pixel, point))
+    nameSvwe !== '' && (temp[nameSvwe + idx] = (pixel: Pixel) => svwe(pixel, point))
   }
 
   return {
     core: temp,
     VSCodeSnippet: genVSCodeSnippetDraftWidth({
-      nameVw,
-      nameVwc,
-      nameVwe,
       pointsSize: validPoints.length,
       firstIndex,
       scope,
+
+      nameVw,
+      nameDvw,
+      nameLvw,
+      nameSvw,
+
+      nameVwc,
+      nameDvwc,
+      nameLvwc,
+      nameSvwc,
+
+      nameVwe,
+      nameDvwe,
+      nameLvwe,
+      nameSvwe,
     }),
   }
 }
 
-/**
- * Generates height conversion functions for multiple design draft breakpoints.
- * Creates vh, vhc, and vhe functions for each breakpoint with indexed names.
- * Automatically filters out invalid design draft heights (≤ 0).
- *
- * @param params - Configuration object
- * @param params.points - Array of design draft heights in pixels (invalid values ≤ 0 are automatically filtered out)
- * @param params.firstIndex - Starting index for generated function names (default: 1)
- * @param params.nameVh - Prefix for vh functions (default: 'vh')
- * @param params.nameVhc - Prefix for vhc functions (default: 'vhc')
- * @param params.nameVhe - Prefix for vhe functions (default: 'vhe')
- * @param params.space - Default space flag for generated functions (default: 0)
- * @param params.scope - VSCode snippet scope for generated snippets (default: 'html,css,sass,scss,less,stylus')
- * @returns Object with generated functions
- *
- * @example
- * ```typescript
- * const funcs = genFuncsDraftHeight({
- *   points: [667, 1080, 1440],
- *   firstIndex: 1,
- *   scope: 'scss'
- * })
- *
- * funcs.core.vh1(30)     // 30px on 667px design, no space
- * funcs.core.vh1(30, 1) // 30px on 667px design, with space
- * funcs.core.vhc2(30)   // Clamped 30px on 1080px design
- * funcs.core.vhe3(30)   // Extended 30px on 1440px design
- *
- * // Invalid points are automatically filtered out
- * const filteredFuncs = genFuncsDraftHeight({
- *   points: [0, -200, 667, 1080, -100] // Only 667 and 1080 are valid
- * })
- * // Only generates: vh1, vh2, vhc1, vhc2, vhe1, vhe2
- * ```
- */
 export const genFuncsDraftHeight = ({
-  points = [],
-  firstIndex = 1,
-  nameVh = 'vh',
-  nameVhc = 'vhc',
-  nameVhe = 'vhe',
-  space = 0,
+  space = DEFAULT.space,
   scope = DEFAULT_SNIPPET.SCOPE,
-}: PropsDraftFuncs & PropsNameCustomHeight & Pick<SnippetConfig, 'scope'>) => {
+  points = DEFAULT.points,
+  firstIndex = DEFAULT.firstIndex,
+
+  nameVh = DEFAULT.nameVh,
+  nameDvh = DEFAULT.nameDvh,
+  nameLvh = DEFAULT.nameLvh,
+  nameSvh = DEFAULT.nameSvh,
+
+  nameVhc = DEFAULT.nameVhc,
+  nameDvhc = DEFAULT.nameDvhc,
+  nameLvhc = DEFAULT.nameLvhc,
+  nameSvhc = DEFAULT.nameSvhc,
+
+  nameVhe = DEFAULT.nameVhe,
+  nameDvhe = DEFAULT.nameDvhe,
+  nameLvhe = DEFAULT.nameLvhe,
+  nameSvhe = DEFAULT.nameSvhe,
+}: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<SnippetConfig, 'scope'>) => {
   const validPoints = points.filter(point => point > 0)
 
   validPoints.sort((a, b) => a - b)
@@ -156,77 +194,118 @@ export const genFuncsDraftHeight = ({
     const point = validPoints[i]
 
     nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vh(pixel, point, spaceOverride ?? space))
+    nameDvh !== '' && (temp[nameDvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvh(pixel, point, spaceOverride ?? space))
+    nameLvh !== '' && (temp[nameLvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvh(pixel, point, spaceOverride ?? space))
+    nameSvh !== '' && (temp[nameSvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svh(pixel, point, spaceOverride ?? space))
+
     nameVhc !== '' && (temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point))
+    nameDvhc !== '' && (temp[nameDvhc + idx] = (pixel: Pixel) => dvhc(pixel, point))
+    nameLvhc !== '' && (temp[nameLvhc + idx] = (pixel: Pixel) => lvhc(pixel, point))
+    nameSvhc !== '' && (temp[nameSvhc + idx] = (pixel: Pixel) => svhc(pixel, point))
+
     nameVhe !== '' && (temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point))
+    nameDvhe !== '' && (temp[nameDvhe + idx] = (pixel: Pixel) => dvhe(pixel, point))
+    nameLvhe !== '' && (temp[nameLvhe + idx] = (pixel: Pixel) => lvhe(pixel, point))
+    nameSvhe !== '' && (temp[nameSvhe + idx] = (pixel: Pixel) => svhe(pixel, point))
   }
 
   return {
     core: temp,
     VSCodeSnippet: genVSCodeSnippetDraftHeight({
-      nameVh,
-      nameVhc,
-      nameVhe,
       pointsSize: validPoints.length,
       firstIndex,
       scope,
+
+      nameVh,
+      nameDvh,
+      nameLvh,
+      nameSvh,
+
+      nameVhc,
+      nameDvhc,
+      nameLvhc,
+      nameSvhc,
+
+      nameVhe,
+      nameDvhe,
+      nameLvhe,
+      nameSvhe,
     }),
   }
 }
 
-/**
- * Generates core conversion functions with custom names.
- * Returns all core functions (vw, vh, vwc, vhc, vwe, vhe, em, lh, percent) with customizable names.
- *
- * @param params - Configuration object with optional custom function names
- * @param params.nameVw - Custom name for vw function (default: 'vw')
- * @param params.nameVh - Custom name for vh function (default: 'vh')
- * @param params.nameVwc - Custom name for vwc function (default: 'vwc')
- * @param params.nameVhc - Custom name for vhc function (default: 'vhc')
- * @param params.nameVwe - Custom name for vwe function (default: 'vwe')
- * @param params.nameVhe - Custom name for vhe function (default: 'vhe')
- * @param params.nameEm - Custom name for em function (default: 'em')
- * @param params.nameLh - Custom name for lh function (default: 'lh')
- * @param params.namePercent - Custom name for percent function (default: 'percent')
- * @param params.space - Default space flag for generated functions (default: 0)
- * @param params.scope - VSCode snippet scope for generated snippets (default: 'html,css,sass,scss,less,stylus')
- * @returns Object with all core functions using specified names
- *
- * @example
- * ```typescript
- * const funcs = genFuncsCore({
- *   nameVw: 'toVw',
- *   namePercent: 'toPercent',
- *   scope: 'css,scss'
- * })
- *
- * funcs.core.toVw(20, 1440)      // Same as Core.vw
- * funcs.core.toPercent(10, 100)  // Same as Core.percent
- * funcs.core.vh(30, 1080)        // Uses default name
- * ```
- */
 export const genFuncsCore = ({
-  nameEm = 'em',
-  nameLh = 'lh',
-  nameVh = 'vh',
-  nameVhc = 'vhc',
-  nameVhe = 'vhe',
-  nameVw = 'vw',
-  nameVwc = 'vwc',
-  nameVwe = 'vwe',
-  namePercent = 'percent',
-  space = 0,
+  space = DEFAULT.space,
   scope = DEFAULT_SNIPPET.SCOPE,
-}: PropsNameCustomWidth & PropsNameCustomHeight & PropsNameCustomOther & PropsSpace & Pick<SnippetConfig, 'scope'> = {}) => {
+
+  nameEm = DEFAULT.nameEm,
+  nameLh = DEFAULT.nameLh,
+  namePercent = DEFAULT.namePercent,
+
+  nameVw = DEFAULT.nameVw,
+  nameDvw = DEFAULT.nameDvw,
+  nameLvw = DEFAULT.nameLvw,
+  nameSvw = DEFAULT.nameSvw,
+
+  nameVwc = DEFAULT.nameVwc,
+  nameDvwc = DEFAULT.nameDvwc,
+  nameLvwc = DEFAULT.nameLvwc,
+  nameSvwc = DEFAULT.nameSvwc,
+
+  nameVwe = DEFAULT.nameVwe,
+  nameDvwe = DEFAULT.nameDvwe,
+  nameLvwe = DEFAULT.nameLvwe,
+  nameSvwe = DEFAULT.nameSvwe,
+
+  nameVh = DEFAULT.nameVh,
+  nameDvh = DEFAULT.nameDvh,
+  nameLvh = DEFAULT.nameLvh,
+  nameSvh = DEFAULT.nameSvh,
+
+  nameVhc = DEFAULT.nameVhc,
+  nameDvhc = DEFAULT.nameDvhc,
+  nameLvhc = DEFAULT.nameLvhc,
+  nameSvhc = DEFAULT.nameSvhc,
+
+  nameVhe = DEFAULT.nameVhe,
+  nameDvhe = DEFAULT.nameDvhe,
+  nameLvhe = DEFAULT.nameLvhe,
+  nameSvhe = DEFAULT.nameSvhe,
+}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & PropsSpace & Pick<SnippetConfig, 'scope'> = {}) => {
   const temp = {
     [nameEm]: em,
     [nameLh]: lh,
-    [nameVh]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => vh(pixel, designDraft, spaceOverride ?? space),
-    [nameVhc]: vhc,
-    [nameVhe]: vhe,
-    [nameVw]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => vw(pixel, designDraft, spaceOverride ?? space),
-    [nameVwc]: vwc,
-    [nameVwe]: vwe,
     [namePercent]: percent,
+
+    [nameVw]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => vw(pixel, designDraft, spaceOverride ?? space),
+    [nameDvw]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => dvw(pixel, designDraft, spaceOverride ?? space),
+    [nameLvw]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => lvw(pixel, designDraft, spaceOverride ?? space),
+    [nameSvw]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => svw(pixel, designDraft, spaceOverride ?? space),
+
+    [nameVh]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => vh(pixel, designDraft, spaceOverride ?? space),
+    [nameDvh]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => dvh(pixel, designDraft, spaceOverride ?? space),
+    [nameLvh]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => lvh(pixel, designDraft, spaceOverride ?? space),
+    [nameSvh]: (pixel: Pixel, designDraft: DesignDraft, spaceOverride?: SpaceFlag) => svh(pixel, designDraft, spaceOverride ?? space),
+
+    [nameVwc]: vwc,
+    [nameDvwc]: dvwc,
+    [nameLvwc]: lvwc,
+    [nameSvwc]: svwc,
+
+    [nameVwe]: vwe,
+    [nameDvwe]: dvwe,
+    [nameLvwe]: lvwe,
+    [nameSvwe]: svwe,
+
+    [nameVhc]: vhc,
+    [nameDvhc]: dvhc,
+    [nameLvhc]: lvhc,
+    [nameSvhc]: svhc,
+
+    [nameVhe]: vhe,
+    [nameDvhe]: dvhe,
+    [nameLvhe]: lvhe,
+    [nameSvhe]: svhe,
   }
 
   delete temp['']
@@ -234,16 +313,41 @@ export const genFuncsCore = ({
   return {
     core: temp,
     VSCodeSnippet: genVSCodeSnippetCore({
+      scope,
+
       nameEm,
       nameLh,
-      nameVh,
-      nameVhc,
-      nameVhe,
-      nameVw,
-      nameVwc,
-      nameVwe,
       namePercent,
-      scope,
+
+      nameVw,
+      nameDvw,
+      nameLvw,
+      nameSvw,
+
+      nameVwc,
+      nameDvwc,
+      nameLvwc,
+      nameSvwc,
+
+      nameVwe,
+      nameDvwe,
+      nameLvwe,
+      nameSvwe,
+
+      nameVh,
+      nameDvh,
+      nameLvh,
+      nameSvh,
+
+      nameVhc,
+      nameDvhc,
+      nameLvhc,
+      nameSvhc,
+
+      nameVhe,
+      nameDvhe,
+      nameLvhe,
+      nameSvhe,
     }),
   }
 }
