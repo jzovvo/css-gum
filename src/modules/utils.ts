@@ -211,7 +211,7 @@ export const cssPercent = (parent: number) => (child: number) => {
   }
 
   if (parent === 0) {
-    return 'Infinity%'
+    return 'infinity'
   }
 
   return `${percent(parent)(child)}%`

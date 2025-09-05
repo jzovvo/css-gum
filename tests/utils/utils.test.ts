@@ -262,7 +262,7 @@ describe('Util Module', () => {
     it('cssPercent should handle division by zero', () => {
       const result = Util.cssPercent(0)(100)
 
-      expect(result).toBe('Infinity%')
+      expect(result).toBe('infinity')
     })
 
     it('cssEm should handle division by zero', () => {
