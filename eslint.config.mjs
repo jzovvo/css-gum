@@ -62,33 +62,6 @@ export default [
           ignoreComments: true,
         },
       ],
-      '@stylistic/padding-line-between-statements': [
-        'error',
-        // Import 語句後要空行（但 import 之間不要）
-        { blankLine: 'always', prev: 'import', next: '*' },
-        { blankLine: 'never', prev: 'import', next: 'import' },
-
-        // Export 語句前要空行（但連續 export 不要）
-        { blankLine: 'always', prev: 'export', next: 'export' },
-
-        // Return 語句前要空行
-        { blankLine: 'always', prev: '*', next: 'return' },
-
-        // 控制結構後要空行
-        { blankLine: 'always', prev: 'if', next: '*' },
-        { blankLine: 'always', prev: 'for', next: '*' },
-        { blankLine: 'always', prev: 'while', next: '*' },
-        { blankLine: 'always', prev: 'do', next: '*' },
-        { blankLine: 'always', prev: 'switch', next: '*' },
-        { blankLine: 'always', prev: 'try', next: '*' },
-
-        // 函式聲明後要空行
-        { blankLine: 'always', prev: 'function', next: '*' },
-
-        // 變數聲明群組後要空行
-        { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
-        { blankLine: 'never', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
-      ],
     }
   },
   {
