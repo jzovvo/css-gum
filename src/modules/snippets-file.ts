@@ -3,17 +3,6 @@ import fs from 'fs'
 import {dirname} from 'path'
 import type {SnippetConfig} from './types'
 
-/**
- * Reads existing VSCode snippets file and returns parsed JSON object.
- *
- * @param filePath - Path to the snippets file
- * @returns Parsed snippets object or empty object if file doesn't exist or is invalid
- *
- * @example
- * ```typescript
- * const snippets = readExistingSnippets('.vscode/css.code-snippets')
- * ```
- */
 const readExistingSnippets = (filePath: string): Record<string, SnippetConfig> => {
   try {
     if (fs.existsSync(filePath)) {
@@ -37,33 +26,10 @@ const readExistingSnippets = (filePath: string): Record<string, SnippetConfig> =
 
   return {}
 }
-/**
- * Merges new snippets with existing ones, removing duplicate keys.
- *
- * @param existing - Existing snippets object
- * @param newSnippets - New snippets to add
- * @returns Merged snippets object
- *
- * @example
- * ```typescript
- * const merged = mergeSnippets(existingSnippets, newSnippets)
- * ```
- */
 const mergeSnippets = (existing: Record<string, SnippetConfig>, newSnippets: Record<string, SnippetConfig>): Record<string, SnippetConfig> => {
   return {...existing, ...newSnippets}
 }
 
-/**
- * Writes snippets to output files.
- *
- * @param snippets - Snippets object to write
- * @param output - Array of file paths to write to
- *
- * @example
- * ```typescript
- * writeSnippetsToFiles(snippets, ['.vscode/css.code-snippets'])
- * ```
- */
 export const writeSnippetsToFiles = (snippets: Record<string, SnippetConfig>, output: string[]) => {
   for (let i = 0; i < output.length; i++) {
     const filePath = output[i]
