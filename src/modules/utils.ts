@@ -1,7 +1,7 @@
 import type {DesignDraft, Percent, Pixel} from './types'
 
-type Vw = 'vw' | 'dvw' | 'lvw' | 'svw'
-type Vh = 'vh' | 'dvh' | 'lvh' | 'svh'
+type ViewportWidthUnit = 'vw' | 'dvw' | 'lvw' | 'svw'
+type ViewportHeightUnit = 'vh' | 'dvh' | 'lvh' | 'svh'
 
 
 export const percent = (denominator: number) => (numerator: number) => numerator / denominator * 100
@@ -20,7 +20,7 @@ const genCssPercentUnit = (parent: number) => (unit: string) => (child: number) 
   return `${percent(parent)(child)}${unit}`
 }
 
-const genCssViewport = (designDraftWidth: DesignDraft) => (unit: Vw | Vh) => (pixel: Pixel) => {
+const genCssViewport = (designDraftWidth: DesignDraft) => (unit: ViewportWidthUnit | ViewportHeightUnit) => (pixel: Pixel) => {
   if (designDraftWidth <= 0) {
     return ''
   }
@@ -28,7 +28,7 @@ const genCssViewport = (designDraftWidth: DesignDraft) => (unit: Vw | Vh) => (pi
   return genCssPercentUnit(designDraftWidth)(unit)(pixel)
 }
 
-const genCssClamp = (designDraftWidth: DesignDraft) => (unit: Vw | Vh) => (pixel: Pixel) => {
+const genCssClamp = (designDraftWidth: DesignDraft) => (unit: ViewportWidthUnit | ViewportHeightUnit) => (pixel: Pixel) => {
   if (designDraftWidth <= 0) {
     return ''
   }
@@ -40,7 +40,7 @@ const genCssClamp = (designDraftWidth: DesignDraft) => (unit: Vw | Vh) => (pixel
   return pixel > 0 ? `min(${pixel}px, ${genCssViewport(designDraftWidth)(unit)(pixel)})` : `max(${pixel}px, ${genCssViewport(designDraftWidth)(unit)(pixel)})`
 }
 
-const genCssExtend = (designDraftWidth: DesignDraft) => (unit: Vw | Vh) => (percent: Percent) => (pixel: Pixel) => {
+const genCssExtend = (designDraftWidth: DesignDraft) => (unit: ViewportWidthUnit | ViewportHeightUnit) => (percent: Percent) => (pixel: Pixel) => {
   if (designDraftWidth <= 0) {
     return ''
   }
