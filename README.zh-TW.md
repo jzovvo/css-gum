@@ -10,9 +10,9 @@
 
 ## 功能特色
 
-- 🖥️ **viewport 單位**: 將 pixel 轉換為響應式 `vw`/`vh` 單位
+- 🖥️ **viewport 單位**: 支援 `vw`/`vh`、`dvw`/`dvh`、`lvw`/`lvh`、`svw`/`svh`
 - 🔒 **限制單位**: 使用 `vwc`/`vhc` 限制最大/最小值
-- 📏 **延伸縮放**: 適應比 design draft 更大 screen 的自適應縮放
+- 📏 **延伸縮放**: 適應比 design draft 更大螢幕
 - ⚡ **批量生成**: 為多個 design draft breakpoint 批量生成 function
 - 🎯 **Snippet**: 自動生成 Snippet，提升開發效率
 
@@ -27,9 +27,17 @@ npm install css-gum
 ```typescript
 import { Core } from "css-gum";
 
-// 基本 viewport 單位（預設不帶尾隨空格）
+// 基本（預設不帶尾隨空格）
 Core.vw(20, 1440); // '1.39vw' - 1440px design draft 的 20px
 Core.vh(30, 1080); // '2.78vh' - 1080px design draft 的 30px
+
+// viewport 變體
+Core.dvw(20, 1440); // '1.39dvw'
+Core.dvh(30, 1080); // '2.78dvh'
+Core.lvw(20, 1440); // '1.39lvw'
+Core.lvh(30, 1080); // '2.78lvh'
+Core.svw(20, 1440); // '1.39svw'
+Core.svh(30, 1080); // '2.78svh'
 
 // 控制空格參數（適用於不同使用場景）
 Core.vw(20, 1440, 0); // '1.39vw'  - 指定不帶空格（預設）
@@ -37,11 +45,15 @@ Core.vw(20, 1440, 1); // '1.39vw ' - 指定帶空格
 
 // 限制單位
 Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
+Core.dvwc(20, 1440); // 'min(20px, 1.39dvw)'
 Core.vhc(30, 1080); // 'min(30px, 2.78vh)'
+Core.dvhc(30, 1080); // 'min(30px, 2.78dvh)'
 
-// 延伸縮放
+// 延伸縮放（預設縮放係數 0.5）
 Core.vwe(20, 1440); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+Core.dvwe(20, 1440); // 'calc((100dvw - 1440px) * 0.5 + 20px)'
 Core.vhe(30, 1080); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+Core.dvhe(30, 1080); // 'calc((100dvh - 1080px) * 0.5 + 30px)'
 
 // 其他工具
 Core.percent(10, 100); // '10%'
@@ -62,112 +74,118 @@ Core.lh(24, 16); // '1.5'
 
 ### Core Module
 
-#### `vw(pixel, designDraft, space?)`
+#### Viewport 單位函數
+
+CSS-Gum 支援所有 viewport 單位：`vw`, `vh`, `dvw`, `dvh`, `lvw`, `lvh`, `svw`, `svh`
+
+#### `vw(pixel, designDraft, space?)`, `dvw()`, `lvw()`, `svw()`
 
 將 pixel 轉換為 viewport 寬度單位。
 
 **Parameters**
 
-- `pixel`
-  - 要轉換的 pixel 值
-- `designDraft`
-  - design draft 寬度 pixel 值
-- `space`
-  - 是否添加尾隨空格以支援 Tailwind 多值語法
-  - `1` = 帶空格, `0` = 不帶空格, 預設: `0`
+- `pixel` - 要轉換的 pixel 值
+- `designDraft` - design draft 寬度 pixel 值
+- `space` - 是否添加尾隨空格以支援 Tailwind 多值語法 (`1` = 帶空格, `0` = 不帶空格, 預設: `0`)
 
 ```typescript
-Core.vw(20, 1440); // '1.39vw' (預設不帶空格)
-Core.vw(20, 1440, 0); // '1.39vw' (指定不帶空格)
-Core.vw(20, 1440, 1); // '1.39vw ' (指定帶空格)
+Core.vw(20, 1440); // '1.39vw'
+Core.vw(20, 1440, 1); // '1.39vw ' (帶空格)
+Core.dvw(20, 1440); // '1.39dvw'
+Core.lvw(20, 1440); // '1.39lvw'
+Core.svw(20, 1440); // '1.39svw'
 ```
 
-#### `vh(pixel, designDraft, space?)`
+#### `vh(pixel, designDraft, space?)`, `dvh()`, `lvh()`, `svh()`
 
 將 pixel 轉換為 viewport 高度單位。
 
 **Parameters**
 
-- `pixel`
-  - 要轉換的 pixel 值
-- `designDraft`
-  - design draft 高度 pixel 值
-- `space`
-  - 是否添加尾隨空格以支援 Tailwind 多值語法
-  - `1` = 帶空格, `0` = 不帶空格, 預設: `0`
+- `pixel` - 要轉換的 pixel 值
+- `designDraft` - design draft 高度 pixel 值
+- `space` - 是否添加尾隨空格以支援 Tailwind 多值語法 (`1` = 帶空格, `0` = 不帶空格, 預設: `0`)
 
 ```typescript
-Core.vh(30, 1080); // '2.78vh' (預設不帶空格)
-Core.vh(30, 1080, 0); // '2.78vh'  (指定不帶空格)
-Core.vh(30, 1080, 1); // '2.78vh ' (指定帶空格)
+Core.vh(30, 1080); // '2.78vh'
+Core.vh(30, 1080, 1); // '2.78vh ' (帶空格)
+Core.dvh(30, 1080); // '2.78dvh'
+Core.lvh(30, 1080); // '2.78lvh'
+Core.svh(30, 1080); // '2.78svh'
 ```
 
-#### `vwc(pixel, designDraft)`
+#### `vwc(pixel, designDraft)`, `dvwc()`, `lvwc()`, `svwc()`
 
 限制型 viewport 寬度。
 
 **Parameters**
 
-- `pixel`
-  - 要轉換的 pixel 值
-- `designDraft`
-  - design draft 寬度 pixel 值
+- `pixel` - 要轉換的 pixel 值
+- `designDraft` - design draft 寬度 pixel 值
 
 ```typescript
 Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
+Core.vwc(-20, 1440); // 'max(-20px, -1.39vw)'
+Core.dvwc(20, 1440); // 'min(20px, 1.39dvw)'
+Core.lvwc(20, 1440); // 'min(20px, 1.39lvw)'
+Core.svwc(20, 1440); // 'min(20px, 1.39svw)'
 ```
 
-#### `vhc(pixel, designDraft)`
+#### `vhc(pixel, designDraft)`, `dvhc()`, `lvhc()`, `svhc()`
 
 限制型 viewport 高度。
 
 **Parameters**
 
-- `pixel`
-  - 要轉換的 pixel 值
-- `designDraft`
-  - design draft 高度 pixel 值
+- `pixel` - 要轉換的 pixel 值
+- `designDraft` - design draft 高度 pixel 值
 
 ```typescript
 Core.vhc(30, 1080); // 'min(30px, 2.78vh)'
+Core.vhc(-30, 1080); // 'max(-30px, -2.78vh)'
+Core.dvhc(30, 1080); // 'min(30px, 2.78dvh)'
+Core.lvhc(30, 1080); // 'min(30px, 2.78lvh)'
+Core.svhc(30, 1080); // 'min(30px, 2.78svh)'
 ```
 
-#### `vwe(pixel, designDraft, percent?)`
+#### `vwe(pixel, designDraft, percent?)`, `dvwe()`, `lvwe()`, `svwe()`
 
 延伸型 viewport 寬度。
 
 **Parameters**
 
-- `pixel`
-  - 要轉換的 pixel 值
-- `designDraft`
-  - design draft 寬度 pixel 值
-- `percent`
-  - 縮放係數
-  - 預設: 0.5
+- `pixel` - 要轉換的 pixel 值
+- `designDraft` - design draft 寬度 pixel 值
+- `percent` - 縮放係數（預設: 0.5）
 
 ```typescript
 Core.vwe(20, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 Core.vwe(20, 1440); // 與上面相同，使用預設值 0.5
+Core.vwe(0, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5)'
+Core.vwe(-20, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5 - 20px)'
+Core.dvwe(20, 1440, 0.8); // 'calc((100dvw - 1440px) * 0.8 + 20px)'
+Core.lvwe(20, 1440); // 'calc((100lvw - 1440px) * 0.5 + 20px)'
+Core.svwe(20, 1440); // 'calc((100svw - 1440px) * 0.5 + 20px)'
 ```
 
-#### `vhe(pixel, designDraft, percent?)`
+#### `vhe(pixel, designDraft, percent?)`, `dvhe()`, `lvhe()`, `svhe()`
 
 延伸型 viewport 高度。
 
 **Parameters**
 
-- `pixel`
-  - 要轉換的 pixel 值
-- `designDraft`
-  - design draft 高度 pixel 值
-- `percent`
-  - 縮放係數
-  - 預設: 0.5
+- `pixel` - 要轉換的 pixel 值
+- `designDraft` - design draft 高度 pixel 值
+- `percent` - 縮放係數（預設: 0.5）
 
 ```typescript
 Core.vhe(30, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 Core.vhe(30, 1080); // 與上面相同，使用預設值 0.5
+Core.vhe(0, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5)'
+Core.vhe(-30, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5 - 30px)'
+Core.dvhe(30, 1080, 0.8); // 'calc((100dvh - 1080px) * 0.8 + 30px)'
+Core.lvhe(30, 1080); // 'calc((100lvh - 1080px) * 0.5 + 30px)'
+Core.svhe(30, 1080); // 'calc((100svh - 1080px) * 0.5 + 30px)'
 ```
 
 #### `percent(child, parent)`
@@ -218,16 +236,18 @@ Core.lh(24, 16); // '1.5'
 
 ### Util Module
 
-#### `cssPxToVw(designDraft)(pixel)`
+Util 模組提供 curried function。
 
-pixel 轉 CSS vw 字串的 curried function。
+#### Viewport 寬度工具函數
+
+##### `cssPxToVw(designDraft)(pixel)`, `cssPxToDvw()`, `cssPxToLvw()`, `cssPxToSvw()`
+
+pixel 轉 CSS viewport 寬度字串的 curried function。
 
 **Parameters**
 
-- `designDraft`
-  - design draft 寬度 pixel 值
-- `pixel`
-  - 要轉換的 pixel 值
+- `designDraft` - design draft 寬度 pixel 值
+- `pixel` - 要轉換的 pixel 值
 
 ```typescript
 import { Util } from "css-gum";
@@ -235,94 +255,140 @@ import { Util } from "css-gum";
 const toVw = Util.cssPxToVw(1440);
 toVw(20); // '1.39vw'
 toVw(0); // '0'
+
+const toDvw = Util.cssPxToDvw(1440);
+toDvw(20); // '1.39dvw'
+
+const toLvw = Util.cssPxToLvw(1440);
+const toSvw = Util.cssPxToSvw(1440);
+toLvw(20); // '1.39lvw'
+toSvw(20); // '1.39svw'
 ```
 
-#### `cssPxToVh(designDraft)(pixel)`
+#### Viewport 高度工具函數
 
-pixel 轉 CSS vh 字串的 curried function。
+##### `cssPxToVh(designDraft)(pixel)`, `cssPxToDvh()`, `cssPxToLvh()`, `cssPxToSvh()`
+
+pixel 轉 CSS viewport 高度字串的 curried function。
 
 **Parameters**
 
-- `designDraft`
-  - design draft 高度 pixel 值
-- `pixel`
-  - 要轉換的 pixel 值
+- `designDraft` - design draft 高度 pixel 值
+- `pixel` - 要轉換的 pixel 值
 
 ```typescript
 const toVh = Util.cssPxToVh(1080);
 toVh(30); // '2.78vh'
+
+const toDvh = Util.cssPxToDvh(1080);
+toDvh(30); // '2.78dvh'
+
+const toLvh = Util.cssPxToLvh(1080);
+const toSvh = Util.cssPxToSvh(1080);
+toLvh(30); // '2.78lvh'
+toSvh(30); // '2.78svh'
 ```
 
-#### `cssPxToVwc(designDraft)(pixel)`
+#### 限制型 Viewport 工具函數
 
-pixel 轉限制型 vw 的 curried function。
+##### `cssPxToVwc(designDraft)(pixel)`, `cssPxToDvwc()`, `cssPxToLvwc()`, `cssPxToSvwc()`
+
+pixel 轉限制型 viewport 寬度的 curried function。
 
 **Parameters**
 
-- `designDraft`
-  - design draft 寬度 pixel 值
-- `pixel`
-  - 要轉換的 pixel 值
+- `designDraft` - design draft 寬度 pixel 值
+- `pixel` - 要轉換的 pixel 值
 
 ```typescript
 const toVwc = Util.cssPxToVwc(1440);
 toVwc(20); // 'min(20px, 1.39vw)'
 toVwc(-20); // 'max(-20px, -1.39vw)'
+
+const toDvwc = Util.cssPxToDvwc(1440);
+toDvwc(20); // 'min(20px, 1.39dvw)'
+
+const toLvwc = Util.cssPxToLvwc(1440);
+const toSvwc = Util.cssPxToSvwc(1440);
+toLvwc(20); // 'min(20px, 1.39lvw)'
+toSvwc(20); // 'min(20px, 1.39svw)'
 ```
 
-#### `cssPxToVhc(designDraft)(pixel)`
+##### `cssPxToVhc(designDraft)(pixel)`, `cssPxToDvhc()`, `cssPxToLvhc()`, `cssPxToSvhc()`
 
-pixel 轉限制型 vh 的 curried function。
+pixel 轉限制型 viewport 高度的 curried function。
 
 **Parameters**
 
-- `designDraft`
-  - design draft 高度 pixel 值
-- `pixel`
-  - 要轉換的 pixel 值
+- `designDraft` - design draft 高度 pixel 值
+- `pixel` - 要轉換的 pixel 值
 
 ```typescript
 const toVhc = Util.cssPxToVhc(1080);
 toVhc(30); // 'min(30px, 2.78vh)'
+
+const toDvhc = Util.cssPxToDvhc(1080);
+toDvhc(30); // 'min(30px, 2.78dvh)'
+
+const toLvhc = Util.cssPxToLvhc(1080);
+const toSvhc = Util.cssPxToSvhc(1080);
+toLvhc(30); // 'min(30px, 2.78lvh)'
+toSvhc(30); // 'min(30px, 2.78svh)'
 ```
 
-#### `cssPxToVwe(designDraft)(percent)(pixel)`
+#### 延伸型 Viewport 工具函數
 
-pixel 轉延伸型 vw 的 curried function。
+##### `cssPxToVwe(designDraft)(percent)(pixel)`, `cssPxToDvwe()`, `cssPxToLvwe()`, `cssPxToSvwe()`
+
+pixel 轉延伸型 viewport 寬度的 curried function。
 
 **Parameters**
 
-- `designDraft`
-  - design draft 寬度 pixel 值
-- `percent`
-  - 縮放係數
-- `pixel`
-  - 要轉換的 pixel 值
+- `designDraft` - design draft 寬度 pixel 值
+- `percent` - 縮放係數
+- `pixel` - 要轉換的 pixel 值
 
 ```typescript
 const toVwe = Util.cssPxToVwe(1440)(0.5);
 toVwe(20); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+toVwe(0); // 'calc((100vw - 1440px) * 0.5)'
+toVwe(-20); // 'calc((100vw - 1440px) * 0.5 - 20px)'
+
+const toDvwe = Util.cssPxToDvwe(1440)(0.8);
+toDvwe(20); // 'calc((100dvw - 1440px) * 0.8 + 20px)'
+
+const toLvwe = Util.cssPxToLvwe(1440)(0.5);
+const toSvwe = Util.cssPxToSvwe(1440)(0.5);
+toLvwe(20); // 'calc((100lvw - 1440px) * 0.5 + 20px)'
+toSvwe(20); // 'calc((100svw - 1440px) * 0.5 + 20px)'
 ```
 
-#### `cssPxToVhe(designDraft)(percent)(pixel)`
+##### `cssPxToVhe(designDraft)(percent)(pixel)`, `cssPxToDvhe()`, `cssPxToLvhe()`, `cssPxToSvhe()`
 
-pixel 轉延伸型 vh 的 curried function。
+pixel 轉延伸型 viewport 高度的 curried function。
 
 **Parameters**
 
-- `designDraft`
-  - design draft 高度 pixel 值
-- `percent`
-  - 縮放係數
-- `pixel`
-  - 要轉換的 pixel 值
+- `designDraft` - design draft 高度 pixel 值
+- `percent` - 縮放係數
+- `pixel` - 要轉換的 pixel 值
 
 ```typescript
 const toVhe = Util.cssPxToVhe(1080)(0.5);
 toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+
+const toDvhe = Util.cssPxToDvhe(1080)(0.8);
+toDvhe(30); // 'calc((100dvh - 1080px) * 0.8 + 30px)'
+
+const toLvhe = Util.cssPxToLvhe(1080)(0.5);
+const toSvhe = Util.cssPxToSvhe(1080)(0.5);
+toLvhe(30); // 'calc((100lvh - 1080px) * 0.5 + 30px)'
+toSvhe(30); // 'calc((100svh - 1080px) * 0.5 + 30px)'
 ```
 
-#### `percent(denominator)(numerator)`
+#### 其他工具函數
+
+##### `percent(denominator)(numerator)`
 
 計算百分比的 curried function。
 
@@ -406,8 +472,8 @@ Util.cssLh(24, 16); // '1.5'
     - 起始索引號（預設: 1）
   - `space`
     - 生成 function 的預設 space 值（預設: 0）
-  - `nameVw`, `nameVwc`, `nameVwe`
-    - 自訂 function 名稱前綴
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`
+    - 自定義名稱前綴
     - 使用空字串 `''` 跳過該類型
   - `scope`
     - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
@@ -428,33 +494,26 @@ const cssOnlyFuncs = Gen.genFuncsDraftWidth({
 
 widthFuncs.core.vw1(20); // '5.33vw' - 375px design draft 的 20px
 widthFuncs.core.vw1(20, 1); // '5.33vw ' - 帶空格
-widthFuncs.core.vwc2(20); // 'min(20px, 2.60vw)' - 768px 限制型
-widthFuncs.core.vwe3(20); // 'calc((100vw - 1440px) * 0.5 + 20px)' - 1440px 延伸型
+widthFuncs.core.dvw1(20); // '5.33dvw'
+widthFuncs.core.vwc2(20); // 'min(20px, 2.60vw)' - 768px
+widthFuncs.core.vwe3(20); // 'calc((100vw - 1440px) * 0.5 + 20px)' - 1440px
 
-// 使用 space 參數配置預設行為
+// 設定預設 space 參數
 const spacedFuncs = Gen.genFuncsDraftWidth({
-  points: [375, 768, 1440],
-  space: 1, // 設定預設帶空格
+  points: [375, 768],
+  space: 1, // 預設帶空格
 });
-
 spacedFuncs.core.vw1(20); // '5.33vw ' - 預設帶空格
 spacedFuncs.core.vw1(20, 0); // '5.33vw' - 指定不帶空格
 
-// 無效 breakpoint 自動過濾（≤ 0 的值被忽略）
-const filteredFuncs = Gen.genFuncsDraftWidth({
-  points: [0, -100, 375, 768, -50], // 只有 375 和 768 有效
-});
-// 結果：只生成 core.vw1, core.vw2, core.vwc1, core.vwc2, core.vwe1, core.vwe2
-
-// 使用空字串跳過特定 function 類型
-const partialFuncs = Gen.genFuncsDraftWidth({
+// 跳過特定類型或自訂名稱
+const customFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768],
-  nameVw: "vw", // 生成 vw
-  nameVwc: "", // 跳過 vwc
-  nameVwe: "extend", // 自訂名稱
+  nameVw: "custom", // 自訂名稱
+  nameDvw: "", // 跳過 dvw
+  nameVwc: "", // 跳過限制型
 });
-
-// 結果：只生成 core.vw1, core.vw2, core.extend1, core.extend2
+// 結果：只生成 core.custom1, core.custom2, core.vwe1, core.vwe2
 ```
 
 #### `genFuncsDraftHeight(options)`
@@ -471,8 +530,8 @@ const partialFuncs = Gen.genFuncsDraftWidth({
     - 起始索引號（預設: 1）
   - `space`
     - 生成 function 的預設 space 值（預設: 0）
-  - `nameVh`, `nameVhc`, `nameVhe`
-    - 自訂 function 名稱前綴
+  - `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`
+    - 自定義名稱前綴
     - 使用空字串 `''` 跳過該類型
   - `scope`
     - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
@@ -483,33 +542,8 @@ const heightFuncs = Gen.genFuncsDraftHeight({
 });
 
 heightFuncs.core.vh1(30); // '4.50vh' - 667px design draft 的 30px
-heightFuncs.core.vh1(30, 1); // '4.50vh ' - 帶空格
-heightFuncs.core.vhc2(30); // 'min(30px, 2.78vh)' - 1080px 限制型
-
-// 設定預設帶空格的高度 function
-const spacedHeightFuncs = Gen.genFuncsDraftHeight({
-  points: [667, 1080],
-  space: 1, // 所有生成的 function 預設帶空格
-});
-
-spacedHeightFuncs.core.vh1(30); // '4.50vh ' - 預設帶空格
-spacedHeightFuncs.core.vh2(30, 0); // '2.78vh' - 指定不帶空格
-
-// 無效 breakpoint 自動過濾（≤ 0 的值被忽略）
-const filteredHeightFuncs = Gen.genFuncsDraftHeight({
-  points: [0, -200, 667, 1080, -100], // 只有 667 和 1080 有效
-});
-// 結果：只生成 core.vh1, core.vh2, core.vhc1, core.vhc2, core.vhe1, core.vhe2
-
-// 跳過特定 function 類型（只保留基本功能）
-const onlyVhFuncs = Gen.genFuncsDraftHeight({
-  points: [667, 1080],
-  nameVh: "vh",
-  nameVhc: "", // 跳過 vhc
-  nameVhe: "", // 跳過 vhe
-});
-
-// 結果：只生成 core.vh1, core.vh2
+heightFuncs.core.dvh1(30); // '4.50dvh'
+heightFuncs.core.vhc2(30); // 'min(30px, 2.78vh)' - 1080px
 ```
 
 #### `genFuncsCore(options)`
@@ -521,46 +555,29 @@ const onlyVhFuncs = Gen.genFuncsDraftHeight({
 - `options`
   - `space`
     - 生成 function 的預設 space 值（預設: 0）
-  - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
-    - 自訂 function 名稱前綴
-    - 使用空字串 `''` 排除
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`, `nameEm`, `nameLh`, `namePercent`
+    - 自定義名稱前綴
+    - 使用空字串 `''` 跳過該類型
   - `scope`
     - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
 
 ```typescript
 const customCore = Gen.genFuncsCore({
-  nameVw: "toVw",
+  nameVw: "toVw", // 自訂名稱
+  nameDvw: "", // 跳過 dvw
   namePercent: "toPercent",
 });
 
 customCore.core.toVw(20, 1440); // 等同於 Core.vw(20, 1440)
-customCore.core.toVw(20, 1440, 1); // 帶空格
 customCore.core.toPercent(10, 100); // 等同於 Core.percent(10, 100)
 
-// 使用 space 參數配置預設行為
+// 設定預設 space 參數
 const spacedCore = Gen.genFuncsCore({
-  space: 1, // 所有 vw/vh function 預設帶空格
+  space: 1, // 預設帶空格
   nameVw: "vw",
-  nameVh: "vh",
 });
-
 spacedCore.core.vw(20, 1440); // '1.39vw ' - 預設帶空格
-spacedCore.core.vh(30, 1080, 0); // '2.78vh' - 指定不帶空格
-
-// 排除特定 function（創建最簡核心功能集）
-const minimalCore = Gen.genFuncsCore({
-  nameVw: "vw",
-  nameVh: "vh",
-  nameVwc: "", // 排除 vwc
-  nameVhc: "", // 排除 vhc
-  nameVwe: "", // 排除 vwe
-  nameVhe: "", // 排除 vhe
-  nameEm: "", // 排除 em
-  nameLh: "", // 排除 lh
-  namePercent: "", // 排除 percent
-});
-
-// 結果：只生成 core.vw, core.vh function
+spacedCore.core.vw(20, 1440, 0); // '1.39vw' - 指定不帶空格
 ```
 
 ### Snippet Module
@@ -627,25 +644,12 @@ import { Gen, Snippet } from "css-gum";
 
 const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
-// 生成基礎核心 function 的 Snippet
+// 從生成器取得 Snippet
 const coreGen = Gen.genFuncsCore();
-const coreSnippets = coreGen.VSCodeSnippet;
-Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
+Snippet.writeSnippetsToFiles(coreGen.VSCodeSnippet, VSCodeSnippetsPath);
 
-// 生成寬度 function 的 Snippet
-const widthGen = Gen.genFuncsDraftWidth({
-  points: [375, 768, 1440],
-  firstIndex: 1,
-});
-const widthSnippets = widthGen.VSCodeSnippet;
-Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
-
-// 生成高度 function 的 Snippet
-const heightGen = Gen.genFuncsDraftHeight({
-  points: [667, 1080, 1440],
-});
-const heightSnippets = heightGen.VSCodeSnippet;
-Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
+const widthGen = Gen.genFuncsDraftWidth({ points: [375, 768, 1440] });
+Snippet.writeSnippetsToFiles(widthGen.VSCodeSnippet, VSCodeSnippetsPath);
 ```
 
 **使用 Snippet 模組**
@@ -657,8 +661,8 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 **Parameters**
 
 - `options`
-  - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
-    - 自訂 function 名稱前綴
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`, `nameEm`, `nameLh`, `namePercent`
+    - 自定義名稱前綴
     - 使用空字串 `''` 跳過該類型
   - `scope`
     - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
@@ -674,8 +678,8 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
     - 生成的 breakpoint 數量
   - `firstIndex`
     - 起始索引號（預設: 1）
-  - `nameVw`, `nameVwc`, `nameVwe`
-    - 自訂 function 名稱前綴
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`
+    - 自定義名稱前綴
     - 使用空字串 `''` 跳過該類型
   - `scope`
     - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
@@ -691,8 +695,8 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
     - 生成的 breakpoint 數量
   - `firstIndex`
     - 起始索引號（預設: 1）
-  - `nameVh`, `nameVhc`, `nameVhe`
-    - 自訂 function 名稱前綴
+  - `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`
+    - 自定義名稱前綴
     - 使用空字串 `''` 跳過該類型
   - `scope`
     - VSCode Snippet 的檔案類型範圍（預設: `'html,css,sass,scss,less,stylus'`）
@@ -705,38 +709,17 @@ const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 // 生成核心 function Snippet
 const coreSnippets = Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
-  nameVh: "vh",
+  nameDvw: "dvw", // 包含 dvw
   namePercent: "percent",
 });
 Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
 
-// 生成只在特定檔案類型中顯示的 Snippet
+// 自訂 scope 範圍
 const cssOnlySnippets = Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
-  namePercent: "percent",
-  scope: "css,scss", // 只在 CSS 和 SCSS 檔案中觸發
+  scope: "css,scss", // 只在 CSS/SCSS 中觸發
 });
 Snippet.writeSnippetsToFiles(cssOnlySnippets, VSCodeSnippetsPath);
-
-// 生成寬度 function Snippet
-const widthSnippets = Snippet.genVSCodeSnippetDraftWidth({
-  pointsSize: 3,
-  firstIndex: 1,
-  nameVw: "vw",
-  nameVwc: "vwc",
-  nameVwe: "vwe",
-});
-Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
-
-// 生成高度 function Snippet
-const heightSnippets = Snippet.genVSCodeSnippetDraftHeight({
-  pointsSize: 3,
-  firstIndex: 1,
-  nameVh: "vh",
-  nameVhc: "vhc",
-  nameVhe: "vhe",
-});
-Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 ```
 
 ##### 自定義 Snippet 名稱
@@ -744,14 +727,13 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 你可以通過空字串來跳過不需要的 Snippet 類型。
 
 ```typescript
-// 只生成 vw 相關的 Snippet（精簡版本）
+// 精簡版 Snippet
 const minimalSnippets = Snippet.genVSCodeSnippetDraftWidth({
-  pointsSize: 2, // 生成 2 個 breakpoint 的 Snippet
-  nameVw: "vw", // 保留 vw
+  pointsSize: 2,
+  nameVw: "vw", // 只保留 vw
+  nameDvw: "", // 跳過 dvw
   nameVwc: "", // 跳過 vwc
-  nameVwe: "", // 跳過 vwe
 });
-// 將精簡版 Snippet 寫入指定檔案
 Snippet.writeSnippetsToFiles(minimalSnippets, ["/path/to/.vscode/minimal.code-snippets"]);
 ```
 
@@ -776,11 +758,15 @@ Core.vw("invalid", 1000);
 
 ## 瀏覽器支援
 
-支援現代 browser：
+支援現代瀏覽器：
 
-- viewport 單位（`vw`、`vh`）
+- viewport 單位：`vw`/`vh`（傳統）、`dvw`/`dvh`、`lvw`/`lvh`、`svw`/`svh`
 - CSS `calc()` function
 - CSS `min()`/`max()` function
+
+**viewport 變體支援：**
+
+- `dvw`/`dvh`、`lvw`/`lvh`、`svw`/`svh`: Chrome 108+, Firefox 101+, Safari 16.0+
 
 ## 支持
 

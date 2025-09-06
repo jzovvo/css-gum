@@ -4,15 +4,15 @@
 [![codecov](https://codecov.io/gh/jzovvo/css-gum/branch/master/graph/badge.svg)](https://codecov.io/gh/jzovvo/css-gum)
 [![npm version](https://badge.fury.io/js/css-gum.svg)](https://www.npmjs.com/package/css-gum)
 
-Make your responsive designs stretch like gum – seamlessly elastic across all screen sizes. This toolkit transforms complex viewport calculations into simple, intuitive functions, and automatically generates VSCode Snippets, allowing you to effortlessly integrate efficient responsive workflows.
+Make your responsive designs stretch like gum—perfectly elastic across all screen sizes. This toolkit transforms complex viewport calculations into simple, intuitive functions, and automatically generates VSCode Snippets, letting you effortlessly stick to efficient responsive development workflows.
 
 [繁體中文](./README.zh-TW.md)
 
 ## Features
 
-- 🖥️ **viewport units**: Convert pixels to responsive `vw`/`vh` units
+- 🖥️ **viewport units**: Support `vw`/`vh`, `dvw`/`dvh`, `lvw`/`lvh`, `svw`/`svh`
 - 🔒 **Clamped units**: Use `vwc`/`vhc` to limit max/min values
-- 📏 **Extended scaling**: Adaptive scaling for screens larger than design draft
+- 📏 **Extended scaling**: Adapt to screens larger than design draft
 - ⚡ **Batch generation**: Batch generate functions for multiple design draft breakpoints
 - 🎯 **Snippets**: Auto-generate Snippets to boost development efficiency
 
@@ -27,9 +27,17 @@ npm install css-gum
 ```typescript
 import { Core } from "css-gum";
 
-// Basic viewport units (no trailing space by default)
+// Basic (no trailing space by default)
 Core.vw(20, 1440); // '1.39vw' - 20px on 1440px design draft
 Core.vh(30, 1080); // '2.78vh' - 30px on 1080px design draft
+
+// viewport variants
+Core.dvw(20, 1440); // '1.39dvw'
+Core.dvh(30, 1080); // '2.78dvh'
+Core.lvw(20, 1440); // '1.39lvw'
+Core.lvh(30, 1080); // '2.78lvh'
+Core.svw(20, 1440); // '1.39svw'
+Core.svh(30, 1080); // '2.78svh'
 
 // Control space parameter (for different use cases)
 Core.vw(20, 1440, 0); // '1.39vw'  - specify no space (default)
@@ -37,11 +45,15 @@ Core.vw(20, 1440, 1); // '1.39vw ' - specify with space
 
 // Clamped units
 Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
+Core.dvwc(20, 1440); // 'min(20px, 1.39dvw)'
 Core.vhc(30, 1080); // 'min(30px, 2.78vh)'
+Core.dvhc(30, 1080); // 'min(30px, 2.78dvh)'
 
-// Extended scaling
+// Extended scaling (default scaling factor 0.5)
 Core.vwe(20, 1440); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+Core.dvwe(20, 1440); // 'calc((100dvw - 1440px) * 0.5 + 20px)'
 Core.vhe(30, 1080); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+Core.dvhe(30, 1080); // 'calc((100dvh - 1080px) * 0.5 + 30px)'
 
 // Other utilities
 Core.percent(10, 100); // '10%'
@@ -62,112 +74,118 @@ Core.lh(24, 16); // '1.5'
 
 ### Core Module
 
-#### `vw(pixel, designDraft, space?)`
+#### Viewport Unit Functions
+
+CSS-Gum supports all viewport units: `vw`, `vh`, `dvw`, `dvh`, `lvw`, `lvh`, `svw`, `svh`
+
+#### `vw(pixel, designDraft, space?)`, `dvw()`, `lvw()`, `svw()`
 
 Convert pixels to viewport width units.
 
 **Parameters**
 
-- `pixel`
-  - Pixel value to convert
-- `designDraft`
-  - Design draft width in pixels
-- `space`
-  - Whether to add trailing space for Tailwind multi-value syntax
-  - `1` = with space, `0` = no space, default: `0`
+- `pixel` - Pixel value to convert
+- `designDraft` - Design draft width in pixels
+- `space` - Whether to add trailing space for Tailwind multi-value syntax (`1` = with space, `0` = no space, default: `0`)
 
 ```typescript
-Core.vw(20, 1440); // '1.39vw' (no space by default)
-Core.vw(20, 1440, 0); // '1.39vw' (specify no space)
-Core.vw(20, 1440, 1); // '1.39vw ' (specify with space)
+Core.vw(20, 1440); // '1.39vw'
+Core.vw(20, 1440, 1); // '1.39vw ' (with space)
+Core.dvw(20, 1440); // '1.39dvw'
+Core.lvw(20, 1440); // '1.39lvw'
+Core.svw(20, 1440); // '1.39svw'
 ```
 
-#### `vh(pixel, designDraft, space?)`
+#### `vh(pixel, designDraft, space?)`, `dvh()`, `lvh()`, `svh()`
 
 Convert pixels to viewport height units.
 
 **Parameters**
 
-- `pixel`
-  - Pixel value to convert
-- `designDraft`
-  - Design draft height in pixels
-- `space`
-  - Whether to add trailing space for Tailwind multi-value syntax
-  - `1` = with space, `0` = no space, default: `0`
+- `pixel` - Pixel value to convert
+- `designDraft` - Design draft height in pixels
+- `space` - Whether to add trailing space for Tailwind multi-value syntax (`1` = with space, `0` = no space, default: `0`)
 
 ```typescript
-Core.vh(30, 1080); // '2.78vh' (no space by default)
-Core.vh(30, 1080, 0); // '2.78vh'  (specify no space)
-Core.vh(30, 1080, 1); // '2.78vh ' (specify with space)
+Core.vh(30, 1080); // '2.78vh'
+Core.vh(30, 1080, 1); // '2.78vh ' (with space)
+Core.dvh(30, 1080); // '2.78dvh'
+Core.lvh(30, 1080); // '2.78lvh'
+Core.svh(30, 1080); // '2.78svh'
 ```
 
-#### `vwc(pixel, designDraft)`
+#### `vwc(pixel, designDraft)`, `dvwc()`, `lvwc()`, `svwc()`
 
 Clamped viewport width.
 
 **Parameters**
 
-- `pixel`
-  - Pixel value to convert
-- `designDraft`
-  - Design draft width in pixels
+- `pixel` - Pixel value to convert
+- `designDraft` - Design draft width in pixels
 
 ```typescript
 Core.vwc(20, 1440); // 'min(20px, 1.39vw)'
+Core.vwc(-20, 1440); // 'max(-20px, -1.39vw)'
+Core.dvwc(20, 1440); // 'min(20px, 1.39dvw)'
+Core.lvwc(20, 1440); // 'min(20px, 1.39lvw)'
+Core.svwc(20, 1440); // 'min(20px, 1.39svw)'
 ```
 
-#### `vhc(pixel, designDraft)`
+#### `vhc(pixel, designDraft)`, `dvhc()`, `lvhc()`, `svhc()`
 
 Clamped viewport height.
 
 **Parameters**
 
-- `pixel`
-  - Pixel value to convert
-- `designDraft`
-  - Design draft height in pixels
+- `pixel` - Pixel value to convert
+- `designDraft` - Design draft height in pixels
 
 ```typescript
 Core.vhc(30, 1080); // 'min(30px, 2.78vh)'
+Core.vhc(-30, 1080); // 'max(-30px, -2.78vh)'
+Core.dvhc(30, 1080); // 'min(30px, 2.78dvh)'
+Core.lvhc(30, 1080); // 'min(30px, 2.78lvh)'
+Core.svhc(30, 1080); // 'min(30px, 2.78svh)'
 ```
 
-#### `vwe(pixel, designDraft, percent?)`
+#### `vwe(pixel, designDraft, percent?)`, `dvwe()`, `lvwe()`, `svwe()`
 
 Extended viewport width.
 
 **Parameters**
 
-- `pixel`
-  - Pixel value to convert
-- `designDraft`
-  - Design draft width in pixels
-- `percent`
-  - Scaling factor
-  - Default: 0.5
+- `pixel` - Pixel value to convert
+- `designDraft` - Design draft width in pixels
+- `percent` - Scaling factor (default: 0.5)
 
 ```typescript
 Core.vwe(20, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5 + 20px)'
 Core.vwe(20, 1440); // Same as above, using default value 0.5
+Core.vwe(0, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5)'
+Core.vwe(-20, 1440, 0.5); // 'calc((100vw - 1440px) * 0.5 - 20px)'
+Core.dvwe(20, 1440, 0.8); // 'calc((100dvw - 1440px) * 0.8 + 20px)'
+Core.lvwe(20, 1440); // 'calc((100lvw - 1440px) * 0.5 + 20px)'
+Core.svwe(20, 1440); // 'calc((100svw - 1440px) * 0.5 + 20px)'
 ```
 
-#### `vhe(pixel, designDraft, percent?)`
+#### `vhe(pixel, designDraft, percent?)`, `dvhe()`, `lvhe()`, `svhe()`
 
 Extended viewport height.
 
 **Parameters**
 
-- `pixel`
-  - Pixel value to convert
-- `designDraft`
-  - Design draft height in pixels
-- `percent`
-  - Scaling factor
-  - Default: 0.5
+- `pixel` - Pixel value to convert
+- `designDraft` - Design draft height in pixels
+- `percent` - Scaling factor (default: 0.5)
 
 ```typescript
 Core.vhe(30, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5 + 30px)'
 Core.vhe(30, 1080); // Same as above, using default value 0.5
+Core.vhe(0, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5)'
+Core.vhe(-30, 1080, 0.5); // 'calc((100vh - 1080px) * 0.5 - 30px)'
+Core.dvhe(30, 1080, 0.8); // 'calc((100dvh - 1080px) * 0.8 + 30px)'
+Core.lvhe(30, 1080); // 'calc((100lvh - 1080px) * 0.5 + 30px)'
+Core.svhe(30, 1080); // 'calc((100svh - 1080px) * 0.5 + 30px)'
 ```
 
 #### `percent(child, parent)`
@@ -218,16 +236,18 @@ Core.lh(24, 16); // '1.5'
 
 ### Util Module
 
-#### `cssPxToVw(designDraft)(pixel)`
+The Util module provides curried functions.
 
-Curried function to convert pixels to CSS vw strings.
+#### Viewport Width Utility Functions
+
+##### `cssPxToVw(designDraft)(pixel)`, `cssPxToDvw()`, `cssPxToLvw()`, `cssPxToSvw()`
+
+Curried function to convert pixels to CSS viewport width strings.
 
 **Parameters**
 
-- `designDraft`
-  - Design draft width in pixels
-- `pixel`
-  - Pixel value to convert
+- `designDraft` - Design draft width in pixels
+- `pixel` - Pixel value to convert
 
 ```typescript
 import { Util } from "css-gum";
@@ -235,94 +255,140 @@ import { Util } from "css-gum";
 const toVw = Util.cssPxToVw(1440);
 toVw(20); // '1.39vw'
 toVw(0); // '0'
+
+const toDvw = Util.cssPxToDvw(1440);
+toDvw(20); // '1.39dvw'
+
+const toLvw = Util.cssPxToLvw(1440);
+const toSvw = Util.cssPxToSvw(1440);
+toLvw(20); // '1.39lvw'
+toSvw(20); // '1.39svw'
 ```
 
-#### `cssPxToVh(designDraft)(pixel)`
+#### Viewport Height Utility Functions
 
-Curried function to convert pixels to CSS vh strings.
+##### `cssPxToVh(designDraft)(pixel)`, `cssPxToDvh()`, `cssPxToLvh()`, `cssPxToSvh()`
+
+Curried function to convert pixels to CSS viewport height strings.
 
 **Parameters**
 
-- `designDraft`
-  - Design draft height in pixels
-- `pixel`
-  - Pixel value to convert
+- `designDraft` - Design draft height in pixels
+- `pixel` - Pixel value to convert
 
 ```typescript
 const toVh = Util.cssPxToVh(1080);
 toVh(30); // '2.78vh'
+
+const toDvh = Util.cssPxToDvh(1080);
+toDvh(30); // '2.78dvh'
+
+const toLvh = Util.cssPxToLvh(1080);
+const toSvh = Util.cssPxToSvh(1080);
+toLvh(30); // '2.78lvh'
+toSvh(30); // '2.78svh'
 ```
 
-#### `cssPxToVwc(designDraft)(pixel)`
+#### Clamped Viewport Utility Functions
 
-Curried function to convert pixels to clamped vw.
+##### `cssPxToVwc(designDraft)(pixel)`, `cssPxToDvwc()`, `cssPxToLvwc()`, `cssPxToSvwc()`
+
+Curried function to convert pixels to clamped viewport width.
 
 **Parameters**
 
-- `designDraft`
-  - Design draft width in pixels
-- `pixel`
-  - Pixel value to convert
+- `designDraft` - Design draft width in pixels
+- `pixel` - Pixel value to convert
 
 ```typescript
 const toVwc = Util.cssPxToVwc(1440);
 toVwc(20); // 'min(20px, 1.39vw)'
 toVwc(-20); // 'max(-20px, -1.39vw)'
+
+const toDvwc = Util.cssPxToDvwc(1440);
+toDvwc(20); // 'min(20px, 1.39dvw)'
+
+const toLvwc = Util.cssPxToLvwc(1440);
+const toSvwc = Util.cssPxToSvwc(1440);
+toLvwc(20); // 'min(20px, 1.39lvw)'
+toSvwc(20); // 'min(20px, 1.39svw)'
 ```
 
-#### `cssPxToVhc(designDraft)(pixel)`
+##### `cssPxToVhc(designDraft)(pixel)`, `cssPxToDvhc()`, `cssPxToLvhc()`, `cssPxToSvhc()`
 
-Curried function to convert pixels to clamped vh.
+Curried function to convert pixels to clamped viewport height.
 
 **Parameters**
 
-- `designDraft`
-  - Design draft height in pixels
-- `pixel`
-  - Pixel value to convert
+- `designDraft` - Design draft height in pixels
+- `pixel` - Pixel value to convert
 
 ```typescript
 const toVhc = Util.cssPxToVhc(1080);
 toVhc(30); // 'min(30px, 2.78vh)'
+
+const toDvhc = Util.cssPxToDvhc(1080);
+toDvhc(30); // 'min(30px, 2.78dvh)'
+
+const toLvhc = Util.cssPxToLvhc(1080);
+const toSvhc = Util.cssPxToSvhc(1080);
+toLvhc(30); // 'min(30px, 2.78lvh)'
+toSvhc(30); // 'min(30px, 2.78svh)'
 ```
 
-#### `cssPxToVwe(designDraft)(percent)(pixel)`
+#### Extended Viewport Utility Functions
 
-Curried function to convert pixels to extended vw.
+##### `cssPxToVwe(designDraft)(percent)(pixel)`, `cssPxToDvwe()`, `cssPxToLvwe()`, `cssPxToSvwe()`
+
+Curried function to convert pixels to extended viewport width.
 
 **Parameters**
 
-- `designDraft`
-  - Design draft width in pixels
-- `percent`
-  - Scaling factor
-- `pixel`
-  - Pixel value to convert
+- `designDraft` - Design draft width in pixels
+- `percent` - Scaling factor
+- `pixel` - Pixel value to convert
 
 ```typescript
 const toVwe = Util.cssPxToVwe(1440)(0.5);
 toVwe(20); // 'calc((100vw - 1440px) * 0.5 + 20px)'
+toVwe(0); // 'calc((100vw - 1440px) * 0.5)'
+toVwe(-20); // 'calc((100vw - 1440px) * 0.5 - 20px)'
+
+const toDvwe = Util.cssPxToDvwe(1440)(0.8);
+toDvwe(20); // 'calc((100dvw - 1440px) * 0.8 + 20px)'
+
+const toLvwe = Util.cssPxToLvwe(1440)(0.5);
+const toSvwe = Util.cssPxToSvwe(1440)(0.5);
+toLvwe(20); // 'calc((100lvw - 1440px) * 0.5 + 20px)'
+toSvwe(20); // 'calc((100svw - 1440px) * 0.5 + 20px)'
 ```
 
-#### `cssPxToVhe(designDraft)(percent)(pixel)`
+##### `cssPxToVhe(designDraft)(percent)(pixel)`, `cssPxToDvhe()`, `cssPxToLvhe()`, `cssPxToSvhe()`
 
-Curried function to convert pixels to extended vh.
+Curried function to convert pixels to extended viewport height.
 
 **Parameters**
 
-- `designDraft`
-  - Design draft height in pixels
-- `percent`
-  - Scaling factor
-- `pixel`
-  - Pixel value to convert
+- `designDraft` - Design draft height in pixels
+- `percent` - Scaling factor
+- `pixel` - Pixel value to convert
 
 ```typescript
 const toVhe = Util.cssPxToVhe(1080)(0.5);
 toVhe(30); // 'calc((100vh - 1080px) * 0.5 + 30px)'
+
+const toDvhe = Util.cssPxToDvhe(1080)(0.8);
+toDvhe(30); // 'calc((100dvh - 1080px) * 0.8 + 30px)'
+
+const toLvhe = Util.cssPxToLvhe(1080)(0.5);
+const toSvhe = Util.cssPxToSvhe(1080)(0.5);
+toLvhe(30); // 'calc((100lvh - 1080px) * 0.5 + 30px)'
+toSvhe(30); // 'calc((100svh - 1080px) * 0.5 + 30px)'
 ```
 
-#### `percent(denominator)(numerator)`
+#### Other Utility Functions
+
+##### `percent(denominator)(numerator)`
 
 Curried function to calculate percentages.
 
@@ -406,8 +472,8 @@ Generate width conversion functions for multiple design draft breakpoints.
     - Starting index number (default: 1)
   - `space`
     - Default space value for generated functions (default: 0)
-  - `nameVw`, `nameVwc`, `nameVwe`
-    - Custom function name prefixes
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`
+    - Custom name prefixes
     - Use empty string `''` to skip that type
   - `scope`
     - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
@@ -428,33 +494,26 @@ const cssOnlyFuncs = Gen.genFuncsDraftWidth({
 
 widthFuncs.core.vw1(20); // '5.33vw' - 20px on 375px design draft
 widthFuncs.core.vw1(20, 1); // '5.33vw ' - with space
-widthFuncs.core.vwc2(20); // 'min(20px, 2.60vw)' - 768px clamped
-widthFuncs.core.vwe3(20); // 'calc((100vw - 1440px) * 0.5 + 20px)' - 1440px extended
+widthFuncs.core.dvw1(20); // '5.33dvw'
+widthFuncs.core.vwc2(20); // 'min(20px, 2.60vw)' - 768px
+widthFuncs.core.vwe3(20); // 'calc((100vw - 1440px) * 0.5 + 20px)' - 1440px
 
-// Configure default behavior with space parameter
+// Set default space parameter
 const spacedFuncs = Gen.genFuncsDraftWidth({
-  points: [375, 768, 1440],
-  space: 1, // Set default with space
+  points: [375, 768],
+  space: 1, // Default with space
 });
-
 spacedFuncs.core.vw1(20); // '5.33vw ' - default with space
 spacedFuncs.core.vw1(20, 0); // '5.33vw' - specify no space
 
-// Invalid breakpoints are automatically filtered (≤ 0 values ignored)
-const filteredFuncs = Gen.genFuncsDraftWidth({
-  points: [0, -100, 375, 768, -50], // Only 375 and 768 are valid
-});
-// Result: Only generates core.vw1, core.vw2, core.vwc1, core.vwc2, core.vwe1, core.vwe2
-
-// Use empty strings to skip specific function types
-const partialFuncs = Gen.genFuncsDraftWidth({
+// Skip specific types or custom names
+const customFuncs = Gen.genFuncsDraftWidth({
   points: [375, 768],
-  nameVw: "vw", // Generate vw
-  nameVwc: "", // Skip vwc
-  nameVwe: "extend", // Custom name
+  nameVw: "custom", // Custom name
+  nameDvw: "", // Skip dvw
+  nameVwc: "", // Skip clamped
 });
-
-// Result: Only generates core.vw1, core.vw2, core.extend1, core.extend2
+// Result: Only generates core.custom1, core.custom2, core.vwe1, core.vwe2
 ```
 
 #### `genFuncsDraftHeight(options)`
@@ -471,8 +530,8 @@ Generate height conversion functions for multiple design draft breakpoints.
     - Starting index number (default: 1)
   - `space`
     - Default space value for generated functions (default: 0)
-  - `nameVh`, `nameVhc`, `nameVhe`
-    - Custom function name prefixes
+  - `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`
+    - Custom name prefixes
     - Use empty string `''` to skip that type
   - `scope`
     - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
@@ -483,33 +542,8 @@ const heightFuncs = Gen.genFuncsDraftHeight({
 });
 
 heightFuncs.core.vh1(30); // '4.50vh' - 30px on 667px design draft
-heightFuncs.core.vh1(30, 1); // '4.50vh ' - with space
-heightFuncs.core.vhc2(30); // 'min(30px, 2.78vh)' - 1080px clamped
-
-// Configure default with space for height functions
-const spacedHeightFuncs = Gen.genFuncsDraftHeight({
-  points: [667, 1080],
-  space: 1, // All generated functions default with space
-});
-
-spacedHeightFuncs.core.vh1(30); // '4.50vh ' - default with space
-spacedHeightFuncs.core.vh2(30, 0); // '2.78vh' - specify no space
-
-// Invalid breakpoints are automatically filtered (≤ 0 values ignored)
-const filteredHeightFuncs = Gen.genFuncsDraftHeight({
-  points: [0, -200, 667, 1080, -100], // Only 667 and 1080 are valid
-});
-// Result: Only generates core.vh1, core.vh2, core.vhc1, core.vhc2, core.vhe1, core.vhe2
-
-// Skip specific function types (keep only basic functionality)
-const onlyVhFuncs = Gen.genFuncsDraftHeight({
-  points: [667, 1080],
-  nameVh: "vh",
-  nameVhc: "", // Skip vhc
-  nameVhe: "", // Skip vhe
-});
-
-// Result: Only generates core.vh1, core.vh2
+heightFuncs.core.dvh1(30); // '4.50dvh'
+heightFuncs.core.vhc2(30); // 'min(30px, 2.78vh)' - 1080px
 ```
 
 #### `genFuncsCore(options)`
@@ -521,46 +555,29 @@ Generate core function collections with custom names.
 - `options`
   - `space`
     - Default space value for generated functions (default: 0)
-  - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
-    - Custom function name prefixes
-    - Use empty string `''` to exclude
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`, `nameEm`, `nameLh`, `namePercent`
+    - Custom name prefixes
+    - Use empty string `''` to skip that type
   - `scope`
     - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
 
 ```typescript
 const customCore = Gen.genFuncsCore({
-  nameVw: "toVw",
+  nameVw: "toVw", // Custom name
+  nameDvw: "", // Skip dvw
   namePercent: "toPercent",
 });
 
 customCore.core.toVw(20, 1440); // Equivalent to Core.vw(20, 1440)
-customCore.core.toVw(20, 1440, 1); // With space
 customCore.core.toPercent(10, 100); // Equivalent to Core.percent(10, 100)
 
-// Configure default behavior with space parameter
+// Set default space parameter
 const spacedCore = Gen.genFuncsCore({
-  space: 1, // All vw/vh functions default with space
+  space: 1, // Default with space
   nameVw: "vw",
-  nameVh: "vh",
 });
-
 spacedCore.core.vw(20, 1440); // '1.39vw ' - default with space
-spacedCore.core.vh(30, 1080, 0); // '2.78vh' - specify no space
-
-// Exclude specific functions (create minimal core functionality)
-const minimalCore = Gen.genFuncsCore({
-  nameVw: "vw",
-  nameVh: "vh",
-  nameVwc: "", // Exclude vwc
-  nameVhc: "", // Exclude vhc
-  nameVwe: "", // Exclude vwe
-  nameVhe: "", // Exclude vhe
-  nameEm: "", // Exclude em
-  nameLh: "", // Exclude lh
-  namePercent: "", // Exclude percent
-});
-
-// Result: Only generates core.vw, core.vh functions
+spacedCore.core.vw(20, 1440, 0); // '1.39vw' - specify no space
 ```
 
 ### Snippet Module
@@ -627,25 +644,12 @@ import { Gen, Snippet } from "css-gum";
 
 const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 
-// Generate core function Snippets
+// Get Snippets from generators
 const coreGen = Gen.genFuncsCore();
-const coreSnippets = coreGen.VSCodeSnippet;
-Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
+Snippet.writeSnippetsToFiles(coreGen.VSCodeSnippet, VSCodeSnippetsPath);
 
-// Generate width function Snippets
-const widthGen = Gen.genFuncsDraftWidth({
-  points: [375, 768, 1440],
-  firstIndex: 1,
-});
-const widthSnippets = widthGen.VSCodeSnippet;
-Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
-
-// Generate height function Snippets
-const heightGen = Gen.genFuncsDraftHeight({
-  points: [667, 1080, 1440],
-});
-const heightSnippets = heightGen.VSCodeSnippet;
-Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
+const widthGen = Gen.genFuncsDraftWidth({ points: [375, 768, 1440] });
+Snippet.writeSnippetsToFiles(widthGen.VSCodeSnippet, VSCodeSnippetsPath);
 ```
 
 **Using Snippet Module**
@@ -657,8 +661,8 @@ Generate core function Snippets.
 **Parameters**
 
 - `options`
-  - `nameVw`, `nameVh`, `nameVwc`, `nameVhc`, `nameVwe`, `nameVhe`, `nameEm`, `nameLh`, `namePercent`
-    - Custom function name prefixes
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`, `nameEm`, `nameLh`, `namePercent`
+    - Custom name prefixes
     - Use empty string `''` to skip that type
   - `scope`
     - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
@@ -671,11 +675,11 @@ Generate width function Snippets.
 
 - `options`
   - `pointsSize`
-    - Number of breakpoints to generate
+    - Number of generated breakpoints
   - `firstIndex`
     - Starting index number (default: 1)
-  - `nameVw`, `nameVwc`, `nameVwe`
-    - Custom function name prefixes
+  - `nameVw`, `nameDvw`, `nameLvw`, `nameSvw`, `nameVwc`, `nameDvwc`, `nameLvwc`, `nameSvwc`, `nameVwe`, `nameDvwe`, `nameLvwe`, `nameSvwe`
+    - Custom name prefixes
     - Use empty string `''` to skip that type
   - `scope`
     - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
@@ -688,11 +692,11 @@ Generate height function Snippets.
 
 - `options`
   - `pointsSize`
-    - Number of breakpoints to generate
+    - Number of generated breakpoints
   - `firstIndex`
     - Starting index number (default: 1)
-  - `nameVh`, `nameVhc`, `nameVhe`
-    - Custom function name prefixes
+  - `nameVh`, `nameDvh`, `nameLvh`, `nameSvh`, `nameVhc`, `nameDvhc`, `nameLvhc`, `nameSvhc`, `nameVhe`, `nameDvhe`, `nameLvhe`, `nameSvhe`
+    - Custom name prefixes
     - Use empty string `''` to skip that type
   - `scope`
     - VSCode Snippet file type scope (default: `'html,css,sass,scss,less,stylus'`)
@@ -705,38 +709,17 @@ const VSCodeSnippetsPath = ["/path/to/.vscode/css.code-snippets"];
 // Generate core function Snippets
 const coreSnippets = Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
-  nameVh: "vh",
+  nameDvw: "dvw", // Include dvw
   namePercent: "percent",
 });
 Snippet.writeSnippetsToFiles(coreSnippets, VSCodeSnippetsPath);
 
-// Generate Snippets that only show in specific file types
+// Custom scope range
 const cssOnlySnippets = Snippet.genVSCodeSnippetCore({
   nameVw: "vw",
-  namePercent: "percent",
-  scope: "css,scss", // Only trigger in CSS and SCSS files
+  scope: "css,scss", // Only trigger in CSS/SCSS
 });
 Snippet.writeSnippetsToFiles(cssOnlySnippets, VSCodeSnippetsPath);
-
-// Generate width function Snippets
-const widthSnippets = Snippet.genVSCodeSnippetDraftWidth({
-  pointsSize: 3,
-  firstIndex: 1,
-  nameVw: "vw",
-  nameVwc: "vwc",
-  nameVwe: "vwe",
-});
-Snippet.writeSnippetsToFiles(widthSnippets, VSCodeSnippetsPath);
-
-// Generate height function Snippets
-const heightSnippets = Snippet.genVSCodeSnippetDraftHeight({
-  pointsSize: 3,
-  firstIndex: 1,
-  nameVh: "vh",
-  nameVhc: "vhc",
-  nameVhe: "vhe",
-});
-Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 ```
 
 ##### Custom Snippet Names
@@ -744,14 +727,13 @@ Snippet.writeSnippetsToFiles(heightSnippets, VSCodeSnippetsPath);
 You can use empty strings to skip unwanted Snippet types.
 
 ```typescript
-// Only generate vw-related Snippets (minimal version)
+// Minimal Snippets
 const minimalSnippets = Snippet.genVSCodeSnippetDraftWidth({
-  pointsSize: 2, // Generate Snippets for 2 breakpoints
-  nameVw: "vw", // Keep vw
+  pointsSize: 2,
+  nameVw: "vw", // Keep only vw
+  nameDvw: "", // Skip dvw
   nameVwc: "", // Skip vwc
-  nameVwe: "", // Skip vwe
 });
-// Write minimal Snippets to specified file
 Snippet.writeSnippetsToFiles(minimalSnippets, ["/path/to/.vscode/minimal.code-snippets"]);
 ```
 
@@ -778,9 +760,13 @@ Core.vw("invalid", 1000);
 
 Supports modern browsers with:
 
-- Viewport units (`vw`, `vh`)
+- viewport units: `vw`/`vh` (legacy), `dvw`/`dvh`, `lvw`/`lvh`, `svw`/`svh`
 - CSS `calc()` functions
 - CSS `min()`/`max()` functions
+
+**viewport variant support:**
+
+- `dvw`/`dvh`, `lvw`/`lvh`, `svw`/`svh`: Chrome 108+, Firefox 101+, Safari 16.0+
 
 ## Support
 
