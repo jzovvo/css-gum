@@ -111,9 +111,7 @@ export const genFuncsDraftWidth = ({
   nameLvwe = DEFAULT.nameLvwe,
   nameSvwe = DEFAULT.nameSvwe,
 }: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<SnippetConfig, 'scope'>) => {
-  const validPoints = points.filter(point => point > 0)
-
-  validPoints.sort((a, b) => a - b)
+  const validPoints = points.filter(point => point > 0).sort((a, b) => a - b)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
 
@@ -183,9 +181,7 @@ export const genFuncsDraftHeight = ({
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
 }: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<SnippetConfig, 'scope'>) => {
-  const validPoints = points.filter(point => point > 0)
-
-  validPoints.sort((a, b) => a - b)
+  const validPoints = points.filter(point => point > 0).sort((a, b) => a - b)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
 
