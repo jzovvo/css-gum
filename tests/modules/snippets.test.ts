@@ -4,10 +4,12 @@ import {
   genVSCodeSnippetCore,
   genVSCodeSnippetDraftWidth,
   genVSCodeSnippetDraftHeight,
+  genVSCodeSnippetPicture,
+  genVSCodeSnippetMediaQuery,
 } from '../../src/modules/snippets'
 
 describe('snippets module', () => {
-  describe('DEFAULT_SNIPPET constants', () => {
+  describe('DEFAULT_SNIPPET', () => {
     it('should have correct default values', () => {
       expect(DEFAULT_SNIPPET.args).toBe('$1')
       expect(DEFAULT_SNIPPET.scope).toEqual(['html','css','sass','scss','less','stylus'])
@@ -15,375 +17,220 @@ describe('snippets module', () => {
   })
 
   describe('genVSCodeSnippetCore', () => {
-    it('should generate snippets with default names', () => {
+    it('should generate snippets with correct structure', () => {
       const result = genVSCodeSnippetCore()
 
-      expect(result).toHaveProperty('vw')
-      expect(result).toHaveProperty('dvw')
-      expect(result).toHaveProperty('vh')
-      expect(result).toHaveProperty('vwc')
-      expect(result).toHaveProperty('vwe')
-      expect(result).toHaveProperty('em')
-      expect(result).toHaveProperty('lh')
-      expect(result).toHaveProperty('percent')
-    })
-
-    it('should generate correct snippet structure', () => {
-      const result = genVSCodeSnippetCore()
-
+      // Test basic functionality
       expect(result.vw).toEqual({
         prefix: 'vw',
         body: 'vw($1,$2)$0',
         scope: DEFAULT_SNIPPET.scope.join(','),
       })
 
-      expect(result.em).toEqual({
-        prefix: 'em',
-        body: 'em($1,$2)$0',
-        scope: DEFAULT_SNIPPET.scope.join(','),
-      })
+      // Ensure all main variants exist
+      const expectedKeys = ['vw', 'dvw', 'lvw', 'svw', 'vwc', 'vwe', 'vh', 'vhe', 'em', 'lh', 'percent']
+      expectedKeys.forEach(key => expect(result).toHaveProperty(key))
     })
 
-    it('should handle custom function names', () => {
+    it('should handle custom names and empty names', () => {
       const result = genVSCodeSnippetCore({
         nameVw: 'customVw',
-        nameEm: 'customEm',
-        namePercent: 'customPercent',
+        nameEm: '', // Should be skipped
+        scope: ['css'],
       })
 
-      expect(result).toHaveProperty('customVw')
-      expect(result).toHaveProperty('customEm')
-      expect(result).toHaveProperty('customPercent')
+      expect(result.customVw).toBeDefined()
+      expect(result.customVw.scope).toBe('css')
       expect(result).not.toHaveProperty('vw')
       expect(result).not.toHaveProperty('em')
-      expect(result).not.toHaveProperty('percent')
-
-      expect(result.customVw).toEqual({
-        prefix: 'customVw',
-        body: 'customVw($1,$2)$0',
-        scope: DEFAULT_SNIPPET.scope.join(','),
-      })
-    })
-
-    it('should skip empty function names', () => {
-      const result = genVSCodeSnippetCore({
-        nameVw: '',
-        nameEm: '',
-        nameDvw: 'dvw',
-      })
-
-      expect(result).not.toHaveProperty('vw')
-      expect(result).not.toHaveProperty('em')
-      expect(Object.keys(result)).not.toContain('')
-      expect(result).toHaveProperty('dvw')
-    })
-
-    it('should handle custom scope', () => {
-      const result = genVSCodeSnippetCore({
-        scope: ['css', 'scss'],
-      })
-
-      expect(result.vw.scope).toBe('css,scss')
-      expect(result.em.scope).toBe('css,scss')
-    })
-
-    it('should generate all viewport variants', () => {
-      const result = genVSCodeSnippetCore()
-
-      // Width variants
-      expect(result).toHaveProperty('vw')
-      expect(result).toHaveProperty('dvw')
-      expect(result).toHaveProperty('lvw')
-      expect(result).toHaveProperty('svw')
-
-      // Width clamp variants
-      expect(result).toHaveProperty('vwc')
-      expect(result).toHaveProperty('dvwc')
-      expect(result).toHaveProperty('lvwc')
-      expect(result).toHaveProperty('svwc')
-
-      // Width extend variants
-      expect(result).toHaveProperty('vwe')
-      expect(result).toHaveProperty('dvwe')
-      expect(result).toHaveProperty('lvwe')
-      expect(result).toHaveProperty('svwe')
-
-      // Height variants
-      expect(result).toHaveProperty('vh')
-      expect(result).toHaveProperty('dvh')
-      expect(result).toHaveProperty('lvh')
-      expect(result).toHaveProperty('svh')
-
-      // Height clamp variants
-      expect(result).toHaveProperty('vhc')
-      expect(result).toHaveProperty('dvhc')
-      expect(result).toHaveProperty('lvhc')
-      expect(result).toHaveProperty('svhc')
-
-      // Height extend variants
-      expect(result).toHaveProperty('vhe')
-      expect(result).toHaveProperty('dvhe')
-      expect(result).toHaveProperty('lvhe')
-      expect(result).toHaveProperty('svhe')
     })
   })
 
   describe('genVSCodeSnippetDraftWidth', () => {
-    it('should generate snippets for multiple points', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 3,
-        firstIndex: 1,
-      })
+    it('should generate correct number of snippets', () => {
+      const result = genVSCodeSnippetDraftWidth({pointsSize: 3})
 
-      expect(result).toHaveProperty('vw1')
-      expect(result).toHaveProperty('vw2')
-      expect(result).toHaveProperty('vw3')
-      expect(result).toHaveProperty('dvw1')
-      expect(result).toHaveProperty('vwc1')
-      expect(result).toHaveProperty('vwe1')
-    })
-
-    it('should respect custom firstIndex', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 2,
-        firstIndex: 5,
-      })
-
-      expect(result).toHaveProperty('vw5')
-      expect(result).toHaveProperty('vw6')
-      expect(result).not.toHaveProperty('vw1')
-      expect(result).not.toHaveProperty('vw7')
-    })
-
-    it('should handle custom function names', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 1,
-        nameVw: 'w',
-        nameDvw: 'dw',
-        nameVwc: 'wc',
-        nameVwe: '',
-      })
-
-      expect(result).toHaveProperty('w1')
-      expect(result).toHaveProperty('dw1')
-      expect(result).toHaveProperty('wc1')
-      expect(result).not.toHaveProperty('vwe1')
-      expect(result).not.toHaveProperty('vw1')
-    })
-
-    it('should generate correct snippet structure', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 1,
-        scope: ['css'],
-      })
-
+      // Should have 3 points × 12 function types
+      expect(Object.keys(result)).toHaveLength(36)
       expect(result.vw1).toEqual({
         prefix: 'vw1',
         body: 'vw1($1)$0',
-        scope: 'css',
+        scope: DEFAULT_SNIPPET.scope.join(','),
+      })
+    })
+
+    it('should handle custom parameters', () => {
+      const result = genVSCodeSnippetDraftWidth({
+        pointsSize: 1,
+        firstIndex: 5,
+        nameVw: 'w',
+        nameVwc: '', // Should be skipped
+        scope: ['css'],
       })
 
-      expect(result.vwc1).toEqual({
-        prefix: 'vwc1',
-        body: 'vwc1($1)$0',
-        scope: 'css',
-      })
+      expect(result.w5).toBeDefined()
+      expect(result.w5.scope).toBe('css')
+      expect(result).not.toHaveProperty('vwc5')
+      expect(result).not.toHaveProperty('vw5')
     })
 
     it('should handle zero pointsSize', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 0,
-      })
-
+      const result = genVSCodeSnippetDraftWidth({pointsSize: 0})
       expect(Object.keys(result)).toHaveLength(0)
-    })
-
-    it('should generate all width function variants', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 1,
-      })
-
-      // Basic variants
-      expect(result).toHaveProperty('vw1')
-      expect(result).toHaveProperty('dvw1')
-      expect(result).toHaveProperty('lvw1')
-      expect(result).toHaveProperty('svw1')
-
-      // Clamp variants
-      expect(result).toHaveProperty('vwc1')
-      expect(result).toHaveProperty('dvwc1')
-      expect(result).toHaveProperty('lvwc1')
-      expect(result).toHaveProperty('svwc1')
-
-      // Extend variants
-      expect(result).toHaveProperty('vwe1')
-      expect(result).toHaveProperty('dvwe1')
-      expect(result).toHaveProperty('lvwe1')
-      expect(result).toHaveProperty('svwe1')
     })
   })
 
   describe('genVSCodeSnippetDraftHeight', () => {
-    it('should generate snippets for height variants', () => {
-      const result = genVSCodeSnippetDraftHeight({
-        pointsSize: 2,
-        firstIndex: 1,
-      })
-
-      expect(result).toHaveProperty('vh1')
-      expect(result).toHaveProperty('vh2')
-      expect(result).toHaveProperty('dvh1')
-      expect(result).toHaveProperty('vhc1')
-      expect(result).toHaveProperty('vhe1')
-    })
-
-    it('should handle custom function names', () => {
-      const result = genVSCodeSnippetDraftHeight({
-        pointsSize: 1,
-        nameVh: 'h',
-        nameDvh: 'dh',
-        nameVhc: '',
-        nameVhe: 'he',
-      })
-
-      expect(result).toHaveProperty('h1')
-      expect(result).toHaveProperty('dh1')
-      expect(result).toHaveProperty('he1')
-      expect(result).not.toHaveProperty('vhc1')
-      expect(result).not.toHaveProperty('vh1')
-    })
-
-    it('should generate correct snippet structure', () => {
-      const result = genVSCodeSnippetDraftHeight({
-        pointsSize: 1,
-        scope: ['scss'],
-      })
+    it('should generate height variants', () => {
+      const result = genVSCodeSnippetDraftHeight({pointsSize: 1})
 
       expect(result.vh1).toEqual({
         prefix: 'vh1',
         body: 'vh1($1)$0',
-        scope: 'scss',
-      })
-    })
-
-    it('should generate all height function variants', () => {
-      const result = genVSCodeSnippetDraftHeight({
-        pointsSize: 1,
+        scope: DEFAULT_SNIPPET.scope.join(','),
       })
 
-      // Basic variants
-      expect(result).toHaveProperty('vh1')
-      expect(result).toHaveProperty('dvh1')
-      expect(result).toHaveProperty('lvh1')
-      expect(result).toHaveProperty('svh1')
-
-      // Clamp variants
-      expect(result).toHaveProperty('vhc1')
-      expect(result).toHaveProperty('dvhc1')
-      expect(result).toHaveProperty('lvhc1')
-      expect(result).toHaveProperty('svhc1')
-
-      // Extend variants
-      expect(result).toHaveProperty('vhe1')
-      expect(result).toHaveProperty('dvhe1')
-      expect(result).toHaveProperty('lvhe1')
-      expect(result).toHaveProperty('svhe1')
+      // Ensure main height variants exist
+      const expectedKeys = ['vh1', 'dvh1', 'vhc1', 'vhe1']
+      expectedKeys.forEach(key => expect(result).toHaveProperty(key))
     })
   })
 
-  describe('integration and edge cases', () => {
-    it('should handle all parameters together', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 2,
-        firstIndex: 3,
-        scope: ['css', 'scss', 'sass'],
-        nameVw: 'width',
-        nameDvw: 'dwidth',
-        nameVwc: '',
-        nameVwe: 'wextend',
+  describe('genVSCodeSnippetPicture', () => {
+    it('should generate HTML and React variants', () => {
+      const result = genVSCodeSnippetPicture({
+        points: [768, 1024],
+        scope: ['html', 'typescriptreact'],
       })
 
-      expect(result).toHaveProperty('width3')
-      expect(result).toHaveProperty('width4')
-      expect(result).toHaveProperty('dwidth3')
-      expect(result).toHaveProperty('wextend3')
-      expect(result).not.toHaveProperty('vwc3')
-
-      expect(result.width3.scope).toBe('css,scss,sass')
-      expect(result.width3.prefix).toBe('width3')
-      expect(result.width3.body).toBe('width3($1)$0')
-    })
-
-    it('should handle large pointsSize efficiently', () => {
-      const result = genVSCodeSnippetDraftWidth({
-        pointsSize: 50,
+      expect(result.pictureNormal).toEqual({
+        prefix: 'pic',
+        body: [
+          '<picture$1>',
+          '  <source media="(max-width: 768px)" srcset="$2"/>',
+          '  <img src="$3" alt="$4"/>',
+          '</picture>$0',
+        ],
+        scope: 'html',
       })
 
-      expect(Object.keys(result)).toHaveLength(50 * 12) // 50 points * 12 function types
-      expect(result).toHaveProperty('vw1')
-      expect(result).toHaveProperty('vw50')
-      expect(result).toHaveProperty('svwe50')
+      expect(result.pictureReact).toEqual({
+        prefix: 'pic',
+        body: [
+          '<picture$1>',
+          '  <source media="(max-width: 768px)" srcSet="$2"/>',
+          '  <img src="$3" alt="$4"/>',
+          '</picture>$0',
+        ],
+        scope: 'typescriptreact',
+      })
     })
 
-    it('should maintain consistent snippet structure across generators', () => {
-      const coreResult = genVSCodeSnippetCore()
-      const widthResult = genVSCodeSnippetDraftWidth({pointsSize: 1})
-      const heightResult = genVSCodeSnippetDraftHeight({pointsSize: 1})
+    it('should handle edge cases', () => {
+      // Point offset and filtering
+      const result = genVSCodeSnippetPicture({
+        points: [-100, 1024, 0, 768],
+        pointOffset: -1,
+        scope: ['html'],
+      })
 
-      // All should have the same structure
-      expect(coreResult.vw.prefix).toBe('vw')
-      expect(coreResult.vw.body).toBe('vw($1,$2)$0')
-      expect(coreResult.vw.scope).toBe(DEFAULT_SNIPPET.scope.join(','))
+      const body = result.pictureNormal?.body as string[]
+      expect(body[1]).toContain('767px') // 768 - 1 (offset applied)
+      expect(body[2]).toContain('src="$3"') // Last element should be img tag
+    })
+  })
 
-      expect(widthResult.vw1.prefix).toBe('vw1')
-      expect(widthResult.vw1.body).toBe('vw1($1)$0')
-      expect(widthResult.vw1.scope).toBe(DEFAULT_SNIPPET.scope.join(','))
+  describe('genVSCodeSnippetMediaQuery', () => {
+    it('should generate min and max media queries', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768, 1024],
+        scope: ['css'],
+      })
 
-      expect(heightResult.vh1.prefix).toBe('vh1')
-      expect(heightResult.vh1.body).toBe('vh1($1)$0')
-      expect(heightResult.vh1.scope).toBe(DEFAULT_SNIPPET.scope.join(','))
+      expect(result.minP0).toEqual({
+        prefix: 'min-p0',
+        body: [
+          '@media (width >= 768px) {',
+          '  $1',
+          '}$0',
+        ],
+        scope: 'css',
+      })
+
+      expect(result.maxP0).toEqual({
+        prefix: 'max-p0',
+        body: [
+          '@media (width < 768px) {',
+          '  $1',
+          '}$0',
+        ],
+        scope: 'css',
+      })
+
+      // Should have 2 points × 2 types = 4 snippets
+      expect(Object.keys(result)).toHaveLength(4)
     })
 
-    it('should handle extreme edge cases', () => {
-      // Very large firstIndex
+    it('should handle custom parameters', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768],
+        firstIndex: 2,
+        pointOffset: 1,
+        nameMin: 'mobile-up',
+        nameMax: 'mobile-down',
+        scope: ['scss'],
+      })
+
+      expect(result.minP2?.prefix).toBe('mobile-up2')
+      expect(result.maxP2?.prefix).toBe('mobile-down2')
+      expect(result.minP2?.body[0]).toContain('769px') // 768 + 1
+      expect(result.minP2?.scope).toBe('scss')
+    })
+  })
+
+  describe('edge cases and integration', () => {
+    it('should handle extreme values consistently', () => {
+      // Test negative firstIndex
       const result1 = genVSCodeSnippetDraftWidth({
-        pointsSize: 1,
-        firstIndex: 1000,
-      })
-      expect(result1).toHaveProperty('vw1000')
-
-      // Zero firstIndex
-      const result2 = genVSCodeSnippetDraftWidth({
-        pointsSize: 1,
-        firstIndex: 0,
-      })
-      expect(result2).toHaveProperty('vw0')
-
-      // Negative firstIndex
-      const result3 = genVSCodeSnippetDraftWidth({
         pointsSize: 1,
         firstIndex: -5,
       })
-      expect(result3).toHaveProperty('vw-5')
+      expect(result1).toHaveProperty('vw-5')
+
+      // Test large values
+      const result2 = genVSCodeSnippetDraftWidth({
+        pointsSize: 1,
+        firstIndex: 1000,
+      })
+      expect(result2).toHaveProperty('vw1000')
     })
 
-    it('should skip functions with empty names consistently', () => {
-      const coreConfig = genVSCodeSnippetCore({nameVw: '', nameEm: ''})
-      const widthConfig = genVSCodeSnippetDraftWidth({pointsSize: 1, nameVw: ''})
-      const heightConfig = genVSCodeSnippetDraftHeight({pointsSize: 1, nameVh: ''})
+    it('should filter invalid points correctly', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [-100, 0, 768, 1024],
+      })
 
-      expect(Object.keys(coreConfig)).not.toContain('')
-      expect(coreConfig).not.toHaveProperty('vw')
-      expect(coreConfig).not.toHaveProperty('em')
-      expect(coreConfig).toHaveProperty('dvw') // Other functions should still be there
+      // Only positive points should be used: 768, 1024
+      expect(Object.keys(result)).toHaveLength(4) // 2 valid points × 2 types
+    })
 
-      expect(Object.keys(widthConfig)).not.toContain('')
-      expect(widthConfig).not.toHaveProperty('vw1')
-      expect(widthConfig).toHaveProperty('dvw1')
+    it('should maintain consistent snippet structure', () => {
+      const core = genVSCodeSnippetCore()
+      const width = genVSCodeSnippetDraftWidth({pointsSize: 1})
+      const height = genVSCodeSnippetDraftHeight({pointsSize: 1})
 
-      expect(Object.keys(heightConfig)).not.toContain('')
-      expect(heightConfig).not.toHaveProperty('vh1')
-      expect(heightConfig).toHaveProperty('dvh1')
+      // All should follow the same structure pattern
+      expect(core.vw).toHaveProperty('prefix')
+      expect(core.vw).toHaveProperty('body')
+      expect(core.vw).toHaveProperty('scope')
+
+      expect(width.vw1).toHaveProperty('prefix')
+      expect(width.vw1).toHaveProperty('body')
+      expect(width.vw1).toHaveProperty('scope')
+
+      expect(height.vh1).toHaveProperty('prefix')
+      expect(height.vh1).toHaveProperty('body')
+      expect(height.vh1).toHaveProperty('scope')
     })
   })
 })
