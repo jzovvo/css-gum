@@ -214,3 +214,119 @@ export const genVSCodeSnippetDraftHeight = ({
 
   return snippets
 }
+
+interface RWD {
+  points: number[]
+  pointOffset?: number
+  scope?: VSCodeLanguageIdentifier[]
+}
+
+export type PropsGenVSCodeSnippetPicture = {
+  namePic?: string
+} & RWD
+
+export const genVSCodeSnippetPicture = ({
+  points,
+  pointOffset = 0,
+  namePic = 'pic',
+  scope = [...DEFAULT_SNIPPET.scopePictureNormal, ...DEFAULT_SNIPPET.scopePictureReact],
+}: PropsGenVSCodeSnippetPicture) => {
+  const validPoints = points.filter(point => point > 0).sort((a, b) => a - b)
+
+  const snippets: Snippets = {}
+  const snippetScopeNormal: VSCodeLanguageIdentifier[] = []
+  const snippetScopeReact: VSCodeLanguageIdentifier[] = []
+  const REACT_ID: VSCodeLanguageIdentifier[] = DEFAULT_SNIPPET.scopePictureReact
+
+  for(let i = 0; i <= scope.length - 1; i++) {
+    const id = scope[i]
+    if (REACT_ID.includes(id)) {
+      snippetScopeReact.push(id)
+    } else {
+      snippetScopeNormal.push(id)
+    }
+  }
+
+  if (snippetScopeNormal.length !== 0) {
+    snippets['pictureNormal'] = {
+      prefix: namePic,
+      body: [
+        '<picture$1>',
+        ...validPoints.map((point, index) => {
+          if (index !== validPoints.length - 1) {
+            return `  <source media="(max-width: ${point + pointOffset}px)" srcset="$${index + 2}"/>`
+          }
+          return `  <img src="$${index + 2}" alt="$${index + 3}"/>`
+        }),
+        '</picture>$0',
+      ],
+      scope: snippetScopeNormal.join(','),
+    }
+  }
+
+  if (snippetScopeReact.length !== 0) {
+    snippets['pictureReact'] = {
+      prefix: namePic,
+      body: [
+        '<picture$1>',
+        ...validPoints.map((point, index) => {
+          if (index !== validPoints.length - 1) {
+            return `  <source media="(max-width: ${point}px)" srcSet="$${index + 2}"/>`
+          }
+          return `  <img src="$${index + 2}" alt="$${index + 3}"/>`
+        }),
+        '</picture>$0',
+      ],
+      scope: snippetScopeReact.join(','),
+    }
+  }
+
+  return snippets
+}
+
+export type PropsGenVSCodeSnippetMediaQuery = {
+  firstIndex?: number
+  nameMin?: string
+  nameMax?: string
+} & RWD
+
+export const genVSCodeSnippetMediaQuery = ({
+  points,
+  pointOffset = 0,
+  firstIndex = 0,
+  scope = DEFAULT_SNIPPET.scope,
+  nameMax = 'max-p',
+  nameMin = 'min-p',
+}: PropsGenVSCodeSnippetMediaQuery) => {
+  const validPoints = points.filter(point => point > 0).sort((a, b) => a - b)
+
+  const snippets: Snippets = {}
+  const scopeString = scope.join(',')
+
+  for (let i = 0; i <= validPoints.length - 1; i++) {
+    const idx = i + firstIndex
+    const point = validPoints[i] + pointOffset
+
+    snippets[`minP${idx}`] = {
+      'prefix': `${nameMin}${idx}`,
+      'body': [
+        `@media (width >= ${point}px) {`,
+        '  $1',
+        '}$0',
+      ],
+      'scope': scopeString,
+    }
+
+    snippets[`maxP${idx}`] = {
+      'prefix': `${nameMax}${idx}`,
+      'body': [
+        `@media (width < ${point}px) {`,
+        '  $1',
+        '}$0',
+      ],
+      'scope': scopeString,
+    }
+  }
+
+  return snippets
+}
