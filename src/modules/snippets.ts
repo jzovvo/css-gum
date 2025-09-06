@@ -1,57 +1,49 @@
 import {DEFAULT, type GenFuncsNameCustomHeight, type GenFuncsNameCustomOther, type GenFuncsNameCustomWidth} from './gen'
+import type {Snippets, VSCodeLanguageIdentifier} from './types'
 
-export const DEFAULT_SNIPPET = {
-  ARGS: '$1',
-  SCOPE: 'html,css,sass,scss,less,stylus',
-}
-
-export interface SnippetConfig {
-  prefix: string
-  body: string
-  scope?: string
-}
-
-type Snippets = Record<string, SnippetConfig>
-
-export interface PropsDraftFuncs {
-  pointsSize?: number
-  firstIndex?: number
-}
-
-const createSnippet = ({prefix, body, scope}: Required<SnippetConfig>): Required<SnippetConfig> => ({
-  prefix,
-  body,
-  scope,
-})
-
-interface PropsAddSnippet {
+export interface PropsAddSnippet {
   snippets: Snippets;
   name: string;
   suffix?: number | string;
   args?: string;
-  scope?: string;
+  scope?: VSCodeLanguageIdentifier[];
+}
+
+export const DEFAULT_SNIPPET: {
+  args: NonNullable<PropsAddSnippet['args']>
+  scope: NonNullable<PropsAddSnippet['scope']>
+  scopePictureNormal: NonNullable<PropsAddSnippet['scope']>
+  scopePictureReact: NonNullable<PropsAddSnippet['scope']>
+} = {
+  args: '$1',
+  scope: ['html','css','sass','scss','less','stylus'],
+  scopePictureNormal: ['html', 'vue'],
+  scopePictureReact: ['javascriptreact', 'typescriptreact'],
 }
 
 const addSnippetIfEnabled = ({
   snippets,
   name,
   suffix = '',
-  args = DEFAULT_SNIPPET.ARGS,
-  scope = DEFAULT_SNIPPET.SCOPE,
+  args = DEFAULT_SNIPPET.args,
+  scope = DEFAULT_SNIPPET.scope,
 }: PropsAddSnippet) => {
   if (name !== '') {
     const key = name + suffix
 
-    snippets[key] = createSnippet({
+    snippets[key] = {
       prefix: key,
       body: `${key}(${args})$0`,
-      scope,
-    })
+    }
+
+    scope.length !== 0 && (snippets[key]['scope'] = scope.join(','))
   }
 }
 
+type PropsGenVSCodeSnippetCore = GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & Pick<PropsAddSnippet, 'scope'>
+
 export const genVSCodeSnippetCore = ({
-  scope = DEFAULT_SNIPPET.SCOPE,
+  scope = DEFAULT_SNIPPET.scope,
 
   nameEm = DEFAULT.nameEm,
   nameLh = DEFAULT.nameLh,
@@ -86,7 +78,7 @@ export const genVSCodeSnippetCore = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & Pick<SnippetConfig, 'scope'> = {}) => {
+}: PropsGenVSCodeSnippetCore = {}) => {
   const snippets: Snippets = {}
 
   addSnippetIfEnabled({snippets, name: nameEm, args: '$1,$2', scope})
@@ -126,10 +118,16 @@ export const genVSCodeSnippetCore = ({
   return snippets
 }
 
-export const genVSCodeSnippetDraftWidth = ({
-  scope = DEFAULT_SNIPPET.SCOPE,
+type PropsGenVSCodeSnippetDraft = {
+  pointsSize: number
+  firstIndex?: number
+} & Pick<PropsAddSnippet, 'scope'>
 
-  pointsSize = DEFAULT.points.length,
+type PropsGenVSCodeSnippetDraftWidth = PropsGenVSCodeSnippetDraft & GenFuncsNameCustomWidth
+
+export const genVSCodeSnippetDraftWidth = ({
+  pointsSize,
+  scope = DEFAULT_SNIPPET.scope,
   firstIndex = DEFAULT.firstIndex,
 
   nameVw = DEFAULT.nameVw,
@@ -146,7 +144,7 @@ export const genVSCodeSnippetDraftWidth = ({
   nameDvwe = DEFAULT.nameDvwe,
   nameLvwe = DEFAULT.nameLvwe,
   nameSvwe = DEFAULT.nameSvwe,
-}: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<SnippetConfig, 'scope'> = {}) => {
+}: PropsGenVSCodeSnippetDraftWidth) => {
   const snippets: Snippets = {}
 
   for (let i = 0; i < pointsSize; i++) {
@@ -171,10 +169,11 @@ export const genVSCodeSnippetDraftWidth = ({
   return snippets
 }
 
-export const genVSCodeSnippetDraftHeight = ({
-  scope = DEFAULT_SNIPPET.SCOPE,
+type PropsGenVSCodeSnippetDraftHeight = PropsGenVSCodeSnippetDraft & GenFuncsNameCustomHeight
 
-  pointsSize = DEFAULT.points.length,
+export const genVSCodeSnippetDraftHeight = ({
+  pointsSize,
+  scope = DEFAULT_SNIPPET.scope,
   firstIndex = DEFAULT.firstIndex,
 
   nameVh = DEFAULT.nameVh,
@@ -191,7 +190,7 @@ export const genVSCodeSnippetDraftHeight = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<SnippetConfig, 'scope'> = {}) => {
+}: PropsGenVSCodeSnippetDraftHeight) => {
   const snippets: Snippets = {}
 
   for (let i = 0; i < pointsSize; i++) {

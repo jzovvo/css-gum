@@ -14,7 +14,14 @@
     "Svwe",
     "Dvhe",
     "Lvhe",
-    "Svhe"
+    "Svhe",
+    "abap",
+    "bibtex",
+    "dockercompose",
+    "cuda",
+    "haml",
+    "dwidth",
+    "wextend"
   ],
   "ignorePaths": [
     "node_modules/**",

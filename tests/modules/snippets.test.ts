@@ -9,8 +9,8 @@ import {
 describe('snippets module', () => {
   describe('DEFAULT_SNIPPET constants', () => {
     it('should have correct default values', () => {
-      expect(DEFAULT_SNIPPET.ARGS).toBe('$1')
-      expect(DEFAULT_SNIPPET.SCOPE).toBe('html,css,sass,scss,less,stylus')
+      expect(DEFAULT_SNIPPET.args).toBe('$1')
+      expect(DEFAULT_SNIPPET.scope).toEqual(['html','css','sass','scss','less','stylus'])
     })
   })
 
@@ -34,13 +34,13 @@ describe('snippets module', () => {
       expect(result.vw).toEqual({
         prefix: 'vw',
         body: 'vw($1,$2)$0',
-        scope: DEFAULT_SNIPPET.SCOPE,
+        scope: DEFAULT_SNIPPET.scope.join(','),
       })
 
       expect(result.em).toEqual({
         prefix: 'em',
         body: 'em($1,$2)$0',
-        scope: DEFAULT_SNIPPET.SCOPE,
+        scope: DEFAULT_SNIPPET.scope.join(','),
       })
     })
 
@@ -61,7 +61,7 @@ describe('snippets module', () => {
       expect(result.customVw).toEqual({
         prefix: 'customVw',
         body: 'customVw($1,$2)$0',
-        scope: DEFAULT_SNIPPET.SCOPE,
+        scope: DEFAULT_SNIPPET.scope.join(','),
       })
     })
 
@@ -80,7 +80,7 @@ describe('snippets module', () => {
 
     it('should handle custom scope', () => {
       const result = genVSCodeSnippetCore({
-        scope: 'css,scss',
+        scope: ['css', 'scss'],
       })
 
       expect(result.vw.scope).toBe('css,scss')
@@ -174,7 +174,7 @@ describe('snippets module', () => {
     it('should generate correct snippet structure', () => {
       const result = genVSCodeSnippetDraftWidth({
         pointsSize: 1,
-        scope: 'css',
+        scope: ['css'],
       })
 
       expect(result.vw1).toEqual({
@@ -256,7 +256,7 @@ describe('snippets module', () => {
     it('should generate correct snippet structure', () => {
       const result = genVSCodeSnippetDraftHeight({
         pointsSize: 1,
-        scope: 'scss',
+        scope: ['scss'],
       })
 
       expect(result.vh1).toEqual({
@@ -296,7 +296,7 @@ describe('snippets module', () => {
       const result = genVSCodeSnippetDraftWidth({
         pointsSize: 2,
         firstIndex: 3,
-        scope: 'css,scss,sass',
+        scope: ['css', 'scss', 'sass'],
         nameVw: 'width',
         nameDvw: 'dwidth',
         nameVwc: '',
@@ -333,15 +333,15 @@ describe('snippets module', () => {
       // All should have the same structure
       expect(coreResult.vw.prefix).toBe('vw')
       expect(coreResult.vw.body).toBe('vw($1,$2)$0')
-      expect(coreResult.vw.scope).toBe(DEFAULT_SNIPPET.SCOPE)
+      expect(coreResult.vw.scope).toBe(DEFAULT_SNIPPET.scope.join(','))
 
       expect(widthResult.vw1.prefix).toBe('vw1')
       expect(widthResult.vw1.body).toBe('vw1($1)$0')
-      expect(widthResult.vw1.scope).toBe(DEFAULT_SNIPPET.SCOPE)
+      expect(widthResult.vw1.scope).toBe(DEFAULT_SNIPPET.scope.join(','))
 
       expect(heightResult.vh1.prefix).toBe('vh1')
       expect(heightResult.vh1.body).toBe('vh1($1)$0')
-      expect(heightResult.vh1.scope).toBe(DEFAULT_SNIPPET.SCOPE)
+      expect(heightResult.vh1.scope).toBe(DEFAULT_SNIPPET.scope.join(','))
     })
 
     it('should handle extreme edge cases', () => {

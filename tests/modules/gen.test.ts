@@ -11,7 +11,6 @@ describe('gen module', () => {
     it('should have correct default values', () => {
       expect(DEFAULT.space).toBe(0)
       expect(DEFAULT.firstIndex).toBe(1)
-      expect(DEFAULT.points).toEqual([])
       expect(DEFAULT.nameVw).toBe('vw')
       expect(DEFAULT.nameDvw).toBe('dvw')
       expect(DEFAULT.nameEm).toBe('em')
@@ -20,7 +19,7 @@ describe('gen module', () => {
 
     it('should have all required properties', () => {
       const requiredKeys = [
-        'space', 'firstIndex', 'points',
+        'space', 'firstIndex',
         'nameEm', 'nameLh', 'namePercent',
         'nameVw', 'nameDvw', 'nameLvw', 'nameSvw',
         'nameVwc', 'nameDvwc', 'nameLvwc', 'nameSvwc',
@@ -128,7 +127,7 @@ describe('gen module', () => {
       const result = genFuncsDraftWidth({
         points: [1000, 800],
         firstIndex: 1,
-        scope: 'css',
+        scope: ['css'],
         nameVw: 'vw',
         nameDvw: 'dvw',
       })
@@ -252,7 +251,7 @@ describe('gen module', () => {
 
     it('should generate VSCode snippets with custom scope', () => {
       const result = genFuncsCore({
-        scope: 'scss,css',
+        scope: ['scss', 'css'],
         nameVw: 'vw',
       })
 
@@ -267,7 +266,7 @@ describe('gen module', () => {
         points: [1000, 800],
         firstIndex: 2,
         space: 1,
-        scope: 'css,scss',
+        scope: ['css', 'scss'],
         nameVw: 'w',
         nameDvw: 'dw',
         nameVwc: 'wc',

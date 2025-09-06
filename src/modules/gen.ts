@@ -1,12 +1,12 @@
 import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent, lvw, svw, dvw, dvh, lvh, svh, dvwc, svwc, lvwc, dvwe, lvwe, svwe, dvhc, lvhc, svhc, dvhe, lvhe, svhe} from './core'
-import {DEFAULT_SNIPPET, genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth, SnippetConfig} from './snippets'
+import {DEFAULT_SNIPPET, genVSCodeSnippetCore, genVSCodeSnippetDraftHeight, genVSCodeSnippetDraftWidth, PropsAddSnippet} from './snippets'
 import type {Pixel, SpaceFlag, DesignDraft} from './types'
 interface PropsSpace {
   space?: SpaceFlag
 }
 
 type PropsDraftFuncs = {
-  points?: number[]
+  points: number[]
   firstIndex?: number
 } & PropsSpace
 
@@ -50,10 +50,9 @@ export interface GenFuncsNameCustomOther {
   namePercent?: string
 }
 
-export const DEFAULT: Required<PropsDraftFuncs & GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther> = {
+export const DEFAULT: Required<Omit<PropsDraftFuncs, 'points'> & GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther> = {
   space: 0,
   firstIndex: 1,
-  points: [],
 
   nameEm: 'em',
   nameLh: 'lh',
@@ -91,9 +90,9 @@ export const DEFAULT: Required<PropsDraftFuncs & GenFuncsNameCustomWidth & GenFu
 }
 
 export const genFuncsDraftWidth = ({
+  points,
   space = DEFAULT.space,
-  scope = DEFAULT_SNIPPET.SCOPE,
-  points = DEFAULT.points,
+  scope = DEFAULT_SNIPPET.scope,
   firstIndex = DEFAULT.firstIndex,
 
   nameVw = DEFAULT.nameVw,
@@ -110,7 +109,7 @@ export const genFuncsDraftWidth = ({
   nameDvwe = DEFAULT.nameDvwe,
   nameLvwe = DEFAULT.nameLvwe,
   nameSvwe = DEFAULT.nameSvwe,
-}: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<SnippetConfig, 'scope'>) => {
+}: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<PropsAddSnippet, 'scope'>) => {
   const validPoints = points.filter(point => point > 0).sort((a, b) => a - b)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
@@ -161,9 +160,9 @@ export const genFuncsDraftWidth = ({
 }
 
 export const genFuncsDraftHeight = ({
+  points,
   space = DEFAULT.space,
-  scope = DEFAULT_SNIPPET.SCOPE,
-  points = DEFAULT.points,
+  scope = DEFAULT_SNIPPET.scope,
   firstIndex = DEFAULT.firstIndex,
 
   nameVh = DEFAULT.nameVh,
@@ -180,7 +179,7 @@ export const genFuncsDraftHeight = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<SnippetConfig, 'scope'>) => {
+}: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<PropsAddSnippet, 'scope'>) => {
   const validPoints = points.filter(point => point > 0).sort((a, b) => a - b)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
@@ -232,7 +231,7 @@ export const genFuncsDraftHeight = ({
 
 export const genFuncsCore = ({
   space = DEFAULT.space,
-  scope = DEFAULT_SNIPPET.SCOPE,
+  scope = DEFAULT_SNIPPET.scope,
 
   nameEm = DEFAULT.nameEm,
   nameLh = DEFAULT.nameLh,
@@ -267,7 +266,7 @@ export const genFuncsCore = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & PropsSpace & Pick<SnippetConfig, 'scope'> = {}) => {
+}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & PropsSpace & Pick<PropsAddSnippet, 'scope'> = {}) => {
   const temp = {
     [nameEm]: em,
     [nameLh]: lh,

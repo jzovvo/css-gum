@@ -1,7 +1,7 @@
 import {consoleWarn} from '../utils/console'
 import fs from 'fs'
 import {dirname} from 'path'
-import {SnippetConfig} from './snippets'
+import type {SnippetConfig} from './types'
 
 /**
  * Reads existing VSCode snippets file and returns parsed JSON object.
