@@ -1,15 +1,16 @@
 import {normalizePoints} from '../../utils/point-utils'
 import {vh, vhc, vhe, dvh, lvh, svh, dvhc, lvhc, svhc, dvhe, lvhe, svhe} from '../core'
-import {DEFAULT_SNIPPET, genVSCodeSnippetDraftHeight, PropsAddSnippet} from '../build-snippets/generator-functions'
+import {genVSCodeSnippetDraftHeight, PropsAddFunctionSnippet} from '../build-snippets/generator-functions'
 import type {Pixel, SpaceFlag} from '../../utils/types'
 import {DEFAULT} from './const'
 import {GenFuncsNameCustomHeight, PropsDraftFuncs} from './types'
+import {DEFAULT_SNIPPET} from '../build-snippets/const'
 
 
 export const genFuncsDraftHeight = ({
   points,
   space = DEFAULT.space,
-  scope = DEFAULT_SNIPPET.scope,
+  scope = DEFAULT_SNIPPET.scopeCss,
   firstIndex = DEFAULT.firstIndex,
   order = DEFAULT.order,
 
@@ -27,7 +28,7 @@ export const genFuncsDraftHeight = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<PropsAddSnippet, 'scope'>) => {
+}: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<PropsAddFunctionSnippet, 'scope'>) => {
   const normalizedPoints = normalizePoints(points, order)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}

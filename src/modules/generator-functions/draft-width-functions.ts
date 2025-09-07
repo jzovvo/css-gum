@@ -1,14 +1,15 @@
 import {normalizePoints} from '../../utils/point-utils'
 import {vw, vwc, vwe, lvw, svw, dvw, dvwc, svwc, lvwc, dvwe, lvwe, svwe} from '../core'
-import {DEFAULT_SNIPPET, genVSCodeSnippetDraftWidth, PropsAddSnippet} from '../build-snippets/generator-functions'
+import {genVSCodeSnippetDraftWidth, PropsAddFunctionSnippet} from '../build-snippets/generator-functions'
 import type {Pixel, SpaceFlag} from '../../utils/types'
 import {DEFAULT} from './const'
 import {GenFuncsNameCustomWidth, PropsDraftFuncs} from './types'
+import {DEFAULT_SNIPPET} from '../build-snippets/const'
 
 export const genFuncsDraftWidth = ({
   points,
   space = DEFAULT.space,
-  scope = DEFAULT_SNIPPET.scope,
+  scope = DEFAULT_SNIPPET.scopeCss,
   firstIndex = DEFAULT.firstIndex,
   order = DEFAULT.order,
 
@@ -26,7 +27,7 @@ export const genFuncsDraftWidth = ({
   nameDvwe = DEFAULT.nameDvwe,
   nameLvwe = DEFAULT.nameLvwe,
   nameSvwe = DEFAULT.nameSvwe,
-}: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<PropsAddSnippet, 'scope'>) => {
+}: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<PropsAddFunctionSnippet, 'scope'>) => {
   const normalizedPoints = normalizePoints(points, order)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}

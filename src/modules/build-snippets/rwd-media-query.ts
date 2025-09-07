@@ -1,7 +1,7 @@
 import {normalizePoints} from '../../utils/point-utils'
 import {Snippets} from '../../utils/types'
 import {DEFAULT} from '../generator-functions/const'
-import {DEFAULT_SNIPPET} from './generator-functions'
+import {DEFAULT_SNIPPET} from './const'
 import {RWD} from './types'
 
 export type PropsGenVSCodeSnippetMediaQuery = {
@@ -14,7 +14,7 @@ export const genVSCodeSnippetMediaQuery = ({
   points,
   pointOffset = 0,
   firstIndex = 0,
-  scope = DEFAULT_SNIPPET.scope,
+  scope = DEFAULT_SNIPPET.scopeCss,
   nameMax = 'max-p',
   nameMin = 'min-p',
   order = DEFAULT.order,

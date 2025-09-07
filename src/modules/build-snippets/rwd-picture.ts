@@ -1,7 +1,7 @@
 import {normalizePoints} from '../../utils/point-utils'
 import {Snippets, VSCodeLanguageIdentifier} from '../../utils/types'
 import {DEFAULT} from '../generator-functions/const'
-import {DEFAULT_SNIPPET} from './generator-functions'
+import {DEFAULT_SNIPPET} from './const'
 import {RWD} from './types'
 
 export type PropsGenVSCodeSnippetPicture = {

@@ -2,13 +2,14 @@ import {DEFAULT} from './const'
 import {GenFuncsNameCustomHeight, GenFuncsNameCustomOther, GenFuncsNameCustomWidth, PropsSpace} from './types'
 
 import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent, lvw, svw, dvw, dvh, lvh, svh, dvwc, svwc, lvwc, dvwe, lvwe, svwe, dvhc, lvhc, svhc, dvhe, lvhe, svhe} from '../core'
-import {DEFAULT_SNIPPET, genVSCodeSnippetCore, PropsAddSnippet} from '../build-snippets/generator-functions'
+import {genVSCodeSnippetCore, PropsAddFunctionSnippet} from '../build-snippets/generator-functions'
 import type {Pixel, SpaceFlag, DesignDraft} from '../../utils/types'
+import {DEFAULT_SNIPPET} from '../build-snippets/const'
 
 
 export const genFuncsCore = ({
   space = DEFAULT.space,
-  scope = DEFAULT_SNIPPET.scope,
+  scope = DEFAULT_SNIPPET.scopeCss,
 
   nameEm = DEFAULT.nameEm,
   nameLh = DEFAULT.nameLh,
@@ -43,7 +44,7 @@ export const genFuncsCore = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & PropsSpace & Pick<PropsAddSnippet, 'scope'> = {}) => {
+}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & PropsSpace & Pick<PropsAddFunctionSnippet, 'scope'> = {}) => {
   const temp = {
     [nameEm]: em,
     [nameLh]: lh,
