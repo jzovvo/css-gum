@@ -1,7 +1,7 @@
 import {normalizePoints} from '../../utils/point-utils'
-import {Snippets} from '../../utils/types'
+import {Snippets, VSCodeLanguageIdentifier} from '../../utils/types'
 import {DEFAULT} from '../generator-functions/const'
-import {DEFAULT_SNIPPET} from './const'
+import {CSS_SNIPPET_SCOPE_SYNTAX_BRACKET, CSS_SNIPPET_SCOPE_SYNTAX_INDENT, DEFAULT_SNIPPET} from './const'
 import {RWD} from './types'
 
 export type PropsGenVSCodeSnippetMediaQuery = {
@@ -22,30 +22,75 @@ export const genVSCodeSnippetMediaQuery = ({
   const normalizedPoints = normalizePoints(points, order)
 
   const snippets: Snippets = {}
-  const scopeString = scope.join(',')
+  const snippetScopeCssBracket: VSCodeLanguageIdentifier[] = []
+  const snippetScopeCssIndent: VSCodeLanguageIdentifier[] = []
 
-  for (let i = 0; i <= normalizedPoints.length - 1; i++) {
-    const idx = i + firstIndex
-    const point = normalizedPoints[i] + pointOffset
 
-    snippets[`minP${idx}`] = {
-      'prefix': `${nameMin}${idx}`,
-      'body': [
-        `@media (width >= ${point}px) {`,
-        '  $1',
-        '}$0',
-      ],
-      'scope': scopeString,
+  for(let i = 0; i <= scope.length - 1; i++) {
+    const id = scope[i]
+
+    if (CSS_SNIPPET_SCOPE_SYNTAX_BRACKET.includes(id)) {
+      snippetScopeCssBracket.push(id)
     }
 
-    snippets[`maxP${idx}`] = {
-      'prefix': `${nameMax}${idx}`,
-      'body': [
-        `@media (width < ${point}px) {`,
-        '  $1',
-        '}$0',
-      ],
-      'scope': scopeString,
+    if (CSS_SNIPPET_SCOPE_SYNTAX_INDENT.includes(id)) {
+      snippetScopeCssIndent.push(id)
+    }
+  }
+
+  if (snippetScopeCssBracket.length) {
+    const scopeCssBracketString = snippetScopeCssBracket.join(',')
+
+    for (let i = 0; i <= normalizedPoints.length - 1; i++) {
+      const idx = i + firstIndex
+      const point = normalizedPoints[i] + pointOffset
+
+      snippets[`cssBracketMinP${idx}`] = {
+        'prefix': `${nameMin}${idx}`,
+        'body': [
+          `@media (width >= ${point}px) {`,
+          '  $1',
+          '}',
+        ],
+        'scope': scopeCssBracketString,
+      }
+
+      snippets[`cssBracketMaxP${idx}`] = {
+        'prefix': `${nameMax}${idx}`,
+        'body': [
+          `@media (width < ${point}px) {`,
+          '  $1',
+          '}',
+        ],
+        'scope': scopeCssBracketString,
+      }
+    }
+  }
+
+  if (snippetScopeCssIndent.length) {
+    const scopeCssIndentString = snippetScopeCssIndent.join(',')
+
+    for (let i = 0; i <= normalizedPoints.length - 1; i++) {
+      const idx = i + firstIndex
+      const point = normalizedPoints[i] + pointOffset
+
+      snippets[`cssIndentMinP${idx}`] = {
+        'prefix': `${nameMin}${idx}`,
+        'body': [
+          `@media (width >= ${point}px)`,
+          '  $1',
+        ],
+        'scope': scopeCssIndentString,
+      }
+
+      snippets[`cssIndentMaxP${idx}`] = {
+        'prefix': `${nameMax}${idx}`,
+        'body': [
+          `@media (width < ${point}px)`,
+          '  $1',
+        ],
+        'scope': scopeCssIndentString,
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 import {normalizePoints} from '../../utils/point-utils'
 import {Snippets, VSCodeLanguageIdentifier} from '../../utils/types'
 import {DEFAULT} from '../generator-functions/const'
-import {DEFAULT_SNIPPET} from './const'
+import {CSS_SNIPPET_SCOPE_REACT, DEFAULT_SNIPPET} from './const'
 import {RWD} from './types'
 
 export type PropsGenVSCodeSnippetPicture = {
@@ -20,11 +20,10 @@ export const genVSCodeSnippetPicture = ({
   const snippets: Snippets = {}
   const snippetScopeNormal: VSCodeLanguageIdentifier[] = []
   const snippetScopeReact: VSCodeLanguageIdentifier[] = []
-  const REACT_ID: VSCodeLanguageIdentifier[] = DEFAULT_SNIPPET.scopePictureReact
 
   for(let i = 0; i <= scope.length - 1; i++) {
     const id = scope[i]
-    if (REACT_ID.includes(id)) {
+    if (CSS_SNIPPET_SCOPE_REACT.includes(id)) {
       snippetScopeReact.push(id)
     } else {
       snippetScopeNormal.push(id)

@@ -3,31 +3,69 @@ import {genVSCodeSnippetMediaQuery} from '../../../src/modules/build-snippets/rw
 
 describe('modules/build-snippets/rwd-media-query', () => {
   describe('genVSCodeSnippetMediaQuery', () => {
-    it('should generate min and max media queries', () => {
+    it('should generate bracket syntax media queries', () => {
       const result = genVSCodeSnippetMediaQuery({
         points: [768, 1024],
         scope: ['css'],
       })
 
-      expect(result).toHaveProperty('minP0')
-      expect(result).toHaveProperty('maxP0')
-      expect(result).toHaveProperty('minP1')
-      expect(result).toHaveProperty('maxP1')
+      expect(result).toHaveProperty('cssBracketMinP0')
+      expect(result).toHaveProperty('cssBracketMaxP0')
+      expect(result).toHaveProperty('cssBracketMinP1')
+      expect(result).toHaveProperty('cssBracketMaxP1')
 
-      expect(result.minP0.prefix).toBe('min-p0')
-      expect(result.minP0.body).toEqual([
+      expect(result.cssBracketMinP0.prefix).toBe('min-p0')
+      expect(result.cssBracketMinP0.body).toEqual([
         '@media (width >= 768px) {',
         '  $1',
-        '}$0',
+        '}',
       ])
-      expect(result.minP0.scope).toBe('css')
+      expect(result.cssBracketMinP0.scope).toBe('css')
 
-      expect(result.maxP0.prefix).toBe('max-p0')
-      expect(result.maxP0.body).toEqual([
+      expect(result.cssBracketMaxP0.prefix).toBe('max-p0')
+      expect(result.cssBracketMaxP0.body).toEqual([
         '@media (width < 768px) {',
         '  $1',
-        '}$0',
+        '}',
       ])
+    })
+
+    it('should generate indent syntax media queries', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768],
+        scope: ['sass'],
+      })
+
+      expect(result).toHaveProperty('cssIndentMinP0')
+      expect(result).toHaveProperty('cssIndentMaxP0')
+
+      expect(result.cssIndentMinP0.prefix).toBe('min-p0')
+      expect(result.cssIndentMinP0.body).toEqual([
+        '@media (width >= 768px)',
+        '  $1',
+      ])
+      expect(result.cssIndentMinP0.scope).toBe('sass')
+
+      expect(result.cssIndentMaxP0.prefix).toBe('max-p0')
+      expect(result.cssIndentMaxP0.body).toEqual([
+        '@media (width < 768px)',
+        '  $1',
+      ])
+    })
+
+    it('should generate both bracket and indent syntax for mixed scope', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768],
+        scope: ['css', 'sass'],
+      })
+
+      expect(result).toHaveProperty('cssBracketMinP0')
+      expect(result).toHaveProperty('cssBracketMaxP0')
+      expect(result).toHaveProperty('cssIndentMinP0')
+      expect(result).toHaveProperty('cssIndentMaxP0')
+
+      expect(result.cssBracketMinP0.scope).toBe('css')
+      expect(result.cssIndentMinP0.scope).toBe('sass')
     })
 
     it('should handle custom parameters', () => {
@@ -40,36 +78,37 @@ describe('modules/build-snippets/rwd-media-query', () => {
         scope: ['scss'],
       })
 
-      expect(result).toHaveProperty('minP2')
-      expect(result).toHaveProperty('maxP2')
+      expect(result).toHaveProperty('cssBracketMinP2')
+      expect(result).toHaveProperty('cssBracketMaxP2')
 
-      expect(result.minP2.prefix).toBe('mobile-up2')
-      expect(result.minP2.body).toEqual([
+      expect(result.cssBracketMinP2.prefix).toBe('mobile-up2')
+      expect(result.cssBracketMinP2.body).toEqual([
         '@media (width >= 767px) {',
         '  $1',
-        '}$0',
+        '}',
       ])
-      expect(result.minP2.scope).toBe('scss')
+      expect(result.cssBracketMinP2.scope).toBe('scss')
 
-      expect(result.maxP2.prefix).toBe('mobile-down2')
-      expect(result.maxP2.body).toEqual([
+      expect(result.cssBracketMaxP2.prefix).toBe('mobile-down2')
+      expect(result.cssBracketMaxP2.body).toEqual([
         '@media (width < 767px) {',
         '  $1',
-        '}$0',
+        '}',
       ])
     })
 
     it('should filter invalid points correctly', () => {
       const result = genVSCodeSnippetMediaQuery({
         points: [-100, 0, 768, 1024],
+        scope: ['css'],
       })
 
-      expect(result).toHaveProperty('minP0')
-      expect(result).toHaveProperty('minP1')
-      expect(result).not.toHaveProperty('minP2')
+      expect(result).toHaveProperty('cssBracketMinP0')
+      expect(result).toHaveProperty('cssBracketMinP1')
+      expect(result).not.toHaveProperty('cssBracketMinP2')
 
-      expect(result.minP0.body[0]).toBe('@media (width >= 768px) {')
-      expect(result.minP1.body[0]).toBe('@media (width >= 1024px) {')
+      expect(result.cssBracketMinP0.body[0]).toBe('@media (width >= 768px) {')
+      expect(result.cssBracketMinP1.body[0]).toBe('@media (width >= 1024px) {')
     })
 
     it('should handle empty points array', () => {
@@ -84,20 +123,41 @@ describe('modules/build-snippets/rwd-media-query', () => {
       const result = genVSCodeSnippetMediaQuery({
         points: [1024, 768],
         order: 'desc',
+        scope: ['css'],
       })
 
-      expect(result.minP0.body[0]).toBe('@media (width >= 1024px) {')
-      expect(result.minP1.body[0]).toBe('@media (width >= 768px) {')
+      expect(result.cssBracketMinP0.body[0]).toBe('@media (width >= 1024px) {')
+      expect(result.cssBracketMinP1.body[0]).toBe('@media (width >= 768px) {')
     })
 
     it('should handle single point', () => {
       const result = genVSCodeSnippetMediaQuery({
         points: [768],
+        scope: ['css'],
       })
 
-      expect(result).toHaveProperty('minP0')
-      expect(result).toHaveProperty('maxP0')
-      expect(result).not.toHaveProperty('minP1')
+      expect(result).toHaveProperty('cssBracketMinP0')
+      expect(result).toHaveProperty('cssBracketMaxP0')
+      expect(result).not.toHaveProperty('cssBracketMinP1')
+    })
+
+    it('should handle multiple languages in same syntax category', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768],
+        scope: ['css', 'scss', 'less'],
+      })
+
+      expect(result).toHaveProperty('cssBracketMinP0')
+      expect(result.cssBracketMinP0.scope).toBe('css,scss,less')
+    })
+
+    it('should skip empty scope categories', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768],
+        scope: ['html'], // not in bracket or indent categories
+      })
+
+      expect(Object.keys(result)).toHaveLength(0)
     })
   })
 })
