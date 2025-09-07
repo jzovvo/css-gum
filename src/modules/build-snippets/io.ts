@@ -42,6 +42,10 @@ export const writeSnippetsToFiles = (snippets: Record<string, SnippetConfig>, ou
       fs.mkdirSync(dir, {recursive: true})
     }
 
-    fs.writeFileSync(filePath, content)
+    try {
+      fs.writeFileSync(filePath, content)
+    } catch (writeError) {
+      consoleWarn(`Could not write snippets to ${filePath}: ${writeError}`)
+    }
   }
 }

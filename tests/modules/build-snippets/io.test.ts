@@ -131,5 +131,17 @@ describe('modules/build-snippets/io', () => {
         JSON.stringify(mockSnippets, null, 2),
       )
     })
+
+    it('should handle write errors', () => {
+      mockFs.existsSync.mockReturnValue(true)
+      mockFs.readFileSync.mockReturnValue('{}')
+      mockFs.writeFileSync.mockImplementation(() => {
+        throw new Error('Write failed')
+      })
+
+      writeSnippetsToFiles(mockSnippets, ['/test/snippets.json'])
+
+      expect(mockConsole.consoleWarn).toHaveBeenCalledWith('Could not write snippets to /test/snippets.json: Error: Write failed')
+    })
   })
 })

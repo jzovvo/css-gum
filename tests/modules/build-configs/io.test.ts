@@ -101,6 +101,27 @@ describe('modules/build-configs/io', () => {
       expect(mockFs.mkdirSync).toHaveBeenCalledWith('/new/path', {recursive: true})
     })
 
+    it('should handle write errors', () => {
+      mockFs.writeFileSync.mockImplementationOnce(() => {
+        throw new Error('Write failed')
+      })
+
+      writeConfigToFiles(testConfig, testPaths)
+
+      expect(console.consoleWarn).toHaveBeenCalledWith('Could not write config to /path/to/config.css: Error: Write failed')
+    })
+
+    it('should not create backup when existing config is empty', () => {
+      mockFs.existsSync.mockReturnValue(true)
+      mockFs.readFileSync.mockReturnValue('')
+
+      writeConfigToFiles(testConfig, testPaths)
+
+      expect(mockFs.writeFileSync).toHaveBeenCalledTimes(1)
+      expect(mockFs.writeFileSync).toHaveBeenCalledWith('/path/to/config.css', testConfig)
+      expect(console.consoleWarn).not.toHaveBeenCalledWith(expect.stringContaining('Backup created'))
+    })
+
     it('should trim content before processing', () => {
       const paddedConfig = '\n\n  @theme {\n  --breakpoint-p0: 375px;\n}  \n\n'
       mockFs.existsSync.mockReturnValue(true)
