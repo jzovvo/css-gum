@@ -50,4 +50,14 @@ describe('index.node', () => {
     expect(snippets.vw.prefix).toBe('vw')
     expect(snippets.vw.body).toBe('vw($1,$2)$0')
   })
+
+  it('should have writeSnippetsToFiles function', () => {
+    expect(cssGumNode.Snippet).toHaveProperty('writeSnippetsToFiles')
+    expect(typeof cssGumNode.Snippet.writeSnippetsToFiles).toBe('function')
+  })
+
+  it('should have writeConfigToFiles function', () => {
+    expect(cssGumNode.Config).toHaveProperty('writeConfigToFiles')
+    expect(typeof cssGumNode.Config.writeConfigToFiles).toBe('function')
+  })
 })

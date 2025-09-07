@@ -24,6 +24,12 @@ describe('modules/utils', () => {
       expect(cssPxToVw(designDraft)(0)).toBe('0')
       expect(cssPxToDvw(designDraft)(0)).toBe('0')
     })
+
+    it('should handle invalid designDraft values', () => {
+      expect(cssPxToVw(0)(144)).toBe('')
+      expect(cssPxToVw(-100)(144)).toBe('')
+      expect(cssPxToDvw(0)(144)).toBe('')
+    })
   })
 
   describe('viewport height utilities', () => {
@@ -54,6 +60,11 @@ describe('modules/utils', () => {
       expect(cssPxToVwc(1440)(0)).toBe('0')
       expect(cssPxToVhc(1080)(0)).toBe('0')
     })
+
+    it('should handle invalid designDraft in clamp functions', () => {
+      expect(cssPxToVwc(0)(144)).toBe('')
+      expect(cssPxToVhc(-100)(144)).toBe('')
+    })
   })
 
   describe('extended utilities', () => {
@@ -72,6 +83,21 @@ describe('modules/utils', () => {
     it('should handle zero pixel', () => {
       expect(cssPxToVwe(1440)(0.5)(0)).toBe('calc((100vw - 1440px) * 0.5)')
       expect(cssPxToVhe(1080)(0.5)(0)).toBe('calc((100vh - 1080px) * 0.5)')
+    })
+
+    it('should handle negative pixels in extend functions', () => {
+      expect(cssPxToVwe(1440)(0.5)(-144)).toBe('calc((100vw - 1440px) * 0.5 - 144px)')
+      expect(cssPxToVhe(1080)(0.5)(-108)).toBe('calc((100vh - 1080px) * 0.5 - 108px)')
+    })
+
+    it('should handle zero percent and zero pixel edge case', () => {
+      expect(cssPxToVwe(1440)(0)(0)).toBe('0')
+      expect(cssPxToVhe(1080)(0)(0)).toBe('0')
+    })
+
+    it('should handle invalid designDraft in extend functions', () => {
+      expect(cssPxToVwe(0)(0.5)(144)).toBe('')
+      expect(cssPxToVhe(-100)(0.5)(144)).toBe('')
     })
   })
 
@@ -92,6 +118,12 @@ describe('modules/utils', () => {
       expect(cssLh(24, 16)).toBe('1.5')
       expect(cssLh(32, 16)).toBe('2')
       expect(cssLh(0, 16)).toBe('0')
+    })
+
+    it('should handle division by zero in percentage and font functions', () => {
+      expect(cssPercent(0)(25)).toBe('infinity')
+      expect(cssEm(24, 0)).toBe('infinity')
+      expect(cssLh(24, 0)).toBe('infinity')
     })
   })
 })

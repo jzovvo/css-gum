@@ -91,5 +91,26 @@ describe('modules/core', () => {
       expect(percent(25, 0)).toBe('infinity')
       expect(em(24, 0)).toBe('infinity')
     })
+
+    it('should handle negative designDraft values', () => {
+      expect(vw(144, -1440)).toBe('')
+      expect(vwc(144, -1440)).toBe('')
+      expect(vwe(144, -1440)).toBe('')
+    })
+
+    it('should handle invalid inputs in extend functions', () => {
+      expect(vwe('invalid' as any, 1440)).toBe('')
+      expect(vhe(144, 'invalid' as any)).toBe('')
+      expect(vwe(144, 1440, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledWith(expect.stringContaining('expected number'))
+    })
+
+    it('should handle all viewport variants error cases consistently', () => {
+      vi.clearAllMocks()
+      expect(dvw('invalid' as any, 1440)).toBe('')
+      expect(lvw('invalid' as any, 1440)).toBe('')
+      expect(svw('invalid' as any, 1440)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(3)
+    })
   })
 })

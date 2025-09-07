@@ -107,5 +107,25 @@ describe('modules/build-snippets/rwd-picture', () => {
         '</picture>$0',
       ])
     })
+
+    it('should handle extreme pointOffset values consistently', () => {
+      const result = genVSCodeSnippetPicture({
+        points: [768],
+        pointOffset: -1000,
+        scope: ['html', 'typescriptreact'],
+      })
+
+      expect(result.pictureNormal.body).toEqual([
+        '<picture$1>',
+        '  <img src="$2" alt="$3"/>',
+        '</picture>$0',
+      ])
+
+      expect(result.pictureReact.body).toEqual([
+        '<picture$1>',
+        '  <img src="$2" alt="$3"/>',
+        '</picture>$0',
+      ])
+    })
   })
 })
