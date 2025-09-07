@@ -5,6 +5,75 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2025-09-07
+
+### Fixed
+
+- Improved error handling for file operations in `build-configs/io.ts` and `build-snippets/io.ts`
+  - Added try-catch blocks around `fs.writeFileSync` operations to handle write failures gracefully
+  - Enhanced error messages with specific file path information
+- Updated test coverage to include write error scenarios
+
+### Documentation
+
+- Updated example configurations for v1.3.2
+
+## [1.3.1] - 2025-09-07
+
+### Fixed
+
+- **VSCode Snippet Generation**: Fixed `genVSCodeSnippetPicture` pointOffset calculation for React version
+  - Previously pointOffset was not being applied to React-specific picture snippets
+  - Now correctly calculates pointOffset for both HTML and React variants
+
+### Added
+
+- Enhanced test coverage for snippet generation functions
+  - Added comprehensive tests for pointOffset functionality
+  - Improved test cases for picture snippet generation
+
+## [1.3.0] - 2025-09-07
+
+### Added
+
+- **Tailwind CSS Config Generation**: New Config module for generating Tailwind CSS breakpoint configurations
+  - `genTailwindBreakpointConfig()` - Generate CSS @theme rules with custom breakpoints
+  - `writeConfigToFiles()` - Write config files with automatic backup and directory creation
+  - Supports custom prefixes, units, wrappers, and ordering
+- **Enhanced VSCode Snippets**: New responsive snippet generation functions
+  - `genVSCodeSnippetMediaQuery()` - Generate media query snippets with both bracket and indent syntax variants
+  - `genVSCodeSnippetPicture()` - Generate responsive picture element snippets for HTML and React
+  - Support for custom scopes, prefixes, and breakpoint offsets
+- **Extended Viewport Units**: Comprehensive support for all modern viewport units
+  - Added `dvw`, `dvh` (dynamic viewport), `lvw`, `lvh` (large viewport), `svw`, `svh` (small viewport)
+  - Extended clamped variants: `dvwc`, `dvhc`, `lvwc`, `lvhc`, `svwc`, `svhc`
+  - Extended scaling variants: `dvwe`, `dvhe`, `lvwe`, `lvhe`, `svwe`, `svhe`
+  - All variants available in Core, Util, and Gen modules
+
+### Changed
+
+- **Architecture Refactoring**: Improved project structure and organization
+  - Reorganized directory structure for better maintainability
+  - Enhanced type definitions with `ViewportWidthUnit` and `ViewportHeightUnit` types
+  - Improved code organization across modules
+- **Enhanced File Operations**: Improved file writing with better error handling and backup logic
+  - Config files are only backed up when existing content is non-empty
+  - Better error messages and recovery mechanisms
+  - Automatic directory creation and file conflict resolution
+
+### Fixed
+
+- **Percentage Calculation**: Fixed division by zero issue in `cssPercent` function
+  - Now properly handles cases where denominator is 0
+  - Improved error handling and edge case management
+
+### Documentation
+
+- Updated README with new Config module documentation
+- Enhanced API documentation for all new viewport units
+- Added comprehensive examples for Tailwind CSS integration
+- Improved PostCSS Functions example with latest features
+
 ## [1.2.1] - 2025-09-04
 
 ### Added
