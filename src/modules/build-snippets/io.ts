@@ -1,7 +1,7 @@
-import {consoleWarn} from '../utils/console'
+import {consoleWarn} from '../../utils/console'
 import fs from 'fs'
 import {dirname} from 'path'
-import type {SnippetConfig} from './types'
+import type {SnippetConfig} from '../../utils/types'
 
 const readExistingSnippets = (filePath: string): Record<string, SnippetConfig> => {
   try {

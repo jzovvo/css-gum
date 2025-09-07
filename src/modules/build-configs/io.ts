@@ -1,4 +1,4 @@
-import {consoleWarn} from '../utils/console'
+import {consoleWarn} from '../../utils/console'
 import fs from 'fs'
 import {dirname} from 'path'
 

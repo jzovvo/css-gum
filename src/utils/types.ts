@@ -14,6 +14,8 @@ export type Percent = z.infer<typeof percentSchema>
 
 export type SpaceFlag = 1 | 0
 
+export type Order = 'asc' | 'desc'
+
 export type VSCodeLanguageIdentifier =
 'abap' |
 'bat' |
@@ -91,3 +93,7 @@ export interface SnippetConfig {
 }
 
 export type Snippets = Record<string, SnippetConfig>
+
+
+export type ViewportWidthUnit = 'vw' | 'dvw' | 'lvw' | 'svw'
+export type ViewportHeightUnit = 'vh' | 'dvh' | 'lvh' | 'svh'

@@ -1,8 +1,4 @@
-import type {DesignDraft, Percent, Pixel} from './types'
-
-type ViewportWidthUnit = 'vw' | 'dvw' | 'lvw' | 'svw'
-type ViewportHeightUnit = 'vh' | 'dvh' | 'lvh' | 'svh'
-
+import type {DesignDraft, Percent, Pixel, ViewportHeightUnit, ViewportWidthUnit} from '../../utils/types'
 
 export const percent = (denominator: number) => (numerator: number) => numerator / denominator * 100
 export const pxToVw = percent

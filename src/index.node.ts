@@ -1,18 +1,18 @@
 import * as Core from './modules/core'
-import * as Gen from './modules/gen'
+import * as Gen from './modules/generator-functions'
 import * as Util from './modules/utils'
-import * as SnippetCore from './modules/snippets'
-import {writeSnippetsToFiles} from './modules/snippets-file'
-import * as ConfigCore from './modules/config'
-import {writeConfigToFiles} from './modules/config-file'
+import * as BuildSnippetsGenerator from './modules/build-snippets'
+import * as BuildConfigsGenerator from './modules/build-configs'
+import {writeSnippetsToFiles} from './modules/build-snippets/io'
+import {writeConfigToFiles} from './modules/build-configs/io'
 
 const Snippet = {
-  ...SnippetCore,
+  ...BuildSnippetsGenerator,
   writeSnippetsToFiles,
 }
 
 const Config = {
-  ...ConfigCore,
+  ...BuildConfigsGenerator,
   writeConfigToFiles,
 }
 

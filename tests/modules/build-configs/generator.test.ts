@@ -1,7 +1,7 @@
 import {describe, it, expect} from 'vitest'
-import {genTailwindBreakpointConfig} from '../../src/modules/config'
+import {genTailwindBreakpointConfig} from '../../../src/modules/build-configs/generator'
 
-describe('config module', () => {
+describe('modules/build-configs/generator', () => {
   describe('genTailwindBreakpointConfig', () => {
     it('should generate basic tailwind breakpoint config', () => {
       const result = genTailwindBreakpointConfig({
@@ -61,6 +61,18 @@ describe('config module', () => {
       expect(genTailwindBreakpointConfig({points: [375, 768, 375]})).toBe(
         '@theme {\n  --breakpoint-p0: 375px;\n  --breakpoint-p1: 375px;\n  --breakpoint-p2: 768px;\n}',
       )
+    })
+
+    it('should handle order parameter', () => {
+      expect(genTailwindBreakpointConfig({
+        points: [1440, 375, 768],
+        order: 'desc',
+      })).toBe('@theme {\n  --breakpoint-p0: 1440px;\n  --breakpoint-p1: 768px;\n  --breakpoint-p2: 375px;\n}')
+
+      expect(genTailwindBreakpointConfig({
+        points: [375, 768, 1440],
+        order: 'asc',
+      })).toBe('@theme {\n  --breakpoint-p0: 375px;\n  --breakpoint-p1: 768px;\n  --breakpoint-p2: 1440px;\n}')
     })
   })
 })

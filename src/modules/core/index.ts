@@ -1,7 +1,7 @@
-import type {DesignDraft, Percent, Pixel, SpaceFlag} from './types'
-import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc, cssPxToDvw, cssPxToLvw, cssPxToSvw, cssPxToDvh, cssPxToLvh, cssPxToSvh, cssPxToDvwc, cssPxToLvwc, cssPxToSvwc, cssPxToDvhc, cssPxToLvhc, cssPxToSvhc, cssPxToDvwe, cssPxToLvwe, cssPxToSvwe, cssPxToDvhe, cssPxToLvhe, cssPxToSvhe} from './utils'
-import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from './validate'
-import {consoleError} from '../utils/console'
+import type {DesignDraft, Percent, Pixel, SpaceFlag} from '../../utils/types'
+import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc, cssPxToDvw, cssPxToLvw, cssPxToSvw, cssPxToDvh, cssPxToLvh, cssPxToSvh, cssPxToDvwc, cssPxToLvwc, cssPxToSvwc, cssPxToDvhc, cssPxToLvhc, cssPxToSvhc, cssPxToDvwe, cssPxToLvwe, cssPxToSvwe, cssPxToDvhe, cssPxToLvhe, cssPxToSvhe} from '../utils'
+import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from '../../utils/validate'
+import {consoleError} from '../../utils/console'
 
 const genCssViewport = (utilsFunction: typeof cssPxToVw) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
   const result = checkViewportParams(pixel, designDraft)

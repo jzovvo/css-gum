@@ -1,9 +1,13 @@
+import {normalizePoints} from '../../utils/point-utils'
+import {Order} from '../../utils/types'
+
 export interface PropsGenTailwindBreakpointConfig {
   points: number[]
   prefix?: string
   firstIndex?: number
   unit?: string
   wrapper?: string
+  order?: Order
 }
 
 export const genTailwindBreakpointConfig = ({
@@ -12,14 +16,15 @@ export const genTailwindBreakpointConfig = ({
   firstIndex = 0,
   unit = 'px',
   wrapper = 'theme',
+  order = 'asc',
 }: PropsGenTailwindBreakpointConfig): string => {
-  const validPoints = points.filter(point => point > 0).sort((a, b) => a - b)
+  const normalizedPoints = normalizePoints(points, order)
 
-  if (validPoints.length === 0) {
+  if (normalizedPoints.length === 0) {
     return ''
   }
 
-  const configLines = validPoints.map((point, index) => `  --${prefix}${index + firstIndex}: ${point}${unit};`)
+  const configLines = normalizedPoints.map((point, index) => `  --${prefix}${index + firstIndex}: ${point}${unit};`)
 
   return [
     `@${wrapper} {`,

@@ -1,18 +1,16 @@
 import {describe, it, expect, vi, beforeEach} from 'vitest'
 import fs from 'fs'
-import {writeConfigToFiles} from '../../src/modules/config-file'
-import * as console from '../../src/utils/console'
+import {writeConfigToFiles} from '../../../src/modules/build-configs/io'
+import * as console from '../../../src/utils/console'
 
-// Mock fs module
 vi.mock('fs')
-// Mock console utils
-vi.mock('../../src/utils/console', () => ({
+vi.mock('../../../src/utils/console', () => ({
   consoleWarn: vi.fn(),
 }))
 
 const mockFs = vi.mocked(fs)
 
-describe('config-file module', () => {
+describe('modules/build-configs/io', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockFs.existsSync.mockReturnValue(false)
