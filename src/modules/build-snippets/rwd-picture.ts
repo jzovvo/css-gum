@@ -54,7 +54,7 @@ export const genVSCodeSnippetPicture = ({
         '<picture$1>',
         ...normalizedPoints.map((point, index) => {
           if (index !== normalizedPoints.length - 1) {
-            return `  <source media="(max-width: ${point}px)" srcSet="$${index + 2}"/>`
+            return `  <source media="(max-width: ${point + pointOffset}px)" srcSet="$${index + 2}"/>`
           }
           return `  <img src="$${index + 2}" alt="$${index + 3}"/>`
         }),

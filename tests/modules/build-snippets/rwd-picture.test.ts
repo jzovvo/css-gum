@@ -85,5 +85,27 @@ describe('modules/build-snippets/rwd-picture', () => {
         '</picture>$0',
       ])
     })
+
+    it('should apply pointOffset consistently across HTML and React variants', () => {
+      const result = genVSCodeSnippetPicture({
+        points: [768, 1024],
+        pointOffset: 50,
+        scope: ['html', 'typescriptreact'],
+      })
+
+      expect(result.pictureNormal.body).toEqual([
+        '<picture$1>',
+        '  <source media="(max-width: 818px)" srcset="$2"/>',
+        '  <img src="$3" alt="$4"/>',
+        '</picture>$0',
+      ])
+
+      expect(result.pictureReact.body).toEqual([
+        '<picture$1>',
+        '  <source media="(max-width: 818px)" srcSet="$2"/>',
+        '  <img src="$3" alt="$4"/>',
+        '</picture>$0',
+      ])
+    })
   })
 })
