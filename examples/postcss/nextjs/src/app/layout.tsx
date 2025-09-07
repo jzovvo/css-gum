@@ -1,5 +1,5 @@
 import '../css/normal.css'
-import '../css/tailwind.css'
+import '../css/tailwind/normal.css'
 
 export default function RootLayout({
   children,

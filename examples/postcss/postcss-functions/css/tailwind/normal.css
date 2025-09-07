@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "./_config.css";
+
+@theme {
+  --font-red-hat: "Red Hat Mono", monospace;
+}

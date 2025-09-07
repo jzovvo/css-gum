@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./_config.css";
 
 @theme {
   --breakpoint-p2: 1440px;
