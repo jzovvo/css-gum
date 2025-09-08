@@ -6,13 +6,15 @@ export const designDraftSchema = z.coerce.number()
 
 export const percentSchema = z.coerce.number()
 
+export const spaceFlagSchema = z.coerce.number().pipe(z.union([z.literal(1), z.literal(0)]))
+
 export type Pixel = z.infer<typeof pixelSchema>
 
 export type DesignDraft = z.infer<typeof designDraftSchema>
 
 export type Percent = z.infer<typeof percentSchema>
 
-export type SpaceFlag = 1 | 0
+export type SpaceFlag = z.infer<typeof spaceFlagSchema>
 
 export type Order = 'asc' | 'desc'
 

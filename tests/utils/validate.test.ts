@@ -1,5 +1,5 @@
 import {describe, it, expect, vi, beforeEach} from 'vitest'
-import {checkViewportParams, checkPercentParams, checkDesignDraftScalingParams} from '../../src/utils/validate'
+import {checkViewportParams, checkPercentParams, checkDesignDraftScalingParams, checkSpaceFlag} from '../../src/utils/validate'
 
 vi.mock('../../src/utils/console', () => ({
   consoleError: vi.fn(),
@@ -95,6 +95,84 @@ describe('utils/validate', () => {
       expect(result.error).toContain('pixel expected number, received invalid')
       expect(result.error).toContain('designDraft expected number, received 1440')
       expect(result.error).toContain('percent expected number, received 0.5')
+    })
+  })
+
+  describe('checkSpaceFlag', () => {
+    it('should validate correct space flag inputs', () => {
+      expect(checkSpaceFlag(0)).toEqual({
+        data: 0,
+        error: null,
+      })
+      expect(checkSpaceFlag(1)).toEqual({
+        data: 1,
+        error: null,
+      })
+      expect(checkSpaceFlag('0')).toEqual({
+        data: 0,
+        error: null,
+      })
+      expect(checkSpaceFlag('1')).toEqual({
+        data: 1,
+        error: null,
+      })
+    })
+
+    it('should return error for invalid space flag inputs', () => {
+      const result = checkSpaceFlag(2)
+      expect(result.data).toBeNull()
+      expect(result.error).toContain('space expected 1 | 0, received 2')
+      expect(result.error).toContain('Error')
+    })
+
+    it('should return error for non-numeric inputs', () => {
+      const result = checkSpaceFlag('invalid')
+      expect(result.data).toBeNull()
+      expect(result.error).toContain('space expected 1 | 0, received invalid')
+    })
+
+    it('should handle symbol inputs safely', () => {
+      const sym = Symbol('test')
+      const result = checkSpaceFlag(sym)
+      expect(result.data).toBeNull()
+      expect(result.error).toContain('space expected 1 | 0, received Symbol(test)')
+    })
+
+    it('should handle null inputs by coercing to 0', () => {
+      expect(checkSpaceFlag(null)).toEqual({
+        data: 0,
+        error: null,
+      })
+    })
+
+    it('should handle undefined inputs with error', () => {
+      const result = checkSpaceFlag(undefined)
+      expect(result.data).toBeNull()
+      expect(result.error).toContain('space expected 1 | 0, received undefined')
+    })
+
+    it('should handle array inputs by coercing to 0', () => {
+      expect(checkSpaceFlag([])).toEqual({
+        data: 0,
+        error: null,
+      })
+    })
+
+    it('should handle object inputs that cannot be coerced', () => {
+      const result = checkSpaceFlag({})
+      expect(result.data).toBeNull()
+      expect(result.error).toContain('space expected 1 | 0, received [object Object]')
+    })
+
+    it('should handle boolean inputs by coercing to numbers', () => {
+      expect(checkSpaceFlag(true)).toEqual({
+        data: 1,
+        error: null,
+      })
+      expect(checkSpaceFlag(false)).toEqual({
+        data: 0,
+        error: null,
+      })
     })
   })
 })

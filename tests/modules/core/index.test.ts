@@ -1,11 +1,11 @@
 import {describe, it, expect, vi, beforeEach} from 'vitest'
 import {
   vw, dvw, lvw, svw,
-  vwc, dvwc,
-  vwe, dvwe,
+  vwc, dvwc, lvwc, svwc,
+  vwe, dvwe, lvwe, svwe,
   vh, dvh, lvh, svh,
-  vhc, dvhc,
-  vhe, dvhe,
+  vhc, dvhc, lvhc, svhc,
+  vhe, dvhe, lvhe, svhe,
   percent, em, lh,
 } from '../../../src/modules/core'
 import * as console from '../../../src/utils/console'
@@ -75,6 +75,11 @@ describe('modules/core', () => {
       expect(vw(144, 1440, 1)).toBe('10vw ')
     })
 
+    it('should handle space flag as string', () => {
+      expect(vw(144, 1440, '0' as any)).toBe('10vw')
+      expect(vw(144, 1440, '1' as any)).toBe('10vw ')
+    })
+
     it('should handle zero values', () => {
       expect(vw(0, 1440)).toBe('0')
       expect(vwc(0, 1440)).toBe('0')
@@ -111,6 +116,84 @@ describe('modules/core', () => {
       expect(lvw('invalid' as any, 1440)).toBe('')
       expect(svw('invalid' as any, 1440)).toBe('')
       expect(console.consoleError).toHaveBeenCalledTimes(3)
+    })
+
+    it('should handle invalid space flag inputs', () => {
+      vi.clearAllMocks()
+      expect(vw(144, 1440, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledWith(expect.stringContaining('space expected 1 | 0'))
+    })
+
+    it('should handle invalid space flag with valid viewport params', () => {
+      vi.clearAllMocks()
+      expect(vw(144, 1440, 2 as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledWith(expect.stringContaining('space expected 1 | 0, received 2'))
+    })
+
+    it('should handle both invalid viewport and space params', () => {
+      vi.clearAllMocks()
+      expect(vw('invalid' as any, 'invalid' as any, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(2)
+      expect(console.consoleError).toHaveBeenCalledWith(expect.stringContaining('pixel expected number'))
+      expect(console.consoleError).toHaveBeenCalledWith(expect.stringContaining('space expected 1 | 0'))
+    })
+
+    it('should handle clamp function error cases', () => {
+      vi.clearAllMocks()
+      expect(vwc('invalid' as any, 1440)).toBe('')
+      expect(vhc(144, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle percent function error cases', () => {
+      vi.clearAllMocks()
+      expect(percent('invalid' as any, 100)).toBe('')
+      expect(percent(25, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle em function error cases', () => {
+      vi.clearAllMocks()
+      expect(em('invalid' as any, 16)).toBe('')
+      expect(em(24, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle lh function error cases', () => {
+      vi.clearAllMocks()
+      expect(lh('invalid' as any, 16)).toBe('')
+      expect(lh(24, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(2)
+    })
+
+    it('should handle extend function error cases', () => {
+      vi.clearAllMocks()
+      expect(vwe('invalid' as any, 1440)).toBe('')
+      expect(vwe(144, 'invalid' as any)).toBe('')
+      expect(vwe(144, 1440, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(3)
+    })
+
+    it('should handle all clamp function variants error cases', () => {
+      vi.clearAllMocks()
+      expect(dvwc('invalid' as any, 1440)).toBe('')
+      expect(lvwc('invalid' as any, 1440)).toBe('')
+      expect(svwc('invalid' as any, 1440)).toBe('')
+      expect(dvhc(144, 'invalid' as any)).toBe('')
+      expect(lvhc(144, 'invalid' as any)).toBe('')
+      expect(svhc(144, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(6)
+    })
+
+    it('should handle all extend function variants error cases', () => {
+      vi.clearAllMocks()
+      expect(dvwe('invalid' as any, 1440)).toBe('')
+      expect(lvwe('invalid' as any, 1440)).toBe('')
+      expect(svwe('invalid' as any, 1440)).toBe('')
+      expect(dvhe(144, 'invalid' as any)).toBe('')
+      expect(lvhe(144, 'invalid' as any)).toBe('')
+      expect(svhe(144, 'invalid' as any)).toBe('')
+      expect(console.consoleError).toHaveBeenCalledTimes(6)
     })
   })
 })

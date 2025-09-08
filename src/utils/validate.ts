@@ -1,4 +1,4 @@
-import {designDraftSchema, percentSchema, pixelSchema} from './types'
+import {designDraftSchema, percentSchema, pixelSchema, spaceFlagSchema} from './types'
 
 export const checkViewportParams = (pixel: unknown, designDraft: unknown) => {
   const pixelResult = pixelSchema.safeParse(pixel)
@@ -70,6 +70,27 @@ export const checkDesignDraftScalingParams = (pixel: unknown, designDraft: unkno
       `pixel expected number, received ${safePixelStr}`,
       `designDraft expected number, received ${safeDesignDraftStr}`,
       `percent expected number, received ${safePercentStr}`,
+      new Error().stack ?? '',
+    ].join('\n'),
+  }
+}
+
+export const checkSpaceFlag = (space: unknown) => {
+  const spaceResult = spaceFlagSchema.safeParse(space)
+
+  if (spaceResult.success) {
+    return {
+      data: spaceResult.data,
+      error: null,
+    }
+  }
+
+  const safeSpaceStr = typeof space === 'symbol' ? space.toString() : String(space)
+
+  return {
+    data: null,
+    error: [
+      `space expected 1 | 0, received ${safeSpaceStr}`,
       new Error().stack ?? '',
     ].join('\n'),
   }

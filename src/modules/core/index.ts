@@ -1,17 +1,20 @@
 import type {DesignDraft, Percent, Pixel, SpaceFlag} from '../../utils/types'
 import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc, cssPxToVw, cssPxToVwc, cssPxToDvw, cssPxToLvw, cssPxToSvw, cssPxToDvh, cssPxToLvh, cssPxToSvh, cssPxToDvwc, cssPxToLvwc, cssPxToSvwc, cssPxToDvhc, cssPxToLvhc, cssPxToSvhc, cssPxToDvwe, cssPxToLvwe, cssPxToSvwe, cssPxToDvhe, cssPxToLvhe, cssPxToSvhe} from '../utils'
-import {checkDesignDraftScalingParams, checkPercentParams, checkViewportParams} from '../../utils/validate'
+import {checkDesignDraftScalingParams, checkPercentParams, checkSpaceFlag, checkViewportParams} from '../../utils/validate'
 import {consoleError} from '../../utils/console'
 
 const genCssViewport = (utilsFunction: typeof cssPxToVw) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
-  const result = checkViewportParams(pixel, designDraft)
+  const viewportResult = checkViewportParams(pixel, designDraft)
+  const spaceResult = checkSpaceFlag(space)
 
-  if (result.data) {
-    const baseResult = utilsFunction(result.data[1])(result.data[0])
-    return baseResult === '' ? '' : baseResult + (space === 1 ? ' ' : '')
+  if (viewportResult.data !== null && spaceResult.data !== null) {
+    const baseResult = utilsFunction(viewportResult.data[1])(viewportResult.data[0])
+    return baseResult === '' ? '' : baseResult + (spaceResult.data === 1 ? ' ' : '')
   }
 
-  consoleError(result.error)
+  viewportResult.error && consoleError(viewportResult.error)
+  spaceResult.error && consoleError(spaceResult.error)
+
   return ''
 }
 
