@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3] - 2025-09-08
+
+### Fixed
+
+- **Space Parameter Validation**: Fixed bug where passing string `'1'` as space parameter would not add trailing space
+  - Updated `spaceFlagSchema` to use `z.coerce.number().pipe(z.union([z.literal(1), z.literal(0)]))` for proper string-to-number conversion
+  - Added `checkSpaceFlag` validation function with comprehensive error handling
+  - Enhanced Core module functions to properly validate both viewport and space parameters separately
+  - Fixes issue with PostCSS Functions where parameters are received as strings instead of numbers
+
+### Added
+
+- **Comprehensive Test Coverage**: Significantly improved test coverage for edge cases
+  - Added complete test suite for `checkSpaceFlag` function with 9 test cases covering all input types
+  - Enhanced Core module error handling tests for clamp, percent, em, lh, and extend functions
+  - Added tests for invalid space parameter combinations and error scenarios
+  - Increased overall test coverage: statements 99.02% → 100%, branches 93.38% → 96.01%
+  - Core module coverage improved from 87.67% to 100%
+  - Total tests increased from 148 to 167 test cases
+
+### Changed
+
+- **Enhanced Error Handling**: Improved error reporting for parameter validation
+  - Core module functions now separately validate viewport and space parameters
+  - Better error messages for invalid space flag inputs
+  - More granular error reporting with multiple validation failures handled appropriately
+
 ## [1.3.2] - 2025-09-07
 
 ### Fixed
