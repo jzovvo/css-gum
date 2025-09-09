@@ -1,6 +1,6 @@
 # CSS Gum + Vite 範例
 
-這個範例展示如何在 Vite 專案中使用 css-gum 搭配 [PostCSS Functions](https://www.npmjs.com/package/postcss-functions) 外掛，實作響應式設計的數值計算。
+這個範例展示如何在 Vite 專案中使用 css-gum 搭配 [PostCSS Functions](https://www.npmjs.com/package/postcss-functions)，實作響應式設計的數值計算。
 
 ## 執行範例
 
@@ -17,7 +17,6 @@ npm run dev
   1. **SCALE** - 純縮放，元素會無限制地根據視窗大小變化
   2. **CLAMP** - 限制縮放，在中斷點範圍內才會縮放
   3. **CLAMP+EXTEND** - 結合 clamp 和 extend，提供更精細的控制
-
 - 每個範例都同時展示了 Tailwind CSS 和 CSS 的寫法。
 
 ## Core
@@ -45,20 +44,20 @@ export default {
 
 這個配置會產生以下函式：
 
-- 🖥️ **Scale 純縮放**: `vw1()`, `vw2()`
+- 🖥️ **Scale 純縮放**: `vw0()`, `vw1()`
   - 元素會根據視窗寬度等比例縮放，沒有上下限制。
 
-- 🔒 **Clamp 限制縮放**: `vwc1()`, `vwc2()`
+- 🔒 **Clamp 限制縮放**: `vwc0()`, `vwc1()`
   - 元素會根據視窗寬度縮放，但有最大值／最小值限制。
 
-- 📏 **Extend 延伸縮放**: `vwe1()`, `vwe2()`
-  - 當視窗寬度超出中斷點範圍時，元素會保持固定的計算值
-  - 適合處理負邊界等需要精確控制的情境
+- 📏 **Extend 延伸縮放**: `vwe0()`, `vwe1()`
+  - 當視窗寬度超出設計稿範圍時，元素會根據設定的比例繼續縮放
+  - 適合處理大螢幕延伸效果和精確控制的情境
 
 數字後綴對應設計稿大小：
 
-- `1` = 375px 設計稿
-- `2` = 1440px 設計稿
+- `0` = 375px 設計稿
+- `1` = 1440px 設計稿
 
 ### 使用方式
 
@@ -76,9 +75,9 @@ export default {
 
 ```css
 .text {
-  font-size: vw2(100);
+  font-size: vw1(100);
   @media screen and (max-width: 767px) {
-    font-size: vw1(100);
+    font-size: vw0(100);
   }
 }
 ```
@@ -86,59 +85,50 @@ export default {
 ## Snippet
 
 - `genFuncsDraftWidth` 會在返回物件中包含 `VSCodeSnippet` 屬性
-- 利用 `Snippet.writeSnippetsToFiles` 將 `VSCodeSnippet` 寫入到指定的檔案即可
+- `Snippet.genVSCodeSnippetMediaQuery` 會返回 `@media (width ? ?px) {...}` 的 Snippet 配置
+- `Snippet.genVSCodeSnippetPicture` 會返回 `<picture/>` 標籤的 Snippet 配置
+- 可以使用 `Snippet.writeSnippetsToFiles` 將所有 Snippet 配置寫入到指定的檔案中
 
 ```ts
 import { Gen, Snippet } from "css-gum";
 import { join } from "path";
 
 const draftWidthPoints = [375, 1440];
+const mediaQueryPoints = [375, 768, 1440];
 const snippetOutput = [join(import.meta.dirname, ".vscode/css-gum.code-snippets")];
-const { core, VSCodeSnippet } = Gen.genFuncsDraftWidth({ points: draftWidthPoints });
 
-Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
+Snippet.writeSnippetsToFiles(
+  {
+    ...Gen.genFuncsDraftWidth({ points: draftWidthPoints, space: 1 }).VSCodeSnippet,
+    ...Snippet.genVSCodeSnippetMediaQuery({ points: mediaQueryPoints }),
+    ...Snippet.genVSCodeSnippetPicture({ points: mediaQueryPoints, pointOffset: -1 }),
+  },
+  snippetOutput,
+);
 ```
-
-### 使用說明
-
-- 根據你指定的 snippet 檔案類型不同，生效的檔案範圍也會不同，詳情請看 [VSCode Snippet 文件](https://code.visualstudio.com/docs/editing/userdefinedsnippets)
-- 這裡以 `css.code-snippets` 為例，產生後在 CSS 檔案中就會有提示，按下 Tab 鍵即可自動補全函式呼叫，游標會自動定位到參數位置。
 
 ![](../_assets/snippet.gif)
 
-- 執行 `npm run dev` 後，會在 `.vscode/css-gum.code-snippets` 自動產生以下片段：
+## Config
 
-```json
-{
-  "vw1": {
-    "prefix": "vw1",
-    "body": "vw1($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwc1": {
-    "prefix": "vwc1",
-    "body": "vwc1($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwe1": {
-    "prefix": "vwe1",
-    "body": "vwe1($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vw2": {
-    "prefix": "vw2",
-    "body": "vw2($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwc2": {
-    "prefix": "vwc2",
-    "body": "vwc2($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwe2": {
-    "prefix": "vwe2",
-    "body": "vwe2($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  }
+目前提供寫入 `tailwindcss` 配置文件的功能，流程跟 Snippet 差不多。
+
+```js
+import { Config } from "css-gum";
+import { join } from "path";
+
+const mediaQueryPoints = [375, 768, 1440];
+const tailwindConfigOutput = [join(import.meta.dirname, "css/tailwind/_config.css")];
+
+Config.writeConfigToFiles(Config.genTailwindBreakpointConfig({ points: mediaQueryPoints }), tailwindConfigOutput);
+```
+
+`Config.genTailwindBreakpointConfig` 會生成類似下面這種配置，然後再用 `Config.writeConfigToFiles` 寫入指定的文件路徑中。
+
+```css
+@theme {
+  --breakpoint-p0: 375px;
+  --breakpoint-p1: 768px;
+  --breakpoint-p2: 1440px;
 }
 ```

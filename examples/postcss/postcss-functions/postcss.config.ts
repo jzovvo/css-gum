@@ -1,15 +1,18 @@
 import {Gen, Snippet, Config} from 'css-gum'
-import {join} from 'path'
+import {join, dirname} from 'path'
+import {fileURLToPath} from 'url'
 import type {Config as PostcssLoadConfig} from 'postcss-load-config'
+
+const __dirname = import.meta.dirname ?? dirname(fileURLToPath(import.meta.url)) ?? ''
 
 const draftWidthPoints = [375, 1440]
 const mediaQueryPoints = [375, 768, 1440]
 const snippetOutput = [
-  join(import.meta.dirname, '.vscode/css-gum.code-snippets'),
+  join(__dirname, '.vscode/css-gum.code-snippets'),
 ]
 
 const tailwindConfigOutput = [
-  join(import.meta.dirname, 'css/tailwind/_config.css'),
+  join(__dirname, 'css/tailwind/_config.css'),
 ]
 
 const {core, VSCodeSnippet} = Gen.genFuncsDraftWidth({points: draftWidthPoints, space: 1})

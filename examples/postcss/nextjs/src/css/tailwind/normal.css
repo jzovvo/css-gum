@@ -2,11 +2,5 @@
 @import "./_config.css";
 
 @theme {
-  --breakpoint-p2: 1440px;
-  --breakpoint-p1: 768px;
-  --breakpoint-p0: 375px;
-}
-
-@theme {
   --font-red-hat: "Red Hat Mono", monospace;
 }

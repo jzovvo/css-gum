@@ -5,42 +5,42 @@
   & .oBox {
     position: absolute;
     top: 0;
-    left: vwc2(-15);
-    width: vwc2(30);
-    height: vwc2(30);
+    left: vwc1(-15);
+    width: vwc1(30);
+    height: vwc1(30);
     background: #FF6900;
   }
 
   & .oTxt {
-    width: vwc2(1440);
+    width: vwc1(1440);
     margin: auto;
     background: black;
     color: white;
-    font-size: vwc2(100);
+    font-size: vwc1(100);
   }
 
   @media screen and (min-width: 1440px) {
     & .oBox {
-      left: vwe2(-15);
+      left: vwe1(-15);
     }
   }
 
   @media screen and (max-width: 767px) {
     & .oBox {
-      left: vwe1(-15);
-      width: vwc1(30);
-      height: vwc1(30);
+      left: vwe0(-15);
+      width: vwc0(30);
+      height: vwc0(30);
     }
 
     & .oTxt {
-      width: vwc1(375);
-      font-size: vwc1(50);
+      width: vwc0(375);
+      font-size: vwc0(50);
     }
   }
 
   @media screen and (max-width: 374px) {
     & .oBox {
-      left: vwc1(-15);
+      left: vwc0(-15);
     }
   }
 }
@@ -52,30 +52,30 @@
   & .oBox {
     position: absolute;
     top: 0;
-    left: vwc2(-15);
-    width: vwc2(30);
-    height: vwc2(30);
+    left: vwc1(-15);
+    width: vwc1(30);
+    height: vwc1(30);
     background: #FF6900;
   }
 
   & .oTxt {
-    width: vwc2(1440);
+    width: vwc1(1440);
     margin: auto;
     background: black;
     color: white;
-    font-size: vwc2(100);
+    font-size: vwc1(100);
   }
 
   @media screen and (max-width: 767px) {
     & .oBox {
-      left: vwc1(-15);
-      width: vwc1(30);
-      height: vwc1(30);
+      left: vwc0(-15);
+      width: vwc0(30);
+      height: vwc0(30);
     }
 
     & .oTxt {
-      width: vwc1(375);
-      font-size: vwc1(50);
+      width: vwc0(375);
+      font-size: vwc0(50);
     }
   }
 }
@@ -86,30 +86,30 @@
   & .oBox {
     position: absolute;
     top: 0;
-    left: vw2(-15);
-    width: vw2(30);
-    height: vw2(30);
+    left: vw1(-15);
+    width: vw1(30);
+    height: vw1(30);
     background: #FF6900;
   }
 
   & .oTxt {
-    width: vw2(1440);
+    width: vw1(1440);
     margin: auto;
     background: black;
     color: white;
-    font-size: vw2(100);
+    font-size: vw1(100);
   }
 
   @media screen and (max-width: 767px) {
     & .oBox {
-      left: vw1(-15);
-      width: vw1(30);
-      height: vw1(30);
+      left: vw0(-15);
+      width: vw0(30);
+      height: vw0(30);
     }
 
     & .oTxt {
-      width: vw1(375);
-      font-size: vw1(50);
+      width: vw0(375);
+      font-size: vw0(50);
     }
   }
 }

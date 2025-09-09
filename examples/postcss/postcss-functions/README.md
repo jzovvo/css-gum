@@ -1,6 +1,6 @@
 # CSS Gum + Vite Example
 
-This example demonstrates how to use css-gum with [PostCSS Functions](https://www.npmjs.com/package/postcss-functions) plugin in a Vite project to implement responsive design calculations.
+This example demonstrates how to use css-gum with [PostCSS Functions](https://www.npmjs.com/package/postcss-functions) in a Vite project to implement responsive design calculations.
 
 ## Running the Example
 
@@ -17,7 +17,6 @@ npm run dev
   1. **SCALE** - Pure scaling, elements scale infinitely with viewport size
   2. **CLAMP** - Limited scaling, scales only within breakpoint ranges
   3. **CLAMP+EXTEND** - Combines clamp and extend for more precise control
-
 - Each example shows both Tailwind CSS and CSS implementations.
 
 ## Core
@@ -45,20 +44,20 @@ export default {
 
 This configuration generates the following functions:
 
-- 🖥️ **Scale - Pure Scaling**: `vw1()`, `vw2()`
+- 🖥️ **Scale - Pure Scaling**: `vw0()`, `vw1()`
   - Elements scale proportionally with viewport width, no limits.
 
-- 🔒 **Clamp - Limited Scaling**: `vwc1()`, `vwc2()`
+- 🔒 **Clamp - Limited Scaling**: `vwc0()`, `vwc1()`
   - Elements scale with viewport width but have max/min value limits.
 
-- 📏 **Extend - Extended Scaling**: `vwe1()`, `vwe2()`
-  - When viewport width exceeds breakpoint range, elements maintain fixed calculated values
-  - Ideal for handling scenarios requiring precise control like negative margins
+- 📏 **Extend - Extended Scaling**: `vwe0()`, `vwe1()`
+  - When viewport width exceeds design draft range, elements continue to scale according to set proportions
+  - Ideal for handling large screen extension effects and precise control scenarios
 
 Number suffixes correspond to design draft sizes:
 
-- `1` = 375px design draft
-- `2` = 1440px design draft
+- `0` = 375px design draft
+- `1` = 1440px design draft
 
 ### Usage
 
@@ -76,9 +75,9 @@ Number suffixes correspond to design draft sizes:
 
 ```css
 .text {
-  font-size: vw2(100);
+  font-size: vw1(100);
   @media screen and (max-width: 767px) {
-    font-size: vw1(100);
+    font-size: vw0(100);
   }
 }
 ```
@@ -86,59 +85,50 @@ Number suffixes correspond to design draft sizes:
 ## Snippet
 
 - `genFuncsDraftWidth` returns an object containing the `VSCodeSnippet` property
-- Use `Snippet.writeSnippetsToFiles` to write the `VSCodeSnippet` to the specified file
+- `Snippet.genVSCodeSnippetMediaQuery` returns snippet configuration for `@media (width ? ?px) {...}`
+- `Snippet.genVSCodeSnippetPicture` returns snippet configuration for `<picture/>` tags
+- Use `Snippet.writeSnippetsToFiles` to write all snippet configurations to specified files
 
 ```ts
 import { Gen, Snippet } from "css-gum";
 import { join } from "path";
 
 const draftWidthPoints = [375, 1440];
+const mediaQueryPoints = [375, 768, 1440];
 const snippetOutput = [join(import.meta.dirname, ".vscode/css-gum.code-snippets")];
-const { core, VSCodeSnippet } = Gen.genFuncsDraftWidth({ points: draftWidthPoints });
 
-Snippet.writeSnippetsToFiles(VSCodeSnippet, snippetOutput);
+Snippet.writeSnippetsToFiles(
+  {
+    ...Gen.genFuncsDraftWidth({ points: draftWidthPoints, space: 1 }).VSCodeSnippet,
+    ...Snippet.genVSCodeSnippetMediaQuery({ points: mediaQueryPoints }),
+    ...Snippet.genVSCodeSnippetPicture({ points: mediaQueryPoints, pointOffset: -1 }),
+  },
+  snippetOutput,
+);
 ```
-
-### Usage Instructions
-
-- Depending on the snippet file type you specify, the effective file scope will vary. For details, see [VSCode Snippet Documentation](https://code.visualstudio.com/docs/editing/userdefinedsnippets)
-- Using `css.code-snippets` as an example, after generation, you'll have suggestions in CSS files. Press Tab to auto-complete function calls, and the cursor will automatically position to the parameter location.
 
 ![](../_assets/snippet.gif)
 
-- After running `npm run dev`, the following snippets will be automatically generated in `.vscode/css-gum.code-snippets`:
+## Config
 
-```json
-{
-  "vw1": {
-    "prefix": "vw1",
-    "body": "vw1($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwc1": {
-    "prefix": "vwc1",
-    "body": "vwc1($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwe1": {
-    "prefix": "vwe1",
-    "body": "vwe1($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vw2": {
-    "prefix": "vw2",
-    "body": "vw2($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwc2": {
-    "prefix": "vwc2",
-    "body": "vwc2($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  },
-  "vwe2": {
-    "prefix": "vwe2",
-    "body": "vwe2($1)$0",
-    "scope": "html,css,sass,scss,less,stylus"
-  }
+Currently provides functionality to write `tailwindcss` configuration files, with a process similar to Snippet.
+
+```js
+import { Config } from "css-gum";
+import { join } from "path";
+
+const mediaQueryPoints = [375, 768, 1440];
+const tailwindConfigOutput = [join(import.meta.dirname, "css/tailwind/_config.css")];
+
+Config.writeConfigToFiles(Config.genTailwindBreakpointConfig({ points: mediaQueryPoints }), tailwindConfigOutput);
+```
+
+`Config.genTailwindBreakpointConfig` generates configuration similar to the following, then uses `Config.writeConfigToFiles` to write it to specified file paths.
+
+```css
+@theme {
+  --breakpoint-p0: 375px;
+  --breakpoint-p1: 768px;
+  --breakpoint-p2: 1440px;
 }
 ```
