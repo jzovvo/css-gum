@@ -3,7 +3,7 @@ import {GenFuncsNameCustomHeight, GenFuncsNameCustomOther, GenFuncsNameCustomWid
 
 export const DEFAULT: Required<Omit<PropsDraftFuncs, 'points'> & GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther> = {
   space: 0,
-  firstIndex: 1,
+  firstIndex: 0,
   order: 'asc',
 
   nameEm: 'em',

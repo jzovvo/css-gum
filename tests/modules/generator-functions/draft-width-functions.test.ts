@@ -8,9 +8,9 @@ describe('modules/generator-functions/draft-width-functions', () => {
         points: [1440, 1800],
       })
 
-      expect(result.core.vw1(144)).toBe('10vw')
-      expect(result.core.vw2(180)).toBe('10vw')
-      expect(result.core.dvw1(144)).toBe('10dvw')
+      expect(result.core.vw0(144)).toBe('10vw')
+      expect(result.core.vw1(180)).toBe('10vw')
+      expect(result.core.dvw0(144)).toBe('10dvw')
     })
 
     it('should handle all viewport width variants', () => {
@@ -18,10 +18,10 @@ describe('modules/generator-functions/draft-width-functions', () => {
         points: [1440],
       })
 
-      expect(result.core.vw1(144)).toBe('10vw')
-      expect(result.core.dvw1(144)).toBe('10dvw')
-      expect(result.core.lvw1(144)).toBe('10lvw')
-      expect(result.core.svw1(144)).toBe('10svw')
+      expect(result.core.vw0(144)).toBe('10vw')
+      expect(result.core.dvw0(144)).toBe('10dvw')
+      expect(result.core.lvw0(144)).toBe('10lvw')
+      expect(result.core.svw0(144)).toBe('10svw')
     })
 
     it('should handle advanced functions', () => {
@@ -29,8 +29,8 @@ describe('modules/generator-functions/draft-width-functions', () => {
         points: [1440],
       })
 
-      expect(result.core.vwc1(144)).toBe('min(144px, 10vw)')
-      expect(result.core.vwe1(144)).toBe('calc((100vw - 1440px) * 0.5 + 144px)')
+      expect(result.core.vwc0(144)).toBe('min(144px, 10vw)')
+      expect(result.core.vwe0(144)).toBe('calc((100vw - 1440px) * 0.5 + 144px)')
     })
 
     it('should handle custom configuration', () => {
@@ -51,8 +51,8 @@ describe('modules/generator-functions/draft-width-functions', () => {
         points: [1800, 0, 1440, -100],
       })
 
-      expect(result.core.vw1(144)).toBe('10vw') // 1440px
-      expect(result.core.vw2(180)).toBe('10vw') // 1800px
+      expect(result.core.vw0(144)).toBe('10vw') // 1440px
+      expect(result.core.vw1(180)).toBe('10vw') // 1800px
     })
 
     it('should generate VSCode snippets', () => {
@@ -60,8 +60,8 @@ describe('modules/generator-functions/draft-width-functions', () => {
         points: [1440],
       })
 
-      expect(result.VSCodeSnippet.vw1).toHaveProperty('prefix', 'vw1')
-      expect(result.VSCodeSnippet.vw1).toHaveProperty('body', 'vw1($1)$0')
+      expect(result.VSCodeSnippet.vw0).toHaveProperty('prefix', 'vw0')
+      expect(result.VSCodeSnippet.vw0).toHaveProperty('body', 'vw0($1)$0')
     })
 
     it('should handle custom snippet prefixes', () => {
@@ -73,10 +73,10 @@ describe('modules/generator-functions/draft-width-functions', () => {
         snippetPrefixVwc: 'vc',
       })
 
+      expect(result.VSCodeSnippet.vw0.prefix).toBe('v0')
       expect(result.VSCodeSnippet.vw1.prefix).toBe('v1')
-      expect(result.VSCodeSnippet.vw2.prefix).toBe('v2')
+      expect(result.VSCodeSnippet.vwc0.prefix).toBe('vc0')
       expect(result.VSCodeSnippet.vwc1.prefix).toBe('vc1')
-      expect(result.VSCodeSnippet.vwc2.prefix).toBe('vc2')
     })
 
     it('should use function name as default snippet prefix', () => {
@@ -85,7 +85,7 @@ describe('modules/generator-functions/draft-width-functions', () => {
         nameVw: 'customVw',
       })
 
-      expect(result.VSCodeSnippet.customVw1.prefix).toBe('customVw1')
+      expect(result.VSCodeSnippet.customVw0.prefix).toBe('customVw0')
     })
   })
 })

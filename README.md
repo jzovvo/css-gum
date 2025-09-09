@@ -115,7 +115,7 @@ Batch generate functions for multiple design draft breakpoints.
 #### Common Parameters
 
 - `points` _(required)_ - Design draft value array, ≤0 values are automatically filtered
-- `firstIndex` - Starting index (Gen module default: 1, Snippet/Config module default: 0)
+- `firstIndex` - Starting index (default: 0)
 - `space` - Default space setting (default: 0, no space)
 - `order` - Sort order: `'asc'` ascending | `'desc'` descending (default: `'asc'`)
 - `scope` - VSCode Snippet applicable file types (default: `['html','css','sass','scss','less','stylus']`)
@@ -135,7 +135,7 @@ const funcs = Gen.genFuncsDraftWidth({
   space: 1, // Default with space
 });
 
-funcs.core.mobile1(20); // '5.33vw ' - 375px breakpoint
+funcs.core.mobile0(20); // '5.33vw ' - 375px breakpoint
 funcs.VSCodeSnippet; // VSCode Snippet object
 // Available name parameters: nameVw, nameDvw, nameLvw, nameSvw, nameVwc, nameDvwc, nameVwe, nameDvwe etc.
 // Available snippet prefix parameters: snippetPrefixVw, snippetPrefixDvw, snippetPrefixLvw, snippetPrefixSvw, snippetPrefixVwc, snippetPrefixDvwc, snippetPrefixVwe, snippetPrefixDvwe etc.

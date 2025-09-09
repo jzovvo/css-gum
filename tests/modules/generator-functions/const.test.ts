@@ -5,7 +5,7 @@ describe('modules/generator-functions/const', () => {
   describe('DEFAULT constants', () => {
     it('should have correct default values', () => {
       expect(DEFAULT.space).toBe(0)
-      expect(DEFAULT.firstIndex).toBe(1)
+      expect(DEFAULT.firstIndex).toBe(0)
       expect(DEFAULT.order).toBe('asc')
     })
 

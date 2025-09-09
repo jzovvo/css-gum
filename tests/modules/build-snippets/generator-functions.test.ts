@@ -75,10 +75,10 @@ describe('modules/build-snippets/generator-functions', () => {
         pointsSize: 3,
       })
 
+      expect(result).toHaveProperty('vw0')
       expect(result).toHaveProperty('vw1')
       expect(result).toHaveProperty('vw2')
-      expect(result).toHaveProperty('vw3')
-      expect(result).not.toHaveProperty('vw4')
+      expect(result).not.toHaveProperty('vw3')
     })
 
     it('should handle custom parameters', () => {
@@ -128,11 +128,11 @@ describe('modules/build-snippets/generator-functions', () => {
         pointsSize: 2,
       })
 
+      expect(result).toHaveProperty('vh0')
       expect(result).toHaveProperty('vh1')
-      expect(result).toHaveProperty('vh2')
-      expect(result).toHaveProperty('dvh1')
-      expect(result).toHaveProperty('vhc1')
-      expect(result).toHaveProperty('vhe1')
+      expect(result).toHaveProperty('dvh0')
+      expect(result).toHaveProperty('vhc0')
+      expect(result).toHaveProperty('vhe0')
     })
 
     it('should handle custom names', () => {

@@ -114,10 +114,10 @@ Util.cssLh(24, 16); // '1.5'
 
 #### 共通參數
 
-- `points` _(必需)_ - design draft 值陣列，≤0 的值會被自動過濾
-- `firstIndex` - 起始索引（Gen 模組預設: 1，Snippet/Config 模組預設: 0）
-- `space` - 預設空格設定（預設: 0，不帶空格）
-- `order` - 排序方式：`'asc'` 升序 | `'desc'` 降序（預設: `'asc'`）
+- `points: number[]` **必需** - design draft 值陣列，≤0 的值會被自動過濾
+- `firstIndex: number` - 起始索引（預設: 0）
+- `space: 1 | 0` - 預設空格設定（預設: 0，不帶空格）
+- `order: 'asc' | 'desc'` - 排序方式：`'asc'` 升序 | `'desc'` 降序（預設: `'asc'`）
 - `scope` - VSCode Snippet 適用的檔案類型（預設: `['html','css','sass','scss','less','stylus']`）
 - 函數名稱參數 - 自訂函數名稱，使用空字串 `''` 可跳過該類型
 - Snippet 前綴參數 - 自訂 VSCode 代碼片段前綴，獨立於函數名稱（預設使用函數名稱）
@@ -135,7 +135,7 @@ const funcs = Gen.genFuncsDraftWidth({
   space: 1, // 預設帶空格
 });
 
-funcs.core.mobile1(20); // '5.33vw ' - 375px breakpoint
+funcs.core.mobile0(20); // '5.33vw ' - 375px breakpoint
 funcs.VSCodeSnippet; // VSCode Snippet 物件
 // 可用名稱參數：nameVw, nameDvw, nameLvw, nameSvw, nameVwc, nameDvwc, nameVwe, nameDvwe 等
 // 可用 snippet 前綴參數：snippetPrefixVw, snippetPrefixDvw, snippetPrefixLvw, snippetPrefixSvw, snippetPrefixVwc, snippetPrefixDvwc, snippetPrefixVwe, snippetPrefixDvwe 等
