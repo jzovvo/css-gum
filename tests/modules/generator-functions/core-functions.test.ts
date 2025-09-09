@@ -82,5 +82,27 @@ describe('modules/generator-functions/core-functions', () => {
       expect(result.core.vw(144, 1440, 1)).toBe('10vw ')
       expect(result.core.vh(144, 1440, 0)).toBe('10vh')
     })
+
+    it('should handle custom snippet prefixes', () => {
+      const result = genFuncsCore({
+        nameVw: 'vw',
+        snippetPrefixVw: 'v',
+        namePercent: 'percent',
+        snippetPrefixPercent: 'pct',
+      })
+
+      expect(result.VSCodeSnippet.vw.prefix).toBe('v')
+      expect(result.VSCodeSnippet.percent.prefix).toBe('pct')
+    })
+
+    it('should use function name as default snippet prefix', () => {
+      const result = genFuncsCore({
+        nameVw: 'customVw',
+        namePercent: 'customPercent',
+      })
+
+      expect(result.VSCodeSnippet.customVw.prefix).toBe('customVw')
+      expect(result.VSCodeSnippet.customPercent.prefix).toBe('customPercent')
+    })
   })
 })

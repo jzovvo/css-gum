@@ -5,13 +5,13 @@ import {CSS_SNIPPET_SCOPE_REACT, DEFAULT_SNIPPET} from './const'
 import {RWD} from './types'
 
 export type PropsGenVSCodeSnippetPicture = {
-  namePic?: string
+  snippetPrefixPic?: string
 } & RWD
 
 export const genVSCodeSnippetPicture = ({
   points,
   pointOffset = 0,
-  namePic = 'pic',
+  snippetPrefixPic = 'pic',
   scope = [...DEFAULT_SNIPPET.scopePictureNormal, ...DEFAULT_SNIPPET.scopePictureReact],
   order = DEFAULT.order,
 }: PropsGenVSCodeSnippetPicture) => {
@@ -32,7 +32,7 @@ export const genVSCodeSnippetPicture = ({
 
   if (snippetScopeNormal.length !== 0) {
     snippets['pictureNormal'] = {
-      prefix: namePic,
+      prefix: snippetPrefixPic,
       body: [
         '<picture$1>',
         ...normalizedPoints.map((point, index) => {
@@ -49,7 +49,7 @@ export const genVSCodeSnippetPicture = ({
 
   if (snippetScopeReact.length !== 0) {
     snippets['pictureReact'] = {
-      prefix: namePic,
+      prefix: snippetPrefixPic,
       body: [
         '<picture$1>',
         ...normalizedPoints.map((point, index) => {

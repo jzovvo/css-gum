@@ -5,6 +5,7 @@ import type {Pixel, SpaceFlag} from '../../utils/types'
 import {DEFAULT} from './const'
 import {GenFuncsNameCustomWidth, PropsDraftFuncs} from './types'
 import {DEFAULT_SNIPPET} from '../build-snippets/const'
+import {SnippetPrefixCustomWidth} from '../build-snippets/types'
 
 export const genFuncsDraftWidth = ({
   points,
@@ -27,7 +28,22 @@ export const genFuncsDraftWidth = ({
   nameDvwe = DEFAULT.nameDvwe,
   nameLvwe = DEFAULT.nameLvwe,
   nameSvwe = DEFAULT.nameSvwe,
-}: PropsDraftFuncs & GenFuncsNameCustomWidth & Pick<PropsAddFunctionSnippet, 'scope'>) => {
+
+  snippetPrefixVw,
+  snippetPrefixDvw,
+  snippetPrefixLvw,
+  snippetPrefixSvw,
+
+  snippetPrefixVwc,
+  snippetPrefixDvwc,
+  snippetPrefixLvwc,
+  snippetPrefixSvwc,
+
+  snippetPrefixVwe,
+  snippetPrefixDvwe,
+  snippetPrefixLvwe,
+  snippetPrefixSvwe,
+}: PropsDraftFuncs & GenFuncsNameCustomWidth & SnippetPrefixCustomWidth & Pick<PropsAddFunctionSnippet, 'scope'>) => {
   const normalizedPoints = normalizePoints(points, order)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
@@ -73,6 +89,21 @@ export const genFuncsDraftWidth = ({
       nameDvwe,
       nameLvwe,
       nameSvwe,
+
+      snippetPrefixVw,
+      snippetPrefixDvw,
+      snippetPrefixLvw,
+      snippetPrefixSvw,
+
+      snippetPrefixVwc,
+      snippetPrefixDvwc,
+      snippetPrefixLvwc,
+      snippetPrefixSvwc,
+
+      snippetPrefixVwe,
+      snippetPrefixDvwe,
+      snippetPrefixLvwe,
+      snippetPrefixSvwe,
     }),
   }
 }

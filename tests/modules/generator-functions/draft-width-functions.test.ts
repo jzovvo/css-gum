@@ -63,5 +63,29 @@ describe('modules/generator-functions/draft-width-functions', () => {
       expect(result.VSCodeSnippet.vw1).toHaveProperty('prefix', 'vw1')
       expect(result.VSCodeSnippet.vw1).toHaveProperty('body', 'vw1($1)$0')
     })
+
+    it('should handle custom snippet prefixes', () => {
+      const result = genFuncsDraftWidth({
+        points: [1440, 1800],
+        nameVw: 'vw',
+        snippetPrefixVw: 'v',
+        nameVwc: 'vwc',
+        snippetPrefixVwc: 'vc',
+      })
+
+      expect(result.VSCodeSnippet.vw1.prefix).toBe('v1')
+      expect(result.VSCodeSnippet.vw2.prefix).toBe('v2')
+      expect(result.VSCodeSnippet.vwc1.prefix).toBe('vc1')
+      expect(result.VSCodeSnippet.vwc2.prefix).toBe('vc2')
+    })
+
+    it('should use function name as default snippet prefix', () => {
+      const result = genFuncsDraftWidth({
+        points: [1440],
+        nameVw: 'customVw',
+      })
+
+      expect(result.VSCodeSnippet.customVw1.prefix).toBe('customVw1')
+    })
   })
 })

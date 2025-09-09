@@ -72,8 +72,8 @@ describe('modules/build-snippets/rwd-media-query', () => {
       const result = genVSCodeSnippetMediaQuery({
         points: [768],
         firstIndex: 2,
-        nameMin: 'mobile-up',
-        nameMax: 'mobile-down',
+        snippetPrefixMin: 'mobile-up',
+        snippetPrefixMax: 'mobile-down',
         pointOffset: -1,
         scope: ['scss'],
       })
@@ -158,6 +158,30 @@ describe('modules/build-snippets/rwd-media-query', () => {
       })
 
       expect(Object.keys(result)).toHaveLength(0)
+    })
+
+    it('should handle custom snippet prefixes independently', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768, 1024],
+        snippetPrefixMin: 'up',
+        snippetPrefixMax: 'down',
+        scope: ['css'],
+      })
+
+      expect(result.cssBracketMinP0.prefix).toBe('up0')
+      expect(result.cssBracketMaxP0.prefix).toBe('down0')
+      expect(result.cssBracketMinP1.prefix).toBe('up1')
+      expect(result.cssBracketMaxP1.prefix).toBe('down1')
+    })
+
+    it('should use default prefixes when not specified', () => {
+      const result = genVSCodeSnippetMediaQuery({
+        points: [768],
+        scope: ['css'],
+      })
+
+      expect(result.cssBracketMinP0.prefix).toBe('min-p0')
+      expect(result.cssBracketMaxP0.prefix).toBe('max-p0')
     })
   })
 })

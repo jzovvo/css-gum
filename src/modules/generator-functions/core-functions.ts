@@ -5,6 +5,7 @@ import {vw, vwc, vwe, vh, vhc, vhe, em, lh, percent, lvw, svw, dvw, dvh, lvh, sv
 import {genVSCodeSnippetCore, PropsAddFunctionSnippet} from '../build-snippets/generator-functions'
 import type {Pixel, SpaceFlag, DesignDraft} from '../../utils/types'
 import {DEFAULT_SNIPPET} from '../build-snippets/const'
+import {SnippetPrefixCustomHeight, SnippetPrefixCustomOther, SnippetPrefixCustomWidth} from '../build-snippets/types'
 
 
 export const genFuncsCore = ({
@@ -44,7 +45,41 @@ export const genFuncsCore = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & PropsSpace & Pick<PropsAddFunctionSnippet, 'scope'> = {}) => {
+
+  snippetPrefixEm,
+  snippetPrefixLh,
+  snippetPrefixPercent,
+
+  snippetPrefixVw,
+  snippetPrefixDvw,
+  snippetPrefixLvw,
+  snippetPrefixSvw,
+
+  snippetPrefixVwc,
+  snippetPrefixDvwc,
+  snippetPrefixLvwc,
+  snippetPrefixSvwc,
+
+  snippetPrefixVwe,
+  snippetPrefixDvwe,
+  snippetPrefixLvwe,
+  snippetPrefixSvwe,
+
+  snippetPrefixVh,
+  snippetPrefixDvh,
+  snippetPrefixLvh,
+  snippetPrefixSvh,
+
+  snippetPrefixVhc,
+  snippetPrefixDvhc,
+  snippetPrefixLvhc,
+  snippetPrefixSvhc,
+
+  snippetPrefixVhe,
+  snippetPrefixDvhe,
+  snippetPrefixLvhe,
+  snippetPrefixSvhe,
+}: GenFuncsNameCustomWidth & GenFuncsNameCustomHeight & GenFuncsNameCustomOther & SnippetPrefixCustomWidth & SnippetPrefixCustomHeight & SnippetPrefixCustomOther & PropsSpace & Pick<PropsAddFunctionSnippet, 'scope'> = {}) => {
   const temp = {
     [nameEm]: em,
     [nameLh]: lh,
@@ -121,6 +156,40 @@ export const genFuncsCore = ({
       nameDvhe,
       nameLvhe,
       nameSvhe,
+
+      snippetPrefixEm,
+      snippetPrefixLh,
+      snippetPrefixPercent,
+
+      snippetPrefixVw,
+      snippetPrefixDvw,
+      snippetPrefixLvw,
+      snippetPrefixSvw,
+
+      snippetPrefixVwc,
+      snippetPrefixDvwc,
+      snippetPrefixLvwc,
+      snippetPrefixSvwc,
+
+      snippetPrefixVwe,
+      snippetPrefixDvwe,
+      snippetPrefixLvwe,
+      snippetPrefixSvwe,
+
+      snippetPrefixVh,
+      snippetPrefixDvh,
+      snippetPrefixLvh,
+      snippetPrefixSvh,
+
+      snippetPrefixVhc,
+      snippetPrefixDvhc,
+      snippetPrefixLvhc,
+      snippetPrefixSvhc,
+
+      snippetPrefixVhe,
+      snippetPrefixDvhe,
+      snippetPrefixLvhe,
+      snippetPrefixSvhe,
     }),
   }
 }

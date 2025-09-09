@@ -5,6 +5,7 @@ import type {Pixel, SpaceFlag} from '../../utils/types'
 import {DEFAULT} from './const'
 import {GenFuncsNameCustomHeight, PropsDraftFuncs} from './types'
 import {DEFAULT_SNIPPET} from '../build-snippets/const'
+import {SnippetPrefixCustomHeight} from '../build-snippets/types'
 
 
 export const genFuncsDraftHeight = ({
@@ -28,7 +29,22 @@ export const genFuncsDraftHeight = ({
   nameDvhe = DEFAULT.nameDvhe,
   nameLvhe = DEFAULT.nameLvhe,
   nameSvhe = DEFAULT.nameSvhe,
-}: PropsDraftFuncs & GenFuncsNameCustomHeight & Pick<PropsAddFunctionSnippet, 'scope'>) => {
+
+  snippetPrefixVh,
+  snippetPrefixDvh,
+  snippetPrefixLvh,
+  snippetPrefixSvh,
+
+  snippetPrefixVhc,
+  snippetPrefixDvhc,
+  snippetPrefixLvhc,
+  snippetPrefixSvhc,
+
+  snippetPrefixVhe,
+  snippetPrefixDvhe,
+  snippetPrefixLvhe,
+  snippetPrefixSvhe,
+}: PropsDraftFuncs & GenFuncsNameCustomHeight & SnippetPrefixCustomHeight & Pick<PropsAddFunctionSnippet, 'scope'>) => {
   const normalizedPoints = normalizePoints(points, order)
 
   const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
@@ -74,6 +90,21 @@ export const genFuncsDraftHeight = ({
       nameDvhe,
       nameLvhe,
       nameSvhe,
+
+      snippetPrefixVh,
+      snippetPrefixDvh,
+      snippetPrefixLvh,
+      snippetPrefixSvh,
+
+      snippetPrefixVhc,
+      snippetPrefixDvhc,
+      snippetPrefixLvhc,
+      snippetPrefixSvhc,
+
+      snippetPrefixVhe,
+      snippetPrefixDvhe,
+      snippetPrefixLvhe,
+      snippetPrefixSvhe,
     }),
   }
 }

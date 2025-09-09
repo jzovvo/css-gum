@@ -64,5 +64,29 @@ describe('modules/generator-functions/draft-height-functions', () => {
       expect(result.VSCodeSnippet.vh1).toHaveProperty('prefix', 'vh1')
       expect(result.VSCodeSnippet.vh1).toHaveProperty('body', 'vh1($1)$0')
     })
+
+    it('should handle custom snippet prefixes', () => {
+      const result = genFuncsDraftHeight({
+        points: [600, 800],
+        nameVh: 'vh',
+        snippetPrefixVh: 'h',
+        nameVhc: 'vhc',
+        snippetPrefixVhc: 'hc',
+      })
+
+      expect(result.VSCodeSnippet.vh1.prefix).toBe('h1')
+      expect(result.VSCodeSnippet.vh2.prefix).toBe('h2')
+      expect(result.VSCodeSnippet.vhc1.prefix).toBe('hc1')
+      expect(result.VSCodeSnippet.vhc2.prefix).toBe('hc2')
+    })
+
+    it('should use function name as default snippet prefix', () => {
+      const result = genFuncsDraftHeight({
+        points: [600],
+        nameVh: 'customVh',
+      })
+
+      expect(result.VSCodeSnippet.customVh1.prefix).toBe('customVh1')
+    })
   })
 })

@@ -34,7 +34,7 @@ describe('modules/build-snippets/rwd-picture', () => {
     it('should handle custom parameters', () => {
       const result = genVSCodeSnippetPicture({
         points: [768],
-        namePic: 'image',
+        snippetPrefixPic: 'image',
         pointOffset: -1,
         scope: ['html'],
       })
@@ -126,6 +126,26 @@ describe('modules/build-snippets/rwd-picture', () => {
         '  <img src="$2" alt="$3"/>',
         '</picture>$0',
       ])
+    })
+
+    it('should handle custom snippet prefix independently', () => {
+      const result = genVSCodeSnippetPicture({
+        points: [768, 1024],
+        snippetPrefixPic: 'img',
+        scope: ['html', 'typescriptreact'],
+      })
+
+      expect(result.pictureNormal.prefix).toBe('img')
+      expect(result.pictureReact.prefix).toBe('img')
+    })
+
+    it('should use default prefix when not specified', () => {
+      const result = genVSCodeSnippetPicture({
+        points: [768],
+        scope: ['html'],
+      })
+
+      expect(result.pictureNormal.prefix).toBe('pic')
     })
   })
 })

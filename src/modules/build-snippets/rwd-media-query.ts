@@ -6,8 +6,8 @@ import {RWD} from './types'
 
 export type PropsGenVSCodeSnippetMediaQuery = {
   firstIndex?: number
-  nameMin?: string
-  nameMax?: string
+  snippetPrefixMin?: string
+  snippetPrefixMax?: string
 } & RWD
 
 export const genVSCodeSnippetMediaQuery = ({
@@ -15,8 +15,8 @@ export const genVSCodeSnippetMediaQuery = ({
   pointOffset = 0,
   firstIndex = 0,
   scope = DEFAULT_SNIPPET.scopeCss,
-  nameMax = 'max-p',
-  nameMin = 'min-p',
+  snippetPrefixMax = 'max-p',
+  snippetPrefixMin = 'min-p',
   order = DEFAULT.order,
 }: PropsGenVSCodeSnippetMediaQuery) => {
   const normalizedPoints = normalizePoints(points, order)
@@ -46,7 +46,7 @@ export const genVSCodeSnippetMediaQuery = ({
       const point = normalizedPoints[i] + pointOffset
 
       snippets[`cssBracketMinP${idx}`] = {
-        'prefix': `${nameMin}${idx}`,
+        'prefix': `${snippetPrefixMin}${idx}`,
         'body': [
           `@media (width >= ${point}px) {`,
           '  $1',
@@ -56,7 +56,7 @@ export const genVSCodeSnippetMediaQuery = ({
       }
 
       snippets[`cssBracketMaxP${idx}`] = {
-        'prefix': `${nameMax}${idx}`,
+        'prefix': `${snippetPrefixMax}${idx}`,
         'body': [
           `@media (width < ${point}px) {`,
           '  $1',
@@ -75,7 +75,7 @@ export const genVSCodeSnippetMediaQuery = ({
       const point = normalizedPoints[i] + pointOffset
 
       snippets[`cssIndentMinP${idx}`] = {
-        'prefix': `${nameMin}${idx}`,
+        'prefix': `${snippetPrefixMin}${idx}`,
         'body': [
           `@media (width >= ${point}px)`,
           '  $1',
@@ -84,7 +84,7 @@ export const genVSCodeSnippetMediaQuery = ({
       }
 
       snippets[`cssIndentMaxP${idx}`] = {
-        'prefix': `${nameMax}${idx}`,
+        'prefix': `${snippetPrefixMax}${idx}`,
         'body': [
           `@media (width < ${point}px)`,
           '  $1',

@@ -120,6 +120,7 @@ Batch generate functions for multiple design draft breakpoints.
 - `order` - Sort order: `'asc'` ascending | `'desc'` descending (default: `'asc'`)
 - `scope` - VSCode Snippet applicable file types (default: `['html','css','sass','scss','less','stylus']`)
 - Function name parameters - Custom function names, use empty string `''` to skip that type
+- Snippet prefix parameters - Custom VSCode snippet prefixes, independent of function names (defaults to function name)
 
 #### `genFuncsDraftWidth(options)` / `genFuncsDraftHeight(options)`
 
@@ -130,12 +131,14 @@ const funcs = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440],
   nameVw: "mobile", // Custom name
   nameDvw: "", // Skip dvw
+  snippetPrefixVw: "m", // Custom snippet prefix
   space: 1, // Default with space
 });
 
 funcs.core.mobile1(20); // '5.33vw ' - 375px breakpoint
 funcs.VSCodeSnippet; // VSCode Snippet object
 // Available name parameters: nameVw, nameDvw, nameLvw, nameSvw, nameVwc, nameDvwc, nameVwe, nameDvwe etc.
+// Available snippet prefix parameters: snippetPrefixVw, snippetPrefixDvw, snippetPrefixLvw, snippetPrefixSvw, snippetPrefixVwc, snippetPrefixDvwc, snippetPrefixVwe, snippetPrefixDvwe etc.
 ```
 
 #### `genFuncsCore(options)`
@@ -144,10 +147,13 @@ funcs.VSCodeSnippet; // VSCode Snippet object
 const customCore = Gen.genFuncsCore({
   nameVw: "toVw",
   namePercent: "toPercent",
+  snippetPrefixVw: "v", // Custom snippet prefix
+  snippetPrefixPercent: "pct", // Custom snippet prefix
   space: 1, // Default with space
 });
 customCore.VSCodeSnippet; // VSCode Snippet object
 // Available name parameters: nameVw, nameDvw, nameVh, nameDvh, nameVwc, nameVhc, nameVwe, nameVhe, namePercent, nameEm, nameLh
+// Available snippet prefix parameters: snippetPrefixVw, snippetPrefixDvw, snippetPrefixVh, snippetPrefixDvh, snippetPrefixVwc, snippetPrefixVhc, snippetPrefixVwe, snippetPrefixVhe, snippetPrefixPercent, snippetPrefixEm, snippetPrefixLh
 ```
 
 ### Config Module
@@ -212,15 +218,15 @@ Draft series parameter: `pointsSize` - Number of breakpoints generated
 const pictureSnippets = Snippet.genVSCodeSnippetPicture({
   points: [768, 1024], // Required: breakpoint array
   pointOffset: -1, // Breakpoint offset (default: 0)
-  namePic: "pic", // snippet prefix (default: "pic")
+  snippetPrefixPic: "pic", // snippet prefix (default: "pic")
 });
 
 // Media queries (default scope: html, css, sass, scss, less, stylus)
 const mediaSnippets = Snippet.genVSCodeSnippetMediaQuery({
   points: [768, 1024], // Required: breakpoint array
   firstIndex: 0, // Starting index (default: 0)
-  nameMin: "min-p", // Min width prefix (default)
-  nameMax: "max-p", // Max width prefix (default)
+  snippetPrefixMin: "min-p", // Min width prefix (default)
+  snippetPrefixMax: "max-p", // Max width prefix (default)
   pointOffset: 0, // Breakpoint offset (default)
   order: "asc", // Sort order (default)
   scope: ["css", "sass"], // Custom scope (optional)

@@ -45,6 +45,28 @@ describe('modules/build-snippets/generator-functions', () => {
 
       expect(result.vw).toHaveProperty('scope', 'css,scss')
     })
+
+    it('should handle custom snippet prefixes', () => {
+      const result = genVSCodeSnippetCore({
+        nameVw: 'vw',
+        snippetPrefixVw: 'v',
+        namePercent: 'percent',
+        snippetPrefixPercent: 'pct',
+      })
+
+      expect(result.vw.prefix).toBe('v')
+      expect(result.percent.prefix).toBe('pct')
+    })
+
+    it('should use function name as default prefix when snippet prefix not provided', () => {
+      const result = genVSCodeSnippetCore({
+        nameVw: 'customVw',
+        namePercent: 'customPercent',
+      })
+
+      expect(result.customVw.prefix).toBe('customVw')
+      expect(result.customPercent.prefix).toBe('customPercent')
+    })
   })
 
   describe('genVSCodeSnippetDraftWidth', () => {
@@ -72,6 +94,23 @@ describe('modules/build-snippets/generator-functions', () => {
       expect(result).toHaveProperty('custom1')
       expect(result).not.toHaveProperty('dvw0')
       expect(result.custom0).toHaveProperty('scope', 'css')
+    })
+
+    it('should handle custom snippet prefixes in draft width functions', () => {
+      const result = genVSCodeSnippetDraftWidth({
+        pointsSize: 2,
+        firstIndex: 0,
+        nameVw: 'vw',
+        snippetPrefixVw: 'v',
+        nameVwc: 'vwc',
+        snippetPrefixVwc: 'vc',
+        scope: ['css'],
+      })
+
+      expect(result.vw0.prefix).toBe('v0')
+      expect(result.vw1.prefix).toBe('v1')
+      expect(result.vwc0.prefix).toBe('vc0')
+      expect(result.vwc1.prefix).toBe('vc1')
     })
 
     it('should handle zero pointsSize', () => {
@@ -106,6 +145,23 @@ describe('modules/build-snippets/generator-functions', () => {
 
       expect(result).toHaveProperty('customVh5')
       expect(result).not.toHaveProperty('dvh5')
+    })
+
+    it('should handle custom snippet prefixes in draft height functions', () => {
+      const result = genVSCodeSnippetDraftHeight({
+        pointsSize: 2,
+        nameVh: 'vh',
+        snippetPrefixVh: 'h',
+        nameVhc: 'vhc',
+        snippetPrefixVhc: 'hc',
+        firstIndex: 0,
+        scope: ['css'],
+      })
+
+      expect(result.vh0.prefix).toBe('h0')
+      expect(result.vh1.prefix).toBe('h1')
+      expect(result.vhc0.prefix).toBe('hc0')
+      expect(result.vhc1.prefix).toBe('hc1')
     })
   })
 })

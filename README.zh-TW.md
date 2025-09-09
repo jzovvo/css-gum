@@ -120,6 +120,7 @@ Util.cssLh(24, 16); // '1.5'
 - `order` - 排序方式：`'asc'` 升序 | `'desc'` 降序（預設: `'asc'`）
 - `scope` - VSCode Snippet 適用的檔案類型（預設: `['html','css','sass','scss','less','stylus']`）
 - 函數名稱參數 - 自訂函數名稱，使用空字串 `''` 可跳過該類型
+- Snippet 前綴參數 - 自訂 VSCode 代碼片段前綴，獨立於函數名稱（預設使用函數名稱）
 
 #### `genFuncsDraftWidth(options)` / `genFuncsDraftHeight(options)`
 
@@ -130,12 +131,14 @@ const funcs = Gen.genFuncsDraftWidth({
   points: [375, 768, 1440],
   nameVw: "mobile", // 自訂名稱
   nameDvw: "", // 跳過 dvw
+  snippetPrefixVw: "m", // 自訂 snippet 前綴
   space: 1, // 預設帶空格
 });
 
 funcs.core.mobile1(20); // '5.33vw ' - 375px breakpoint
 funcs.VSCodeSnippet; // VSCode Snippet 物件
 // 可用名稱參數：nameVw, nameDvw, nameLvw, nameSvw, nameVwc, nameDvwc, nameVwe, nameDvwe 等
+// 可用 snippet 前綴參數：snippetPrefixVw, snippetPrefixDvw, snippetPrefixLvw, snippetPrefixSvw, snippetPrefixVwc, snippetPrefixDvwc, snippetPrefixVwe, snippetPrefixDvwe 等
 ```
 
 #### `genFuncsCore(options)`
@@ -144,10 +147,13 @@ funcs.VSCodeSnippet; // VSCode Snippet 物件
 const customCore = Gen.genFuncsCore({
   nameVw: "toVw",
   namePercent: "toPercent",
+  snippetPrefixVw: "v", // 自訂 snippet 前綴
+  snippetPrefixPercent: "pct", // 自訂 snippet 前綴
   space: 1, // 預設帶空格
 });
 customCore.VSCodeSnippet; // VSCode Snippet 物件
 // 可用名稱參數：nameVw, nameDvw, nameVh, nameDvh, nameVwc, nameVhc, nameVwe, nameVhe, namePercent, nameEm, nameLh
+// 可用 snippet 前綴參數：snippetPrefixVw, snippetPrefixDvw, snippetPrefixVh, snippetPrefixDvh, snippetPrefixVwc, snippetPrefixVhc, snippetPrefixVwe, snippetPrefixVhe, snippetPrefixPercent, snippetPrefixEm, snippetPrefixLh
 ```
 
 ### Config Module
@@ -212,15 +218,15 @@ Draft 系列參數：`pointsSize` - 生成的 breakpoint 數量
 const pictureSnippets = Snippet.genVSCodeSnippetPicture({
   points: [768, 1024], // 必需：斷點陣列
   pointOffset: -1, // 斷點偏移（預設: 0）
-  namePic: "pic", // snippet 前綴（預設: "pic"）
+  snippetPrefixPic: "pic", // snippet 前綴（預設: "pic"）
 });
 
 // 媒體查詢 (預設 scope: html, css, sass, scss, less, stylus)
 const mediaSnippets = Snippet.genVSCodeSnippetMediaQuery({
   points: [768, 1024], // 必需：斷點陣列
   firstIndex: 0, // 起始索引（預設: 0）
-  nameMin: "min-p", // 最小寬度前綴（預設）
-  nameMax: "max-p", // 最大寬度前綴（預設）
+  snippetPrefixMin: "min-p", // 最小寬度前綴（預設）
+  snippetPrefixMax: "max-p", // 最大寬度前綴（預設）
   pointOffset: 0, // 斷點偏移（預設）
   order: "asc", // 排序方式（預設）
   scope: ["css", "sass"], // 自訂 scope（可選）
