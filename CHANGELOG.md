@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-09-09
+
+### Added
+
+- **Snippet Prefix Parameter**: New `snippetPrefix` parameter decoupled from function name parameters
+  - Added independent snippet prefix parameters for all generation functions
+  - `genFuncsDraftWidth()`, `genFuncsDraftHeight()`, and `genFuncsCore()` now support custom snippet prefixes
+  - Allows different snippet prefixes while maintaining original function names
+  - Available for all viewport units: `snippetPrefixVw`, `snippetPrefixDvw`, `snippetPrefixVh`, etc.
+  - Enhanced flexibility for VSCode snippet customization
+
+### Changed
+
+- **Breaking**: Changed `firstIndex` parameter default from `1` to `0`
+  - Updated default starting index to align with standard programming convention (0-based indexing)
+  - Affects `genFuncsDraftWidth()`, `genFuncsDraftHeight()`, and related generation functions
+  - Better consistency with array indexing and general programming expectations
+  - Users relying on the previous default should explicitly set `firstIndex: 1`
+
+### Enhanced
+
+- **Generation Function Flexibility**: Improved customization options for generated functions
+  - Better separation of concerns between function naming and snippet prefixes
+  - More intuitive parameter defaults aligned with common programming patterns
+  - Enhanced developer experience with more predictable behavior
+
 ## [1.3.3] - 2025-09-08
 
 ### Fixed
