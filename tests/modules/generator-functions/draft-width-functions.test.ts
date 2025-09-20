@@ -87,5 +87,74 @@ describe('modules/generator-functions/draft-width-functions', () => {
 
       expect(result.VSCodeSnippet.customVw0.prefix).toBe('customVw0')
     })
+
+  })
+
+  describe('spaceOverride functionality', () => {
+    it('should support spaceOverride parameter for viewport functions', () => {
+      const result = genFuncsDraftWidth({
+        points: [1440],
+        space: 0,
+      })
+
+      expect(result.core.vw0(144)).toBe('10vw')
+      expect(result.core.vw0(144, 1)).toBe('10vw ')
+      expect(result.core.dvw0(144, 1)).toBe('10dvw ')
+      expect(result.core.lvw0(144, 1)).toBe('10lvw ')
+      expect(result.core.svw0(144, 1)).toBe('10svw ')
+    })
+
+    it('should support spaceOverride parameter for clamp functions', () => {
+      const result = genFuncsDraftWidth({
+        points: [1440],
+        space: 0,
+      })
+
+      expect(result.core.vwc0(144)).toBe('min(144px, 10vw)')
+      expect(result.core.vwc0(144, 1)).toBe('min(144px, 10vw) ')
+      expect(result.core.dvwc0(144, 1)).toBe('min(144px, 10dvw) ')
+      expect(result.core.lvwc0(144, 1)).toBe('min(144px, 10lvw) ')
+      expect(result.core.svwc0(144, 1)).toBe('min(144px, 10svw) ')
+    })
+
+    it('should support spaceOverride parameter for extend functions', () => {
+      const result = genFuncsDraftWidth({
+        points: [1440],
+        space: 0,
+      })
+
+      expect(result.core.vwe0(144)).toBe('calc((100vw - 1440px) * 0.5 + 144px)')
+      expect((result.core.vwe0 as any)(144, 0.5, 1)).toBe('calc((100vw - 1440px) * 0.5 + 144px) ')
+      expect((result.core.dvwe0 as any)(144, 0.5, 1)).toBe('calc((100dvw - 1440px) * 0.5 + 144px) ')
+      expect((result.core.lvwe0 as any)(144, 0.5, 1)).toBe('calc((100lvw - 1440px) * 0.5 + 144px) ')
+      expect((result.core.svwe0 as any)(144, 0.5, 1)).toBe('calc((100svw - 1440px) * 0.5 + 144px) ')
+    })
+
+    it('should override global space setting with spaceOverride', () => {
+      const result = genFuncsDraftWidth({
+        points: [1440],
+        space: 1,
+      })
+
+      expect(result.core.vw0(144)).toBe('10vw ')
+      expect(result.core.vwc0(144)).toBe('min(144px, 10vw) ')
+
+      expect(result.core.vw0(144, 0)).toBe('10vw')
+      expect(result.core.vwc0(144, 0)).toBe('min(144px, 10vw)')
+      expect((result.core.vwe0 as any)(144, 0.5, 0)).toBe('calc((100vw - 1440px) * 0.5 + 144px)')
+    })
+
+    it('should handle spaceOverride for multiple points', () => {
+      const result = genFuncsDraftWidth({
+        points: [1440, 1920],
+        space: 0,
+      })
+
+      expect(result.core.vw0(144, 1)).toBe('10vw ')
+      expect(result.core.vwc0(144, 1)).toBe('min(144px, 10vw) ')
+
+      expect(result.core.vw1(192, 1)).toBe('10vw ')
+      expect(result.core.vwc1(192, 1)).toBe('min(192px, 10vw) ')
+    })
   })
 })

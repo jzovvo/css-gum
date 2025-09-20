@@ -88,5 +88,74 @@ describe('modules/generator-functions/draft-height-functions', () => {
 
       expect(result.VSCodeSnippet.customVh0.prefix).toBe('customVh0')
     })
+
+  })
+
+  describe('spaceOverride functionality', () => {
+    it('should support spaceOverride parameter for viewport functions', () => {
+      const result = genFuncsDraftHeight({
+        points: [1080],
+        space: 0,
+      })
+
+      expect(result.core.vh0(108)).toBe('10vh')
+      expect(result.core.vh0(108, 1)).toBe('10vh ')
+      expect(result.core.dvh0(108, 1)).toBe('10dvh ')
+      expect(result.core.lvh0(108, 1)).toBe('10lvh ')
+      expect(result.core.svh0(108, 1)).toBe('10svh ')
+    })
+
+    it('should support spaceOverride parameter for clamp functions', () => {
+      const result = genFuncsDraftHeight({
+        points: [1080],
+        space: 0,
+      })
+
+      expect(result.core.vhc0(108)).toBe('min(108px, 10vh)')
+      expect(result.core.vhc0(108, 1)).toBe('min(108px, 10vh) ')
+      expect(result.core.dvhc0(108, 1)).toBe('min(108px, 10dvh) ')
+      expect(result.core.lvhc0(108, 1)).toBe('min(108px, 10lvh) ')
+      expect(result.core.svhc0(108, 1)).toBe('min(108px, 10svh) ')
+    })
+
+    it('should support spaceOverride parameter for extend functions', () => {
+      const result = genFuncsDraftHeight({
+        points: [1080],
+        space: 0,
+      })
+
+      expect(result.core.vhe0(108)).toBe('calc((100vh - 1080px) * 0.5 + 108px)')
+      expect((result.core.vhe0 as any)(108, 0.5, 1)).toBe('calc((100vh - 1080px) * 0.5 + 108px) ')
+      expect((result.core.dvhe0 as any)(108, 0.5, 1)).toBe('calc((100dvh - 1080px) * 0.5 + 108px) ')
+      expect((result.core.lvhe0 as any)(108, 0.5, 1)).toBe('calc((100lvh - 1080px) * 0.5 + 108px) ')
+      expect((result.core.svhe0 as any)(108, 0.5, 1)).toBe('calc((100svh - 1080px) * 0.5 + 108px) ')
+    })
+
+    it('should override global space setting with spaceOverride', () => {
+      const result = genFuncsDraftHeight({
+        points: [1080],
+        space: 1,
+      })
+
+      expect(result.core.vh0(108)).toBe('10vh ')
+      expect(result.core.vhc0(108)).toBe('min(108px, 10vh) ')
+
+      expect(result.core.vh0(108, 0)).toBe('10vh')
+      expect(result.core.vhc0(108, 0)).toBe('min(108px, 10vh)')
+      expect((result.core.vhe0 as any)(108, 0.5, 0)).toBe('calc((100vh - 1080px) * 0.5 + 108px)')
+    })
+
+    it('should handle spaceOverride for multiple points', () => {
+      const result = genFuncsDraftHeight({
+        points: [720, 1080],
+        space: 0,
+      })
+
+      expect(result.core.vh0(72, 1)).toBe('10vh ')
+      expect(result.core.vhc0(72, 1)).toBe('min(72px, 10vh) ')
+
+      expect(result.core.vh1(108, 1)).toBe('10vh ')
+      expect(result.core.vhc1(108, 1)).toBe('min(108px, 10vh) ')
+    })
   })
 })

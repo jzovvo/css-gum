@@ -105,4 +105,58 @@ describe('modules/generator-functions/core-functions', () => {
       expect(result.VSCodeSnippet.customPercent.prefix).toBe('customPercent')
     })
   })
+
+  describe('spaceOverride functionality', () => {
+    it('should support spaceOverride parameter for all function types', () => {
+      const result = genFuncsCore({
+        space: 0,
+      })
+
+      expect(result.core.vw(144, 1440)).toBe('10vw')
+      expect(result.core.vw(144, 1440, 1)).toBe('10vw ')
+      expect(result.core.vh(108, 1080, 1)).toBe('10vh ')
+
+      expect(result.core.vwc(144, 1440)).toBe('min(144px, 10vw)')
+      expect(result.core.vwc(144, 1440, 1)).toBe('min(144px, 10vw) ')
+
+      expect(result.core.vwe(144, 1440)).toBe('calc((100vw - 1440px) * 0.5 + 144px)')
+      expect((result.core.vwe as any)(144, 1440, 0.5, 1)).toBe('calc((100vw - 1440px) * 0.5 + 144px) ')
+
+      expect(result.core.percent(25, 100)).toBe('25%')
+      expect(result.core.percent(25, 100, 1)).toBe('25% ')
+      expect(result.core.em(24, 16, 1)).toBe('1.5em ')
+      expect(result.core.lh(24, 16, 1)).toBe('1.5 ')
+    })
+
+    it('should override global space setting with spaceOverride', () => {
+      const result = genFuncsCore({
+        space: 1,
+      })
+
+      expect(result.core.vw(144, 1440)).toBe('10vw ')
+      expect(result.core.percent(25, 100)).toBe('25% ')
+
+      expect(result.core.vw(144, 1440, 0)).toBe('10vw')
+      expect(result.core.percent(25, 100, 0)).toBe('25%')
+
+      expect(result.core.vw(144, 1440, 1)).toBe('10vw ')
+      expect((result.core.vwe as any)(144, 1440, 0.5, 1)).toBe('calc((100vw - 1440px) * 0.5 + 144px) ')
+    })
+
+    it('should handle spaceOverride for all viewport variants', () => {
+      const result = genFuncsCore({space: 0})
+
+      expect(result.core.dvw(144, 1440, 1)).toBe('10dvw ')
+      expect(result.core.lvw(144, 1440, 1)).toBe('10lvw ')
+      expect(result.core.svw(144, 1440, 1)).toBe('10svw ')
+
+      expect(result.core.dvwc(144, 1440, 1)).toBe('min(144px, 10dvw) ')
+      expect(result.core.lvwc(144, 1440, 1)).toBe('min(144px, 10lvw) ')
+      expect(result.core.svwc(144, 1440, 1)).toBe('min(144px, 10svw) ')
+
+      expect((result.core.dvwe as any)(144, 1440, 0.5, 0)).toBe('calc((100dvw - 1440px) * 0.5 + 144px)')
+      expect((result.core.lvwe as any)(144, 1440, 0.5, 0)).toBe('calc((100lvw - 1440px) * 0.5 + 144px)')
+      expect((result.core.svwe as any)(144, 1440, 0.5, 0)).toBe('calc((100svw - 1440px) * 0.5 + 144px)')
+    })
+  })
 })

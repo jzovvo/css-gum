@@ -69,16 +69,72 @@ describe('modules/core', () => {
     })
   })
 
-  describe('special cases', () => {
-    it('should handle space flag', () => {
+  describe('space parameter support', () => {
+    it('should handle space flag for viewport functions', () => {
       expect(vw(144, 1440, 0)).toBe('10vw')
       expect(vw(144, 1440, 1)).toBe('10vw ')
+      expect(vh(108, 1080, 0)).toBe('10vh')
+      expect(vh(108, 1080, 1)).toBe('10vh ')
+    })
+
+    it('should handle space flag for clamp functions', () => {
+      expect(vwc(144, 1440, 0)).toBe('min(144px, 10vw)')
+      expect(vwc(144, 1440, 1)).toBe('min(144px, 10vw) ')
+      expect(vhc(108, 1080, 0)).toBe('min(108px, 10vh)')
+      expect(vhc(108, 1080, 1)).toBe('min(108px, 10vh) ')
+    })
+
+    it('should handle space flag for extend functions', () => {
+      expect(vwe(144, 1440, 0.5, 0)).toBe('calc((100vw - 1440px) * 0.5 + 144px)')
+      expect(vwe(144, 1440, 0.5, 1)).toBe('calc((100vw - 1440px) * 0.5 + 144px) ')
+      expect(vhe(108, 1080, 0.2, 0)).toBe('calc((100vh - 1080px) * 0.2 + 108px)')
+      expect(vhe(108, 1080, 0.2, 1)).toBe('calc((100vh - 1080px) * 0.2 + 108px) ')
+    })
+
+    it('should handle space flag for utility functions', () => {
+      expect(percent(25, 100, 0)).toBe('25%')
+      expect(percent(25, 100, 1)).toBe('25% ')
+      expect(em(24, 16, 0)).toBe('1.5em')
+      expect(em(24, 16, 1)).toBe('1.5em ')
+      expect(lh(24, 16, 0)).toBe('1.5')
+      expect(lh(24, 16, 1)).toBe('1.5 ')
     })
 
     it('should handle space flag as string', () => {
       expect(vw(144, 1440, '0' as any)).toBe('10vw')
       expect(vw(144, 1440, '1' as any)).toBe('10vw ')
+      expect(percent(25, 100, '1' as any)).toBe('25% ')
     })
+
+    it('should handle space flag for all viewport variants', () => {
+      expect(dvw(144, 1440, 1)).toBe('10dvw ')
+      expect(lvw(144, 1440, 1)).toBe('10lvw ')
+      expect(svw(144, 1440, 1)).toBe('10svw ')
+      expect(dvh(108, 1080, 1)).toBe('10dvh ')
+      expect(lvh(108, 1080, 1)).toBe('10lvh ')
+      expect(svh(108, 1080, 1)).toBe('10svh ')
+    })
+
+    it('should handle space flag for all clamp variants', () => {
+      expect(dvwc(144, 1440, 1)).toBe('min(144px, 10dvw) ')
+      expect(lvwc(144, 1440, 1)).toBe('min(144px, 10lvw) ')
+      expect(svwc(144, 1440, 1)).toBe('min(144px, 10svw) ')
+      expect(dvhc(108, 1080, 1)).toBe('min(108px, 10dvh) ')
+      expect(lvhc(108, 1080, 1)).toBe('min(108px, 10lvh) ')
+      expect(svhc(108, 1080, 1)).toBe('min(108px, 10svh) ')
+    })
+
+    it('should handle space flag for all extend variants', () => {
+      expect(dvwe(144, 1440, 0.5, 1)).toBe('calc((100dvw - 1440px) * 0.5 + 144px) ')
+      expect(lvwe(144, 1440, 0.5, 1)).toBe('calc((100lvw - 1440px) * 0.5 + 144px) ')
+      expect(svwe(144, 1440, 0.5, 1)).toBe('calc((100svw - 1440px) * 0.5 + 144px) ')
+      expect(dvhe(108, 1080, 0.2, 1)).toBe('calc((100dvh - 1080px) * 0.2 + 108px) ')
+      expect(lvhe(108, 1080, 0.2, 1)).toBe('calc((100lvh - 1080px) * 0.2 + 108px) ')
+      expect(svhe(108, 1080, 0.2, 1)).toBe('calc((100svh - 1080px) * 0.2 + 108px) ')
+    })
+  })
+
+  describe('special cases', () => {
 
     it('should handle zero values', () => {
       expect(vw(0, 1440)).toBe('0')
