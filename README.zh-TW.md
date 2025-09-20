@@ -1,6 +1,6 @@
 <p align="center">
   <picture>
-    <img alt="Tailwind CSS" src="./logo.png" width="350" style="max-width: 100%;">
+    <img alt="css-gum" src="./logo.png" width="350" style="max-width: 100%;">
   </picture>
 </p>
 
@@ -13,7 +13,7 @@
   <a href="https://codecov.io/gh/jzovvo/css-gum">
     <img src="https://codecov.io/gh/jzovvo/css-gum/branch/master/graph/badge.svg" alt="codecov"/>
   </a>
-  <a href="https://www.npmjs.com/package/css-guml">
+  <a href="https://www.npmjs.com/package/css-gum">
     <img src="https://badge.fury.io/js/css-gum.svg" alt="npm version"/>
   </a>
 </p>
@@ -76,11 +76,11 @@ Core.lh(24, 16); // '1.5'
 
 ```typescript
 Core.vw(pixel, designDraft, space?); // space: 0=不帶空格(預設), 1=帶空格
-Core.vwc(pixel, designDraft); // 限制型: min() 或 max()
-Core.vwe(pixel, designDraft, percent?); // 延伸型: calc() 表達式
-Core.percent(child, parent); // 百分比計算
-Core.em(fontSize, baseFontSize); // em 單位
-Core.lh(lineHeight, fontSize); // 行高比例
+Core.vwc(pixel, designDraft, space?); // 限制型: min() 或 max()
+Core.vwe(pixel, designDraft, percent?, space?); // 延伸型: calc() 表達式
+Core.percent(child, parent, space?); // 百分比計算
+Core.em(child, parent, space?); // em 單位
+Core.lh(child, parent, space?); // 行高比例
 ```
 
 ### Util Module
@@ -137,8 +137,7 @@ const funcs = Gen.genFuncsDraftWidth({
 
 funcs.core.mobile0(20); // '5.33vw ' - 375px breakpoint
 funcs.VSCodeSnippet; // VSCode Snippet 物件
-// 可用名稱參數：nameVw, nameDvw, nameLvw, nameSvw, nameVwc, nameDvwc, nameVwe, nameDvwe 等
-// 可用 snippet 前綴參數：snippetPrefixVw, snippetPrefixDvw, snippetPrefixLvw, snippetPrefixSvw, snippetPrefixVwc, snippetPrefixDvwc, snippetPrefixVwe, snippetPrefixDvwe 等
+// 支援所有寬度相關函數的名稱和 snippet 前綴自訂：vw/dvw/lvw/svw、vwc/dvwc/lvwc/svwc、vwe/dvwe/lvwe/svwe
 ```
 
 #### `genFuncsCore(options)`
@@ -152,8 +151,9 @@ const customCore = Gen.genFuncsCore({
   space: 1, // 預設帶空格
 });
 customCore.VSCodeSnippet; // VSCode Snippet 物件
-// 可用名稱參數：nameVw, nameDvw, nameVh, nameDvh, nameVwc, nameVhc, nameVwe, nameVhe, namePercent, nameEm, nameLh
-// 可用 snippet 前綴參數：snippetPrefixVw, snippetPrefixDvw, snippetPrefixVh, snippetPrefixDvh, snippetPrefixVwc, snippetPrefixVhc, snippetPrefixVwe, snippetPrefixVhe, snippetPrefixPercent, snippetPrefixEm, snippetPrefixLh
+// 支援所有核心函數的名稱和 snippet 前綴自訂：
+// viewport: vw/dvw/lvw/svw、vh/dvh/lvh/svh、vwc/vhc系列、vwe/vhe系列
+// 其他: percent、em、lh
 ```
 
 ### Config Module

@@ -1,6 +1,6 @@
 <p align="center">
   <picture>
-    <img alt="Tailwind CSS" src="./logo.png" width="350" style="max-width: 100%;">
+    <img alt="css-gum" src="./logo.png" width="350" style="max-width: 100%;">
   </picture>
 </p>
 
@@ -13,7 +13,7 @@
   <a href="https://codecov.io/gh/jzovvo/css-gum">
     <img src="https://codecov.io/gh/jzovvo/css-gum/branch/master/graph/badge.svg" alt="codecov"/>
   </a>
-  <a href="https://www.npmjs.com/package/css-guml">
+  <a href="https://www.npmjs.com/package/css-gum">
     <img src="https://badge.fury.io/js/css-gum.svg" alt="npm version"/>
   </a>
 </p>
@@ -76,11 +76,11 @@ Core.lh(24, 16); // '1.5'
 
 ```typescript
 Core.vw(pixel, designDraft, space?); // space: 0=no space(default), 1=with space
-Core.vwc(pixel, designDraft); // Clamped: min() or max()
-Core.vwe(pixel, designDraft, percent?); // Extended: calc() expression
-Core.percent(child, parent); // Percentage calculation
-Core.em(fontSize, baseFontSize); // em units
-Core.lh(lineHeight, fontSize); // Line height ratio
+Core.vwc(pixel, designDraft, space?); // Clamped: min() or max()
+Core.vwe(pixel, designDraft, percent?, space?); // Extended: calc() expression
+Core.percent(child, parent, space?); // Percentage calculation
+Core.em(child, parent, space?); // em units
+Core.lh(child, parent, space?); // Line height ratio
 ```
 
 ### Util Module
@@ -137,8 +137,7 @@ const funcs = Gen.genFuncsDraftWidth({
 
 funcs.core.mobile0(20); // '5.33vw ' - 375px breakpoint
 funcs.VSCodeSnippet; // VSCode Snippet object
-// Available name parameters: nameVw, nameDvw, nameLvw, nameSvw, nameVwc, nameDvwc, nameVwe, nameDvwe etc.
-// Available snippet prefix parameters: snippetPrefixVw, snippetPrefixDvw, snippetPrefixLvw, snippetPrefixSvw, snippetPrefixVwc, snippetPrefixDvwc, snippetPrefixVwe, snippetPrefixDvwe etc.
+// Supports all width-related function names and snippet prefix customization: vw/dvw/lvw/svw, vwc/dvwc/lvwc/svwc, vwe/dvwe/lvwe/svwe
 ```
 
 #### `genFuncsCore(options)`
@@ -152,8 +151,9 @@ const customCore = Gen.genFuncsCore({
   space: 1, // Default with space
 });
 customCore.VSCodeSnippet; // VSCode Snippet object
-// Available name parameters: nameVw, nameDvw, nameVh, nameDvh, nameVwc, nameVhc, nameVwe, nameVhe, namePercent, nameEm, nameLh
-// Available snippet prefix parameters: snippetPrefixVw, snippetPrefixDvw, snippetPrefixVh, snippetPrefixDvh, snippetPrefixVwc, snippetPrefixVhc, snippetPrefixVwe, snippetPrefixVhe, snippetPrefixPercent, snippetPrefixEm, snippetPrefixLh
+// Supports all core function names and snippet prefix customization:
+// viewport: vw/dvw/lvw/svw, vh/dvh/lvh/svh, vwc/vhc series, vwe/vhe series
+// others: percent, em, lh
 ```
 
 ### Config Module
