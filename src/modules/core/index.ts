@@ -3,63 +3,60 @@ import {cssPxToVhe, cssPxToVwe, cssEm, cssLh, cssPercent, cssPxToVh, cssPxToVhc,
 import {checkDesignDraftScalingParams, checkPercentParams, checkSpaceFlag, checkViewportParams} from '../../utils/validate'
 import {consoleError} from '../../utils/console'
 
-const genCssViewport = (utilsFunction: typeof cssPxToVw) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
-  const viewportResult = checkViewportParams(pixel, designDraft)
-  const spaceResult = checkSpaceFlag(space)
-
-  if (viewportResult.data !== null && spaceResult.data !== null) {
-    const baseResult = utilsFunction(viewportResult.data[1])(viewportResult.data[0])
+const exec = <T>(
+  paramsResult: {data: T | null; error: string | null},
+  spaceResult: {data: SpaceFlag | null; error: string | null},
+  executor: (data: T) => string,
+) => {
+  if (paramsResult.data && spaceResult.data !== null) {
+    const baseResult = executor(paramsResult.data)
     return baseResult === '' ? '' : baseResult + (spaceResult.data === 1 ? ' ' : '')
   }
 
-  viewportResult.error && consoleError(viewportResult.error)
+  paramsResult.error && consoleError(paramsResult.error)
   spaceResult.error && consoleError(spaceResult.error)
 
   return ''
 }
 
-const genCssClamp = (utilsFunction: typeof cssPxToVwc) => (pixel: Pixel, designDraft: DesignDraft) => {
-  const result = checkViewportParams(pixel, designDraft)
-
-  if (result.data) {
-    return utilsFunction(result.data[1])(result.data[0])
-  }
-
-  consoleError(result.error)
-  return ''
+const genCssViewport = (utilsFunction: typeof cssPxToVw) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
+  return exec(
+    checkViewportParams(pixel, designDraft),
+    checkSpaceFlag(space),
+    (data) => utilsFunction(data[1])(data[0]),
+  )
 }
 
-const genCssExtend = (utilsFunction: typeof cssPxToVwe) => (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5) => {
-  const result = checkDesignDraftScalingParams(pixel, designDraft, percent)
-
-  if (result.data) {
-    return utilsFunction(result.data[1])(result.data[2])(result.data[0])
-  }
-
-  consoleError(result.error)
-  return ''
+const genCssClamp = (utilsFunction: typeof cssPxToVwc) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
+  return exec(
+    checkViewportParams(pixel, designDraft),
+    checkSpaceFlag(space),
+    (data) => utilsFunction(data[1])(data[0]),
+  )
 }
 
-const genCssPercent = (utilsFunction: typeof cssPercent) => (child: Percent, parent: Percent) => {
-  const result = checkPercentParams(child, parent)
-
-  if (result.data) {
-    return utilsFunction(result.data[1])(result.data[0])
-  }
-
-  consoleError(result.error)
-  return ''
+const genCssExtend = (utilsFunction: typeof cssPxToVwe) => (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5, space: SpaceFlag = 0) => {
+  return exec(
+    checkDesignDraftScalingParams(pixel, designDraft, percent),
+    checkSpaceFlag(space),
+    (data) => utilsFunction(data[1])(data[2])(data[0]),
+  )
 }
 
-const genCssFont = (utilsFunction: typeof cssEm) => (child: Percent, parent: Percent) => {
-  const result = checkPercentParams(child, parent)
+const genCssPercent = (utilsFunction: typeof cssPercent) => (child: Percent, parent: Percent, space: SpaceFlag = 0) => {
+  return exec(
+    checkPercentParams(child, parent),
+    checkSpaceFlag(space),
+    (data) => utilsFunction(data[1])(data[0]),
+  )
+}
 
-  if (result.data) {
-    return utilsFunction(result.data[0], result.data[1])
-  }
-
-  consoleError(result.error)
-  return ''
+const genCssFont = (utilsFunction: typeof cssEm) => (child: Percent, parent: Percent, space: SpaceFlag = 0) => {
+  return exec(
+    checkPercentParams(child, parent),
+    checkSpaceFlag(space),
+    (data) => utilsFunction(data[0], data[1]),
+  )
 }
 
 export const vw = genCssViewport(cssPxToVw)
