@@ -1,7 +1,7 @@
 import {normalizePoints} from '../../utils/point-utils'
 import {vw, vwc, vwe, lvw, svw, dvw, dvwc, svwc, lvwc, dvwe, lvwe, svwe} from '../core'
 import {genVSCodeSnippetDraftWidth, PropsAddFunctionSnippet} from '../build-snippets/generator-functions'
-import type {Pixel, SpaceFlag} from '../../utils/types'
+import type {Percent, Pixel, SpaceFlag} from '../../utils/types'
 import {DEFAULT} from './const'
 import {GenFuncsNameCustomWidth, PropsDraftFuncs} from './types'
 import {DEFAULT_SNIPPET} from '../build-snippets/const'
@@ -46,30 +46,33 @@ export const genFuncsDraftWidth = ({
 }: PropsDraftFuncs & GenFuncsNameCustomWidth & SnippetPrefixCustomWidth & Pick<PropsAddFunctionSnippet, 'scope'>) => {
   const normalizedPoints = normalizePoints(points, order)
 
-  const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
+  const core: Record<string,
+    | ((pixel: Pixel, spaceOverride?: SpaceFlag) => string)
+    | ((pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => string)
+  > = {}
 
   for (let i = 0; i < normalizedPoints.length; i++) {
     const idx = i + firstIndex
     const point = normalizedPoints[i]
 
-    nameVw !== '' && (temp[nameVw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vw(pixel, point, spaceOverride ?? space))
-    nameDvw !== '' && (temp[nameDvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvw(pixel, point, spaceOverride ?? space))
-    nameLvw !== '' && (temp[nameLvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvw(pixel, point, spaceOverride ?? space))
-    nameSvw !== '' && (temp[nameSvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svw(pixel, point, spaceOverride ?? space))
+    nameVw !== '' && (core[nameVw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vw(pixel, point, spaceOverride ?? space))
+    nameDvw !== '' && (core[nameDvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvw(pixel, point, spaceOverride ?? space))
+    nameLvw !== '' && (core[nameLvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvw(pixel, point, spaceOverride ?? space))
+    nameSvw !== '' && (core[nameSvw + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svw(pixel, point, spaceOverride ?? space))
 
-    nameVwc !== '' && (temp[nameVwc + idx] = (pixel: Pixel) => vwc(pixel, point))
-    nameDvwc !== '' && (temp[nameDvwc + idx] = (pixel: Pixel) => dvwc(pixel, point))
-    nameLvwc !== '' && (temp[nameLvwc + idx] = (pixel: Pixel) => lvwc(pixel, point))
-    nameSvwc !== '' && (temp[nameSvwc + idx] = (pixel: Pixel) => svwc(pixel, point))
+    nameVwc !== '' && (core[nameVwc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vwc(pixel, point, spaceOverride ?? space))
+    nameDvwc !== '' && (core[nameDvwc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvwc(pixel, point, spaceOverride ?? space))
+    nameLvwc !== '' && (core[nameLvwc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvwc(pixel, point, spaceOverride ?? space))
+    nameSvwc !== '' && (core[nameSvwc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svwc(pixel, point, spaceOverride ?? space))
 
-    nameVwe !== '' && (temp[nameVwe + idx] = (pixel: Pixel) => vwe(pixel, point))
-    nameDvwe !== '' && (temp[nameDvwe + idx] = (pixel: Pixel) => dvwe(pixel, point))
-    nameLvwe !== '' && (temp[nameLvwe + idx] = (pixel: Pixel) => lvwe(pixel, point))
-    nameSvwe !== '' && (temp[nameSvwe + idx] = (pixel: Pixel) => svwe(pixel, point))
+    nameVwe !== '' && (core[nameVwe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => vwe(pixel, point, percent, spaceOverride ?? space))
+    nameDvwe !== '' && (core[nameDvwe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => dvwe(pixel, point, percent, spaceOverride ?? space))
+    nameLvwe !== '' && (core[nameLvwe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => lvwe(pixel, point, percent, spaceOverride ?? space))
+    nameSvwe !== '' && (core[nameSvwe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => svwe(pixel, point, percent, spaceOverride ?? space))
   }
 
   return {
-    core: temp,
+    core,
     VSCodeSnippet: genVSCodeSnippetDraftWidth({
       pointsSize: normalizedPoints.length,
       firstIndex,

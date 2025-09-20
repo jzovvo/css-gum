@@ -1,7 +1,7 @@
 import {normalizePoints} from '../../utils/point-utils'
 import {vh, vhc, vhe, dvh, lvh, svh, dvhc, lvhc, svhc, dvhe, lvhe, svhe} from '../core'
 import {genVSCodeSnippetDraftHeight, PropsAddFunctionSnippet} from '../build-snippets/generator-functions'
-import type {Pixel, SpaceFlag} from '../../utils/types'
+import type {Percent, Pixel, SpaceFlag} from '../../utils/types'
 import {DEFAULT} from './const'
 import {GenFuncsNameCustomHeight, PropsDraftFuncs} from './types'
 import {DEFAULT_SNIPPET} from '../build-snippets/const'
@@ -47,30 +47,33 @@ export const genFuncsDraftHeight = ({
 }: PropsDraftFuncs & GenFuncsNameCustomHeight & SnippetPrefixCustomHeight & Pick<PropsAddFunctionSnippet, 'scope'>) => {
   const normalizedPoints = normalizePoints(points, order)
 
-  const temp: Record<string, ((pixel: Pixel, spaceOverride?: SpaceFlag) => string) | ((pixel: Pixel) => string)> = {}
+  const core: Record<string,
+    | ((pixel: Pixel, spaceOverride?: SpaceFlag) => string)
+    | ((pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => string)
+  > = {}
 
   for (let i = 0; i < normalizedPoints.length; i++) {
     const idx = i + firstIndex
     const point = normalizedPoints[i]
 
-    nameVh !== '' && (temp[nameVh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vh(pixel, point, spaceOverride ?? space))
-    nameDvh !== '' && (temp[nameDvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvh(pixel, point, spaceOverride ?? space))
-    nameLvh !== '' && (temp[nameLvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvh(pixel, point, spaceOverride ?? space))
-    nameSvh !== '' && (temp[nameSvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svh(pixel, point, spaceOverride ?? space))
+    nameVh !== '' && (core[nameVh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vh(pixel, point, spaceOverride ?? space))
+    nameDvh !== '' && (core[nameDvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvh(pixel, point, spaceOverride ?? space))
+    nameLvh !== '' && (core[nameLvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvh(pixel, point, spaceOverride ?? space))
+    nameSvh !== '' && (core[nameSvh + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svh(pixel, point, spaceOverride ?? space))
 
-    nameVhc !== '' && (temp[nameVhc + idx] = (pixel: Pixel) => vhc(pixel, point))
-    nameDvhc !== '' && (temp[nameDvhc + idx] = (pixel: Pixel) => dvhc(pixel, point))
-    nameLvhc !== '' && (temp[nameLvhc + idx] = (pixel: Pixel) => lvhc(pixel, point))
-    nameSvhc !== '' && (temp[nameSvhc + idx] = (pixel: Pixel) => svhc(pixel, point))
+    nameVhc !== '' && (core[nameVhc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => vhc(pixel, point, spaceOverride ?? space))
+    nameDvhc !== '' && (core[nameDvhc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => dvhc(pixel, point, spaceOverride ?? space))
+    nameLvhc !== '' && (core[nameLvhc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => lvhc(pixel, point, spaceOverride ?? space))
+    nameSvhc !== '' && (core[nameSvhc + idx] = (pixel: Pixel, spaceOverride?: SpaceFlag) => svhc(pixel, point, spaceOverride ?? space))
 
-    nameVhe !== '' && (temp[nameVhe + idx] = (pixel: Pixel) => vhe(pixel, point))
-    nameDvhe !== '' && (temp[nameDvhe + idx] = (pixel: Pixel) => dvhe(pixel, point))
-    nameLvhe !== '' && (temp[nameLvhe + idx] = (pixel: Pixel) => lvhe(pixel, point))
-    nameSvhe !== '' && (temp[nameSvhe + idx] = (pixel: Pixel) => svhe(pixel, point))
+    nameVhe !== '' && (core[nameVhe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => vhe(pixel, point, percent, spaceOverride ?? space))
+    nameDvhe !== '' && (core[nameDvhe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => dvhe(pixel, point, percent, spaceOverride ?? space))
+    nameLvhe !== '' && (core[nameLvhe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => lvhe(pixel, point, percent, spaceOverride ?? space))
+    nameSvhe !== '' && (core[nameSvhe + idx] = (pixel: Pixel, percent?: Percent, spaceOverride?: SpaceFlag) => svhe(pixel, point, percent, spaceOverride ?? space))
   }
 
   return {
-    core: temp,
+    core,
     VSCodeSnippet: genVSCodeSnippetDraftHeight({
       pointsSize: normalizedPoints.length,
       firstIndex,
