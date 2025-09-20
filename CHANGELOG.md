@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2025-09-20
+
+### Added
+
+- **Universal Space Parameter Support**: Extended space parameter support to all Core module functions
+  - All viewport functions now support space parameter: `vwc`, `vhc`, `vwe`, `vhe` and their variants (`dvwc`, `lvwc`, `svwc`, etc.)
+  - Extended to utility functions: `percent`, `em`, `lh` now all support optional space parameter
+  - Consistent API across all Core functions with uniform space handling
+  - Enhanced flexibility for spacing control in all CSS unit calculations
+
+### Enhanced
+
+- **Core Module Refactoring**: Comprehensive refactoring of Core module architecture
+  - Introduced unified `exec` function for consistent parameter validation and space handling
+  - Streamlined error handling across all Core functions with centralized logic
+  - Improved code maintainability and consistency
+  - Better separation of concerns between validation, execution, and space handling
+
+- **Gen Module Integration**: Updated Gen module to fully support new space parameter system
+  - All generated functions from `genFuncsDraftWidth` and `genFuncsDraftHeight` now properly pass space parameters
+  - Enhanced integration between Core and Gen modules for consistent behavior
+  - Improved function generation logic to handle space parameters correctly
+
+- **Validation Module Improvements**: Refactored validation module for better error handling
+  - Enhanced parameter validation with more robust error reporting
+  - Improved validation functions for better type safety and error messages
+  - Better integration with the new unified execution system
+
+### Changed
+
+- **API Consistency**: Standardized space parameter behavior across all functions
+  - All Core functions now follow the same pattern: `function(params..., space?: SpaceFlag)`
+  - Consistent space parameter handling eliminates API inconsistencies
+  - Better developer experience with uniform function signatures
+
+### Fixed
+
+- **Test Coverage**: Updated comprehensive test suite for new space parameter system
+  - Added tests for all newly supported space parameters across Core functions
+  - Enhanced test coverage for Gen module space parameter integration
+  - Improved test reliability and coverage for edge cases
+
+### Documentation
+
+- **Complete Documentation Update**: Updated all documentation to reflect space parameter changes
+  - README files (English and Traditional Chinese) updated with correct API signatures
+  - Simplified parameter documentation with categorized approach instead of exhaustive lists
+  - Enhanced examples and usage patterns for new space parameter functionality
+  - Better API documentation structure for improved readability
+
 ## [1.4.0] - 2025-09-09
 
 ### Added
