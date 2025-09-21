@@ -6,9 +6,9 @@ const colors = {
 }
 
 export const consoleError = (message: string) => {
-  console.error(`${colors.red}[error]${colors.reset} ${message}`)
+  console.error(`${colors.red}[css-gum error]${colors.reset} ${message}`)
 }
 
 export const consoleWarn = (message: string) => {
-  console.warn(`${colors.yellow}[warn]${colors.reset} ${message}`)
+  console.warn(`${colors.yellow}[css-gum warn]${colors.reset} ${message}`)
 }

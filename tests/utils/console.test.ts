@@ -10,14 +10,14 @@ describe('utils/console', () => {
   describe('consoleError', () => {
     it('should log error messages', () => {
       consoleError('Test error')
-      expect(console.error).toHaveBeenCalledWith('\x1b[31m[error]\x1b[0m Test error')
+      expect(console.error).toHaveBeenCalledWith('\x1b[31m[css-gum error]\x1b[0m Test error')
     })
   })
 
   describe('consoleWarn', () => {
     it('should log warning messages', () => {
       consoleWarn('Test warning')
-      expect(console.warn).toHaveBeenCalledWith('\x1b[33m[warn]\x1b[0m Test warning')
+      expect(console.warn).toHaveBeenCalledWith('\x1b[33m[css-gum warn]\x1b[0m Test warning')
     })
   })
 })

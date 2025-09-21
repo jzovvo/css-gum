@@ -19,76 +19,86 @@ const exec = <T>(
   return ''
 }
 
-const genCssViewport = (utilsFunction: typeof cssPxToVw) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
+const genCssViewport = (callerName: string, utilsFunction: typeof cssPxToVw) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
+  const caller = `${callerName}(${pixel},${designDraft},${space})`
+
   return exec(
-    checkViewportParams(pixel, designDraft),
-    checkSpaceFlag(space),
+    checkViewportParams(caller, pixel, designDraft),
+    checkSpaceFlag(caller, space),
     (data) => utilsFunction(data[1])(data[0]),
   )
 }
 
-const genCssClamp = (utilsFunction: typeof cssPxToVwc) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
+const genCssClamp = (callerName: string, utilsFunction: typeof cssPxToVwc) => (pixel: Pixel, designDraft: DesignDraft, space: SpaceFlag = 0) => {
+  const caller = `${callerName}(${pixel},${designDraft},${space})`
+
   return exec(
-    checkViewportParams(pixel, designDraft),
-    checkSpaceFlag(space),
+    checkViewportParams(caller, pixel, designDraft),
+    checkSpaceFlag(caller, space),
     (data) => utilsFunction(data[1])(data[0]),
   )
 }
 
-const genCssExtend = (utilsFunction: typeof cssPxToVwe) => (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5, space: SpaceFlag = 0) => {
+const genCssExtend = (callerName: string, utilsFunction: typeof cssPxToVwe) => (pixel: Pixel, designDraft: DesignDraft, percent: Percent = 0.5, space: SpaceFlag = 0) => {
+  const caller = `${callerName}(${pixel},${designDraft},${percent},${space})`
+
   return exec(
-    checkDesignDraftScalingParams(pixel, designDraft, percent),
-    checkSpaceFlag(space),
+    checkDesignDraftScalingParams(caller, pixel, designDraft, percent),
+    checkSpaceFlag(caller, space),
     (data) => utilsFunction(data[1])(data[2])(data[0]),
   )
 }
 
-const genCssPercent = (utilsFunction: typeof cssPercent) => (child: Percent, parent: Percent, space: SpaceFlag = 0) => {
+const genCssPercent = (callerName: string, utilsFunction: typeof cssPercent) => (child: Percent, parent: Percent, space: SpaceFlag = 0) => {
+  const caller = `${callerName}(${child},${parent},${space})`
+
   return exec(
-    checkPercentParams(child, parent),
-    checkSpaceFlag(space),
+    checkPercentParams(caller, child, parent),
+    checkSpaceFlag(caller, space),
     (data) => utilsFunction(data[1])(data[0]),
   )
 }
 
-const genCssFont = (utilsFunction: typeof cssEm) => (child: Percent, parent: Percent, space: SpaceFlag = 0) => {
+const genCssFont = (callerName: string, utilsFunction: typeof cssEm) => (child: Percent, parent: Percent, space: SpaceFlag = 0) => {
+  const caller = `${callerName}(${child},${parent},${space})`
+
   return exec(
-    checkPercentParams(child, parent),
-    checkSpaceFlag(space),
+    checkPercentParams(caller, child, parent),
+    checkSpaceFlag(caller, space),
     (data) => utilsFunction(data[0], data[1]),
   )
 }
 
-export const vw = genCssViewport(cssPxToVw)
-export const dvw = genCssViewport(cssPxToDvw)
-export const lvw = genCssViewport(cssPxToLvw)
-export const svw = genCssViewport(cssPxToSvw)
+export const vw = genCssViewport('vw', cssPxToVw)
+export const dvw = genCssViewport('dvw', cssPxToDvw)
+export const lvw = genCssViewport('lvw', cssPxToLvw)
+export const svw = genCssViewport('svw', cssPxToSvw)
 
-export const vwc = genCssClamp(cssPxToVwc)
-export const dvwc = genCssClamp(cssPxToDvwc)
-export const lvwc = genCssClamp(cssPxToLvwc)
-export const svwc = genCssClamp(cssPxToSvwc)
+export const vwc = genCssClamp('vwc', cssPxToVwc)
+export const dvwc = genCssClamp('dvwc', cssPxToDvwc)
+export const lvwc = genCssClamp('lvwc', cssPxToLvwc)
+export const svwc = genCssClamp('svwc', cssPxToSvwc)
 
-export const vwe = genCssExtend(cssPxToVwe)
-export const dvwe = genCssExtend(cssPxToDvwe)
-export const lvwe = genCssExtend(cssPxToLvwe)
-export const svwe = genCssExtend(cssPxToSvwe)
+export const vwe = genCssExtend('vwe', cssPxToVwe)
+export const dvwe = genCssExtend('dvwe', cssPxToDvwe)
+export const lvwe = genCssExtend('lvwe', cssPxToLvwe)
+export const svwe = genCssExtend('svwe', cssPxToSvwe)
 
-export const vh = genCssViewport(cssPxToVh)
-export const dvh = genCssViewport(cssPxToDvh)
-export const lvh = genCssViewport(cssPxToLvh)
-export const svh = genCssViewport(cssPxToSvh)
+export const vh = genCssViewport('vh', cssPxToVh)
+export const dvh = genCssViewport('dvh', cssPxToDvh)
+export const lvh = genCssViewport('lvh', cssPxToLvh)
+export const svh = genCssViewport('svh', cssPxToSvh)
 
-export const vhc = genCssClamp(cssPxToVhc)
-export const dvhc = genCssClamp(cssPxToDvhc)
-export const lvhc = genCssClamp(cssPxToLvhc)
-export const svhc = genCssClamp(cssPxToSvhc)
+export const vhc = genCssClamp('vhc', cssPxToVhc)
+export const dvhc = genCssClamp('dvhc', cssPxToDvhc)
+export const lvhc = genCssClamp('lvhc', cssPxToLvhc)
+export const svhc = genCssClamp('svhc', cssPxToSvhc)
 
-export const vhe = genCssExtend(cssPxToVhe)
-export const dvhe = genCssExtend(cssPxToDvhe)
-export const lvhe = genCssExtend(cssPxToLvhe)
-export const svhe = genCssExtend(cssPxToSvhe)
+export const vhe = genCssExtend('vhe', cssPxToVhe)
+export const dvhe = genCssExtend('dvhe', cssPxToDvhe)
+export const lvhe = genCssExtend('lvhe', cssPxToLvhe)
+export const svhe = genCssExtend('svhe', cssPxToSvhe)
 
-export const percent = genCssPercent(cssPercent)
-export const em = genCssFont(cssEm)
-export const lh = genCssFont(cssLh)
+export const percent = genCssPercent('percent', cssPercent)
+export const em = genCssFont('em', cssEm)
+export const lh = genCssFont('lh', cssLh)

@@ -14,7 +14,7 @@ type ValidationConfig<T> = {
 const createValidator = <T extends readonly ValidationConfig<unknown>[]>(
   ...configs: T
 ) => {
-  return (...values: unknown[]) => {
+  return (caller: string, ...values: unknown[]) => {
     const results = configs.map((config, index) => ({
       result: config.schema.safeParse(values[index]),
       config,
@@ -33,17 +33,18 @@ const createValidator = <T extends readonly ValidationConfig<unknown>[]>(
     }
 
     const errorMessages = results
-      .map(r => `${r.config.paramName} expected ${r.config.expectedType}, received ${safeStringify(r.value)}`)
+      .filter(r => !r.result.success)
+      .map(r => `${r.config.paramName} expected ${r.config.expectedType}, received ${safeStringify(r.value)} (type: ${typeof r.value})`)
 
     return {
       data: null,
-      error: [...errorMessages, new Error().stack ?? ''].join('\n'),
+      error: [caller, ...errorMessages].join('\n'),
     }
   }
 }
 
 const createSingleValidator = <T>(config: ValidationConfig<T>) => {
-  return (value: unknown) => {
+  return (caller: string, value: unknown) => {
     const result = config.schema.safeParse(value)
 
     if (result.success) {
@@ -56,8 +57,8 @@ const createSingleValidator = <T>(config: ValidationConfig<T>) => {
     return {
       data: null,
       error: [
-        `${config.paramName} expected ${config.expectedType}, received ${safeStringify(value)}`,
-        new Error().stack ?? '',
+        caller,
+        `${config.paramName} expected ${config.expectedType}, received ${safeStringify(value)} (type: ${typeof value})`,
       ].join('\n'),
     }
   }
