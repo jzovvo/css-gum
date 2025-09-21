@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2025-09-21
+
+### Changed
+
+- **Error Message Improvements**: Updated error message output to be more concise and user-friendly
+  - Enhanced error reporting with cleaner, more understandable messages
+  - Improved developer experience with better error communication
+
+### Fixed
+
+- **Build Configuration**: Updated gitignore to properly exclude all dist directories
+  - Fixed incomplete dist directory exclusion in .gitignore
+  - Ensures all build output directories are properly ignored across the project
+
+### Removed
+
+- **Prettier**: Removed Prettier dependency and configuration
+  - Simplified code formatting setup by removing Prettier
+  - Streamlined development toolchain
+
 ## [1.4.1] - 2025-09-20
 
 ### Added
