@@ -245,14 +245,14 @@ const mediaSnippets = Snippet.genVSCodeSnippetMediaQuery({
 If `css-gum` makes your designs stretch like gum with elastic flexibility, consider buying me a coffee ☕
 Your support keeps this project sticky and helps it become even more elastic 🍬
 
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-orange)](https://ko-fi.com/jzovvo)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-FF5A16)](https://ko-fi.com/jzovvo)
+[![Portaly](https://img.shields.io/badge/Portaly-請我吃一頓愛珍食-862983)](https://portaly.cc/jzovvo/support)
 
 ## Not Stretching Smoothly?
 
 Is `css-gum` not stretching smoothly in your hands? Or is something getting stuck? Don't worry, let's work together to make it more elastic 🍬
 
 - 🐛 [Issues](https://github.com/jzovvo/css-gum/issues)
-- 💭 [Discussions](https://github.com/jzovvo/css-gum/discussions)
 - 📮 [Mail](mailto:jzovvo@gmail.com)
 - 💻 [Site](https://jzovvo.dev)
 

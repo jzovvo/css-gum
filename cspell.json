@@ -21,7 +21,8 @@
     "cuda",
     "haml",
     "dwidth",
-    "wextend"
+    "wextend",
+    "portaly",
   ],
   "ignorePaths": [
     "node_modules/**",

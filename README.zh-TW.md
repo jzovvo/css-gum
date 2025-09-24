@@ -245,14 +245,14 @@ const mediaSnippets = Snippet.genVSCodeSnippetMediaQuery({
 如果 `css-gum` 讓你的設計像口香糖一樣有彈性地延展，考慮請我喝杯咖啡吧☕
 你的支持讓這個專案保持黏性，並幫助它變得更有彈性🍬
 
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-orange)](https://ko-fi.com/jzovvo)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-FF5A16)](https://ko-fi.com/jzovvo)
+[![Portaly](https://img.shields.io/badge/Portaly-請我吃一頓愛珍食-862983)](https://portaly.cc/jzovvo/support)
 
 ## 拉得不夠順？
 
 `css-gum` 在你手上拉得不夠順嗎？還是有什麼地方卡卡的？別擔心，我們一起來把它拉得更彈性 🍬
 
 - 🐛 [Issues](https://github.com/jzovvo/css-gum/issues)
-- 💭 [Discussions](https://github.com/jzovvo/css-gum/discussions)
 - 📮 [Mail](mailto:jzovvo@gmail.com)
 - 💻 [Site](https://jzovvo.dev)
 
