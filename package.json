@@ -58,21 +58,14 @@
   "types": "./dist/index.browser.d.ts",
   "exports": {
     ".": {
-      "browser": {
-        "types": "./dist/index.browser.d.ts",
-        "import": "./dist/index.browser.js",
-        "require": "./dist/index.browser.cjs"
-      },
-      "node": {
-        "types": "./dist/index.node.d.ts",
-        "import": "./dist/index.node.js",
-        "require": "./dist/index.node.cjs"
-      },
-      "default": {
-        "types": "./dist/index.browser.d.ts",
-        "import": "./dist/index.browser.js",
-        "require": "./dist/index.browser.cjs"
-      }
+      "types": "./dist/index.browser.d.ts",
+      "import": "./dist/index.browser.js",
+      "require": "./dist/index.browser.cjs"
+    },
+    "./node": {
+      "types": "./dist/index.node.d.ts",
+      "import": "./dist/index.node.js",
+      "require": "./dist/index.node.cjs"
     }
   },
   "files": [
