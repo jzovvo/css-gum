@@ -163,7 +163,11 @@ Generate Tailwind CSS breakpoint configuration, Node.js environment only.
 #### `genTailwindBreakpointConfig(options)`
 
 ```typescript
-import { Config } from "css-gum";
+// Browser environment - generate configuration only
+// import { Config } from "css-gum";
+
+// Node.js environment - includes file writing functionality
+import { Config } from "css-gum/node";
 
 const config = Config.genTailwindBreakpointConfig({
   points: [375, 768, 1440],
@@ -174,9 +178,8 @@ const config = Config.genTailwindBreakpointConfig({
   order: "asc", // Sort order (default)
 });
 
+// writeConfigToFiles - Node.js environment only, automatically create directories, backup files
 Config.writeConfigToFiles(config, ["./src/styles/config.css"]);
-
-// writeConfigToFiles - automatically create directories, backup files
 ```
 
 ### Snippet Module
@@ -188,7 +191,11 @@ Auto-generate VSCode Snippets, write function is Node.js only.
 #### Basic Usage
 
 ```typescript
-import { Gen, Snippet } from "css-gum";
+// Browser environment - generate Snippet objects only
+// import { Gen, Snippet } from "css-gum";
+
+// Node.js environment - includes file writing functionality
+import { Gen, Snippet } from "css-gum/node";
 
 // Method 1: Get from Gen
 const funcs = Gen.genFuncsCore();
@@ -198,7 +205,7 @@ Snippet.writeSnippetsToFiles(funcs.VSCodeSnippet, [".vscode/css.code-snippets"])
 const snippets = Snippet.genVSCodeSnippetCore();
 Snippet.writeSnippetsToFiles(snippets, [".vscode/css.code-snippets"]);
 
-// writeSnippetsToFiles - Node.js only
+// writeSnippetsToFiles - Node.js environment only
 // Auto-merge existing snippets, create backups, build directories
 ```
 

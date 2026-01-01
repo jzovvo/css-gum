@@ -163,7 +163,11 @@ customCore.VSCodeSnippet; // VSCode Snippet 物件
 #### `genTailwindBreakpointConfig(options)`
 
 ```typescript
-import { Config } from "css-gum";
+// 瀏覽器環境 - 僅生成配置
+// import { Config } from "css-gum";
+
+// Node.js 環境 - 包含檔案寫入功能
+import { Config } from "css-gum/node";
 
 const config = Config.genTailwindBreakpointConfig({
   points: [375, 768, 1440],
@@ -174,9 +178,8 @@ const config = Config.genTailwindBreakpointConfig({
   order: "asc", // 排序方式（預設）
 });
 
+// writeConfigToFiles - Node.js 環境專用，自動創建目錄、備份檔案
 Config.writeConfigToFiles(config, ["./src/styles/config.css"]);
-
-// writeConfigToFiles - 自動創建目錄、備份檔案
 ```
 
 ### Snippet Module
@@ -188,7 +191,11 @@ Config.writeConfigToFiles(config, ["./src/styles/config.css"]);
 #### 基本用法
 
 ```typescript
-import { Gen, Snippet } from "css-gum";
+// 瀏覽器環境 - 僅生成 Snippet 物件
+// import { Gen, Snippet } from "css-gum";
+
+// Node.js 環境 - 包含檔案寫入功能
+import { Gen, Snippet } from "css-gum/node";
 
 // 方式 1: 從 Gen 取得
 const funcs = Gen.genFuncsCore();
@@ -198,7 +205,7 @@ Snippet.writeSnippetsToFiles(funcs.VSCodeSnippet, [".vscode/css.code-snippets"])
 const snippets = Snippet.genVSCodeSnippetCore();
 Snippet.writeSnippetsToFiles(snippets, [".vscode/css.code-snippets"]);
 
-// writeSnippetsToFiles - Node.js only
+// writeSnippetsToFiles - Node.js 環境專用
 // 自動合併現有 snippet、創建備份、建立目錄
 ```
 

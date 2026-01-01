@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2026-01-01
+
+### Changed
+
+- **Package Exports Structure**: Simplified package.json exports configuration for better TypeScript support
+  - Removed conditional exports (browser/node/default) in favor of explicit entry points
+  - Main entry point `css-gum` now directly exports browser-compatible modules (Core, Gen, Util, Snippet without file I/O, Config without file I/O)
+  - New explicit entry point `css-gum/node` for Node.js-specific functionality (includes Snippet.writeSnippetsToFiles and Config.writeConfigToFiles)
+  - Provides clearer type definitions and reduces environment confusion
+  - Users must now explicitly import from `css-gum/node` to access file writing capabilities
+
+### Improved
+
+- **TypeScript Experience**: Enhanced type inference with explicit module boundaries
+  - Better IDE autocomplete and type checking for browser vs Node.js environments
+  - Clearer separation between browser-safe and Node.js-only functionality
+  - Reduced risk of accidentally importing Node.js modules in browser environments
+
+### Documentation
+
+- Updated README (English and Traditional Chinese) with import examples for both browser and Node.js environments
+- Clarified usage of `css-gum` vs `css-gum/node` entry points in Config and Snippet modules
+
 ## [1.4.2] - 2025-09-21
 
 ### Changed
